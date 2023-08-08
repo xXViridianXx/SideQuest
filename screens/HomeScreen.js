@@ -1,7 +1,12 @@
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { UserCircleIcon } from "react-native-heroicons/outline";
+import {
+    UserCircleIcon,
+    AdjustmentsHorizontalIcon,
+    MagnifyingGlassIcon
+} from "react-native-heroicons/outline";
+import { SearchBar } from 'react-native-screens';
 
 
 
@@ -19,7 +24,9 @@ const HomeScreen = () => {
 
     return (
         <SafeAreaView style={styles.container} behavior='padding'>
+
             {/* Header: Search, profile, logo */}
+
             <View style={styles.headerContainer}>
                 <View style={styles.logoContainer}>
                     <Text style={styles.logoText}>SideQuest</Text>
@@ -28,6 +35,16 @@ const HomeScreen = () => {
                     <UserCircleIcon size='50' color='#D90429' style={styles.profile} />
                 </View>
             </View>
+
+            {/* Search Bar */}
+            <View style={styles.searchContainer}>
+                <View>
+
+                </View>
+                <MagnifyingGlassIcon size='30' color='#D90429' style={styles.profile} />
+                <AdjustmentsHorizontalIcon size='30' color='#D90429' style={styles.profile} />
+            </View>
+
         </SafeAreaView>
     )
 }
