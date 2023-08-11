@@ -1,7 +1,9 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 // import { auth } from '../firebase'
+
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
@@ -18,67 +20,77 @@ const LoginScreen = ({ navigation }) => {
     })
   }, [])
 
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
+
   return (
+
+
 
 
     // keyboard won't cover input fields
 
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior='padding'
-    >
-      <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>SideQuest</Text>
-      </View>
-
-      <View style={styles.introContainer}>
-        <Text style={styles.introText}>Do Tasks. Earn Money.</Text>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder='Email'
-          value={email}
-          onChangeText={text => setEmail(text)}
-          style={styles.input}
-          placeholderTextColor={'#D90429'}
-          keyboardType='email-address'
-
-        />
-
-        <TextInput
-          placeholder='Password'
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-          placeholderTextColor={'#D90429'}
-        />
-        <TouchableOpacity onPress={() => { }}>
-          <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12 }}>Forgot password</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={styles.buttonContainer}
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior='padding'
       >
-        <TouchableOpacity onPress={() => { }} style={styles.button}>
-          <Text style={styles.buttonText}>Sign in</Text>
-        </TouchableOpacity>
+        <View style={styles.logoContainer}>
+          <Text style={styles.logoText}>SideQuest</Text>
+        </View>
 
-        <TouchableOpacity onPress={() => { }} style={styles.button}>
-          <Text style={styles.buttonText}>Sign in with Google</Text>
-        </TouchableOpacity>
+        <View style={styles.introContainer}>
+          <Text style={styles.introText}>Do Tasks. Earn Money.</Text>
+        </View>
 
-        <View style={styles.signUpContainer}>
-          <Text style={{ color: '#FFF', fontSize: 12 }}>New To The App?</Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('Register') }} style={[styles.buttonOutline]}>
-            <Text style={styles.buttonOutlineText}> Sign Up</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder='Email'
+            value={email}
+            onChangeText={text => setEmail(text)}
+            style={styles.input}
+            placeholderTextColor={'#D90429'}
+            keyboardType='email-address'
+
+          />
+
+          <TextInput
+            placeholder='Password'
+            value={password}
+            onChangeText={text => setPassword(text)}
+            style={styles.input}
+            secureTextEntry
+            placeholderTextColor={'#D90429'}
+          />
+          <TouchableOpacity onPress={() => { }}>
+            <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12 }}>Forgot Password</Text>
           </TouchableOpacity>
         </View>
 
-      </View>
-    </KeyboardAvoidingView>
+        <View
+          style={styles.buttonContainer}
+        >
+          <TouchableOpacity onPress={() => {navigation.navigate('Home')}} style={styles.button}>
+            <Text style={styles.buttonText}>Sign in</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => { }} style={styles.button}>
+            <Text style={styles.buttonText}>Sign in with Google</Text>
+          </TouchableOpacity>
+
+          <View style={styles.signUpContainer}>
+            <Text style={{ color: '#FFF', fontSize: 12, fontWeight: 500 }}>New To The App?</Text>
+            <TouchableOpacity onPress={() => { navigation.navigate('Register') }} style={[styles.buttonOutline]}>
+              <Text style={styles.buttonOutlineText}> Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
 
   )
 }
@@ -117,7 +129,7 @@ const styles = StyleSheet.create({
     width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 5,
     marginBottom: 20
 
   },

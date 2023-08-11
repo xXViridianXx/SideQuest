@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 // import { auth } from '../firebase'
@@ -20,82 +20,88 @@ const LoginScreen = ({ navigation }) => {
     })
   }, [])
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
 
 
     // keyboard won't cover input fields
 
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior='padding'
-    >
-      <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>SideQuest</Text>
-      </View>
-
-      <View style={styles.introContainer}>
-        <Text style={styles.introText}>Welcome Aboard</Text>
-      </View>
-
-      <View style={styles.inputContainer}>
-
-        <TextInput
-          placeholder='Username'
-          value={username}
-          onChangeText={text => setUsername(text)}
-          style={styles.input}
-          placeholderTextColor={'#D90429'}
-          keyboardType='default'
-
-        />
-
-        <TextInput
-          placeholder='Email'
-          value={email}
-          onChangeText={text => setEmail(text)}
-          style={styles.input}
-          placeholderTextColor={'#D90429'}
-          keyboardType='email-address'
-
-        />
-
-
-
-        <TextInput
-          placeholder='Password'
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-          placeholderTextColor={'#D90429'}
-        />
-
-        <TextInput
-          placeholder='Confirm Password'
-          value={confirmPassword}
-          onChangeText={text => setConfirmPassword(text)}
-          style={styles.input}
-          secureTextEntry
-          placeholderTextColor={'#D90429'}
-        />
-      </View>
-
-      <View
-        style={styles.buttonContainer}
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior='padding'
       >
-        <TouchableOpacity onPress={() => { }} style={styles.button}>
-          <Text style={styles.buttonText}>Lets Go</Text>
-        </TouchableOpacity>
-
-        <View style={styles.signUpContainer}>
-          <Text style={{ color: '#FFF', fontSize: 12 }}>Already Have An Account?</Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={[styles.buttonOutline]}>
-            <Text style={styles.buttonOutlineText}> Sign In</Text>
-          </TouchableOpacity>
+        <View style={styles.logoContainer}>
+          <Text style={styles.logoText}>SideQuest</Text>
         </View>
 
-      </View>
-    </KeyboardAvoidingView>
+        <View style={styles.introContainer}>
+          <Text style={styles.introText}>Welcome Aboard</Text>
+        </View>
+
+        <View style={styles.inputContainer}>
+
+          <TextInput
+            placeholder='Username'
+            value={username}
+            onChangeText={text => setUsername(text)}
+            style={styles.input}
+            placeholderTextColor={'#D90429'}
+            keyboardType='default'
+
+          />
+
+          <TextInput
+            placeholder='Email'
+            value={email}
+            onChangeText={text => setEmail(text)}
+            style={styles.input}
+            placeholderTextColor={'#D90429'}
+            keyboardType='email-address'
+
+          />
+
+
+
+          <TextInput
+            placeholder='Password'
+            value={password}
+            onChangeText={text => setPassword(text)}
+            style={styles.input}
+            secureTextEntry
+            placeholderTextColor={'#D90429'}
+          />
+
+          <TextInput
+            placeholder='Confirm Password'
+            value={confirmPassword}
+            onChangeText={text => setConfirmPassword(text)}
+            style={styles.input}
+            secureTextEntry
+            placeholderTextColor={'#D90429'}
+          />
+        </View>
+
+        <View
+          style={styles.buttonContainer}
+        >
+          <TouchableOpacity onPress={() => {navigation.navigate('Home')}} style={styles.button}>
+            <Text style={styles.buttonText}>Lets Go</Text>
+          </TouchableOpacity>
+
+          <View style={styles.signUpContainer}>
+            <Text style={{ color: '#FFF', fontSize: 12, fontWeight: 500}}>Already Have An Account?</Text>
+            <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={[styles.buttonOutline]}>
+              <Text style={styles.buttonOutlineText}> Sign In</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
 
   )
 }
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 5,
     marginBottom: 20
 
   },
