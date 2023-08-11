@@ -3,10 +3,11 @@ import React, { useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 // import { auth } from '../firebase'
 
-const RegisterScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   const signUp = () => {
     auth.createUserWithEmailAndPassword(email, password)
@@ -37,13 +38,17 @@ const RegisterScreen = ({navigation}) => {
       </View>
 
       <View style={styles.inputContainer}>
-      <TextInput
+
+        <TextInput
           placeholder='Username'
           value={username}
           onChangeText={text => setUsername(text)}
           style={styles.input}
           placeholderTextColor={'#D90429'}
+          keyboardType='default'
+
         />
+
         <TextInput
           placeholder='Email'
           value={email}
@@ -54,10 +59,21 @@ const RegisterScreen = ({navigation}) => {
 
         />
 
+
+
         <TextInput
           placeholder='Password'
           value={password}
           onChangeText={text => setPassword(text)}
+          style={styles.input}
+          secureTextEntry
+          placeholderTextColor={'#D90429'}
+        />
+
+        <TextInput
+          placeholder='Confirm Password'
+          value={confirmPassword}
+          onChangeText={text => setConfirmPassword(text)}
           style={styles.input}
           secureTextEntry
           placeholderTextColor={'#D90429'}
@@ -71,9 +87,12 @@ const RegisterScreen = ({navigation}) => {
           <Text style={styles.buttonText}>Lets Go</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {navigation.navigate('Login')}} style={[styles.button, styles.buttonOutline]}>
-          <Text style={styles.buttonOutlineText}>Sign In</Text>
-        </TouchableOpacity>
+        <View style={styles.signUpContainer}>
+          <Text style={{ color: '#FFF', fontSize: 12 }}>Already Have An Account?</Text>
+          <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={[styles.buttonOutline]}>
+            <Text style={styles.buttonOutlineText}> Sign In</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
     </KeyboardAvoidingView>
@@ -81,19 +100,27 @@ const RegisterScreen = ({navigation}) => {
   )
 }
 
-export default RegisterScreen
+export default LoginScreen
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E63946'
+    backgroundColor: '#E63946',
+  },
+
+  signUpContainer: {
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
   },
   logoContainer: {
     width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
+    // marginTop: 300
   },
   logoText: {
     color: '#FFF',
@@ -127,7 +154,7 @@ const styles = StyleSheet.create({
     paddingVertical: 1,
     borderRadius: 10,
     marginTop: 15,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: '#D90429',
     color: '#FFF',
   },
@@ -136,7 +163,7 @@ const styles = StyleSheet.create({
     width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 10,
   },
   button: {
     width: '100%',
@@ -144,7 +171,8 @@ const styles = StyleSheet.create({
     color: '#FFF',
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   },
   buttonText: {
     fontWeight: 'bold',
@@ -153,14 +181,14 @@ const styles = StyleSheet.create({
   },
   buttonOutline: {
     backgroundColor: '#E63946',
-    marginTop: 10,
-    borderColor: '#D90429',
-    borderWidth: 3
+    // marginTop: 10,
+    // borderColor: '#D90429',
+    // borderWidth: 3
 
   },
   buttonOutlineText: {
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontWeight: '500',
+    fontSize: 14,
     color: '#FFF'
 
   }

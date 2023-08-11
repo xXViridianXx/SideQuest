@@ -3,7 +3,7 @@ import React, { useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 // import { auth } from '../firebase'
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -55,7 +55,7 @@ const LoginScreen = ({navigation}) => {
           placeholderTextColor={'#D90429'}
         />
         <TouchableOpacity onPress={() => { }}>
-          <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12}}>Forgot password</Text>
+          <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12 }}>Forgot password</Text>
         </TouchableOpacity>
       </View>
 
@@ -63,12 +63,19 @@ const LoginScreen = ({navigation}) => {
         style={styles.buttonContainer}
       >
         <TouchableOpacity onPress={() => { }} style={styles.button}>
+          <Text style={styles.buttonText}>Sign in</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => { }} style={styles.button}>
           <Text style={styles.buttonText}>Sign in with Google</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => { navigation.navigate('Register')}} style={[styles.button, styles.buttonOutline]}>
-          <Text style={styles.buttonOutlineText}>Sign Up</Text>
-        </TouchableOpacity>
+        <View style={styles.signUpContainer}>
+          <Text style={{ color: '#FFF', fontSize: 12 }}>New To The App?</Text>
+          <TouchableOpacity onPress={() => { navigation.navigate('Register') }} style={[styles.buttonOutline]}>
+            <Text style={styles.buttonOutlineText}> Sign Up</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
     </KeyboardAvoidingView>
@@ -83,12 +90,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E63946'
+    backgroundColor: '#E63946',
+  },
+
+  signUpContainer: {
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
   },
   logoContainer: {
     width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
+    // marginTop: 300
   },
   logoText: {
     color: '#FFF',
@@ -122,16 +137,16 @@ const styles = StyleSheet.create({
     paddingVertical: 1,
     borderRadius: 10,
     marginTop: 15,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: '#D90429',
     color: '#FFF',
   },
 
   buttonContainer: {
-    width: '50%',
+    width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 10,
   },
   button: {
     width: '100%',
@@ -139,7 +154,8 @@ const styles = StyleSheet.create({
     color: '#FFF',
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   },
   buttonText: {
     fontWeight: 'bold',
@@ -148,14 +164,14 @@ const styles = StyleSheet.create({
   },
   buttonOutline: {
     backgroundColor: '#E63946',
-    marginTop: 10,
-    borderColor: '#D90429',
-    borderWidth: 3
+    // marginTop: 10,
+    // borderColor: '#D90429',
+    // borderWidth: 3
 
   },
   buttonOutlineText: {
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontWeight: '500',
+    fontSize: 14,
     color: '#FFF'
 
   }
