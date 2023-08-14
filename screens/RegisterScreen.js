@@ -1,14 +1,10 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-// import { auth } from '../firebase'
+import LoginInputs from '../components/LoginInputs'
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-
+  
   const signUp = () => {
     auth.createUserWithEmailAndPassword(email, password)
   }
@@ -44,45 +40,10 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          <TextInput
-            placeholder='Username'
-            value={username}
-            onChangeText={text => setUsername(text)}
-            style={styles.input}
-            placeholderTextColor={'#D90429'}
-            keyboardType='default'
-
-          />
-
-          <TextInput
-            placeholder='Email'
-            value={email}
-            onChangeText={text => setEmail(text)}
-            style={styles.input}
-            placeholderTextColor={'#D90429'}
-            keyboardType='email-address'
-
-          />
-
-
-
-          <TextInput
-            placeholder='Password'
-            value={password}
-            onChangeText={text => setPassword(text)}
-            style={styles.input}
-            secureTextEntry
-            placeholderTextColor={'#D90429'}
-          />
-
-          <TextInput
-            placeholder='Confirm Password'
-            value={confirmPassword}
-            onChangeText={text => setConfirmPassword(text)}
-            style={styles.input}
-            secureTextEntry
-            placeholderTextColor={'#D90429'}
-          />
+          <LoginInputs labelText={'Username'} style={styles.input} color={'#D90429'} boardType='default' secure={false}/>
+          <LoginInputs labelText={'Email'} style={styles.input} color={'#D90429'} boardType='email-address' secure={false}/>
+          <LoginInputs labelText={'Password'} style={styles.input} color={'#D90429'} boardType='default' secure={true}/>
+          <LoginInputs labelText={'Confirm Password'} style={styles.input} color={'#D90429'} boardType='default' secure={true}/>
         </View>
 
         <View

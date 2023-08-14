@@ -1,13 +1,11 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-// import { auth } from '../firebase'
+import LoginInputs from '../components/LoginInputs'
 
 
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
 
   const signUp = () => {
     auth.createUserWithEmailAndPassword(email, password)
@@ -47,24 +45,10 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <TextInput
-            placeholder='Email'
-            value={email}
-            onChangeText={text => setEmail(text)}
-            style={styles.input}
-            placeholderTextColor={'#D90429'}
-            keyboardType='email-address'
 
-          />
+          <LoginInputs labelText={'Email'} style={styles.input} color={'#D90429'} boardType='email-address' secure={false} />
+          <LoginInputs labelText={'Password'} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
 
-          <TextInput
-            placeholder='Password'
-            value={password}
-            onChangeText={text => setPassword(text)}
-            style={styles.input}
-            secureTextEntry
-            placeholderTextColor={'#D90429'}
-          />
           <TouchableOpacity onPress={() => { }}>
             <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12 }}>Forgot Password</Text>
           </TouchableOpacity>
@@ -73,7 +57,7 @@ const LoginScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => {navigation.navigate('Home')}} style={styles.button}>
+          <TouchableOpacity onPress={() => { navigation.navigate('Home') }} style={styles.button}>
             <Text style={styles.buttonText}>Sign in</Text>
           </TouchableOpacity>
 
@@ -163,7 +147,6 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     backgroundColor: '#D90429',
-    color: '#FFF',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -172,7 +155,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#e5e5e5'
+    color: '#FFF'
   },
   buttonOutline: {
     backgroundColor: '#E63946',
@@ -185,6 +168,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     color: '#FFF'
-
   }
 })
