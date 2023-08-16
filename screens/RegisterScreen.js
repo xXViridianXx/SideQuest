@@ -1,7 +1,7 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
-
+import { signUp } from '../components/Helpers'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
 
@@ -13,44 +13,6 @@ const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
-
-  const signUp = () => {
-    const auth = getAuth()
-    if (password != confirmPassword) {
-      Alert.alert('Password Do Not Match')
-      return
-    }
-    if (email && password) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((credentials) => {
-          const user = credentials.user
-          console.log('Successfully created and account with', user.email)
-        })
-        .catch((error) => {
-          if (error.code === 'auth/email-already-in-use') {
-            Alert.alert('The email is already in use')
-          }
-          if (error.code === 'auth/invalid-email') {
-            Alert.alert("Invalid email")
-          }
-
-          console.error('Error creating account', error.message)
-
-        })
-    }
-    else {
-      Alert.alert('Missing required fields')
-    }
-
-
-  }
-
-  // const nav = useNavigation()
-  // useLayoutEffect(() => {
-  //   nav.setOptions({
-  //     headerShown: false,
-  //   })
-  // }, [])
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -85,7 +47,7 @@ const RegisterScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { signUp() }} style={styles.button}>
+          <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword) }} style={styles.button}>
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>
 

@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         backgroundColor: '#FFFFFF',
-        placeholderTextColor: '#ECB8BC',
         padding: 10,
         width: '78%',
     },

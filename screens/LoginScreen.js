@@ -5,6 +5,7 @@ import LoginInputs from '../components/LoginInputs'
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from '../firebaseConfig'
+import { signIn } from '../components/Helpers'
 
 
 // linking firebase
@@ -18,43 +19,11 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     const auth = getAuth()
     onAuthStateChanged(auth, (user) => {
-      if(user) {
+      if (user) {
         navigation.replace('Home')
       }
     })
   })
-
-  const signIn = () => {
-    console.log('in here')
-    const auth = getAuth()
-
-    if (email && password) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userSignInInfo) => {
-          const user = userSignInInfo.user
-          console.log('Logged In With', user.email)
-        })
-        .catch((error) => {
-          if (error.code === 'auth/user-not-found') {
-            Alert.alert("Invalid email address")
-          }
-          if (error.code === 'auth/wrong-password') {
-            Alert.alert("Invalid password")
-          }
-          console.error('Error signing in: ', error.message)
-        })
-    }
-    else if (email) {
-      Alert.alert('Enter password')
-    }
-    else if (password) {
-      Alert.alert('Enter email')
-    }
-    else {
-      Alert.alert('Enter email')
-      Alert.alert('Enter password')
-    }
-  }
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -94,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => {(signIn())}} style={styles.button}>
+          <TouchableOpacity onPress={() => { (signIn(email, password)) }} style={styles.button}>
             <Text style={styles.buttonText}>Sign in</Text>
           </TouchableOpacity>
 
