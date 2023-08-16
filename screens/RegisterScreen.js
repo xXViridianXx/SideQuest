@@ -1,7 +1,7 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
-import { signUp } from '../components/Helpers'
+import { signUp, create} from '../components/Helpers'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
 
@@ -47,7 +47,7 @@ const RegisterScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword) }} style={styles.button}>
+          <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}>
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>
 

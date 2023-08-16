@@ -16,13 +16,6 @@ const HomeScreen = () => {
     // gives access to navigation object
     const navigation = useNavigation()
 
-    // as soon as the screen mounts
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //         headerShown: false,
-    //     })
-    // }, [])
-
     return (
         <SafeAreaView style={styles.container} behavior='padding'>
 
