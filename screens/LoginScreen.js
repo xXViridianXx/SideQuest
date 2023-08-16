@@ -1,23 +1,60 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import React, { useState, useLayoutEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, StatusBar, Alert } from 'react-native'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
 
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import { initializeApp } from 'firebase/app'
+import { firebaseConfig } from '../firebaseConfig'
 
+
+// linking firebase
+initializeApp(firebaseConfig)
 
 const LoginScreen = ({ navigation }) => {
 
-  const signUp = () => {
-    auth.createUserWithEmailAndPassword(email, password)
-  }
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const nav = useNavigation()
-  useLayoutEffect(() => {
-    nav.setOptions({
-      headerShown: false,
+  useEffect(() => {
+    const auth = getAuth()
+    onAuthStateChanged(auth, (user) => {
+      if(user) {
+        navigation.replace('Home')
+      }
     })
-  }, [])
+  })
 
+  const signIn = () => {
+    console.log('in here')
+    const auth = getAuth()
+
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userSignInInfo) => {
+          const user = userSignInInfo.user
+          console.log('Logged In With', user.email)
+        })
+        .catch((error) => {
+          if (error.code === 'auth/user-not-found') {
+            Alert.alert("Invalid email address")
+          }
+          if (error.code === 'auth/wrong-password') {
+            Alert.alert("Invalid password")
+          }
+          console.error('Error signing in: ', error.message)
+        })
+    }
+    else if (email) {
+      Alert.alert('Enter password')
+    }
+    else if (password) {
+      Alert.alert('Enter email')
+    }
+    else {
+      Alert.alert('Enter email')
+      Alert.alert('Enter password')
+    }
+  }
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -46,8 +83,8 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          <LoginInputs labelText={'Email'} style={styles.input} color={'#D90429'} boardType='email-address' secure={false} />
-          <LoginInputs labelText={'Password'} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#D90429'} boardType='email-address' secure={false} />
+          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
 
           <TouchableOpacity onPress={() => { }}>
             <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12 }}>Forgot Password</Text>
@@ -57,7 +94,7 @@ const LoginScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { navigation.navigate('Home') }} style={styles.button}>
+          <TouchableOpacity onPress={() => {(signIn())}} style={styles.button}>
             <Text style={styles.buttonText}>Sign in</Text>
           </TouchableOpacity>
 

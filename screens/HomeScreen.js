@@ -1,4 +1,4 @@
-import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView } from 'react-native'
+import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 // import { StatusBar } from 'expo-status-bar';
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -17,11 +17,11 @@ const HomeScreen = () => {
     const navigation = useNavigation()
 
     // as soon as the screen mounts
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerShown: false,
-        })
-    }, [])
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({
+    //         headerShown: false,
+    //     })
+    // }, [])
 
     return (
         <SafeAreaView style={styles.container} behavior='padding'>
@@ -34,9 +34,9 @@ const HomeScreen = () => {
                 <View style={styles.logoContainer}>
                     <Text style={styles.logoText}>SideQuest</Text>
                 </View>
-                <View>
+                <TouchableOpacity>
                     <UserCircleIcon size='50' color='#D90429' style={styles.profile} />
-                </View>
+                </TouchableOpacity>
             </View>
 
             {/* Search Bar */}
@@ -45,7 +45,9 @@ const HomeScreen = () => {
                     <MagnifyingGlassIcon size='25' color='#ECB8BC' style={styles.searchIcon} />
                     <TextInput placeholder='Math Tutor' keyboardType='default' style={styles.searchInput} />
                 </View>
-                <AdjustmentsHorizontalIcon size='30' color='#D90429' style={styles.filterIcon} />
+                <TouchableOpacity>
+                    <AdjustmentsHorizontalIcon size='30' color='#D90429' style={styles.filterIcon} />
+                </TouchableOpacity>
 
             </View>
 

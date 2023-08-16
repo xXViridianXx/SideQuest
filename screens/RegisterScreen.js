@@ -1,20 +1,56 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard} from 'react-native'
-import React, { useState, useLayoutEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
 
-const LoginScreen = ({ navigation }) => {
-  
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+
+
+
+const RegisterScreen = ({ navigation }) => {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+
   const signUp = () => {
-    auth.createUserWithEmailAndPassword(email, password)
+    const auth = getAuth()
+    if (password != confirmPassword) {
+      Alert.alert('Password Do Not Match')
+      return
+    }
+    if (email && password) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((credentials) => {
+          const user = credentials.user
+          console.log('Successfully created and account with', user.email)
+        })
+        .catch((error) => {
+          if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('The email is already in use')
+          }
+          if (error.code === 'auth/invalid-email') {
+            Alert.alert("Invalid email")
+          }
+
+          console.error('Error creating account', error.message)
+
+        })
+    }
+    else {
+      Alert.alert('Missing required fields')
+    }
+
+
   }
 
-  const nav = useNavigation()
-  useLayoutEffect(() => {
-    nav.setOptions({
-      headerShown: false,
-    })
-  }, [])
+  // const nav = useNavigation()
+  // useLayoutEffect(() => {
+  //   nav.setOptions({
+  //     headerShown: false,
+  //   })
+  // }, [])
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -40,21 +76,21 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          <LoginInputs labelText={'Username'} style={styles.input} color={'#D90429'} boardType='default' secure={false}/>
-          <LoginInputs labelText={'Email'} style={styles.input} color={'#D90429'} boardType='email-address' secure={false}/>
-          <LoginInputs labelText={'Password'} style={styles.input} color={'#D90429'} boardType='default' secure={true}/>
-          <LoginInputs labelText={'Confirm Password'} style={styles.input} color={'#D90429'} boardType='default' secure={true}/>
+          <LoginInputs labelText={'Username'} input={username} setInput={setUsername} style={styles.input} color={'#D90429'} boardType='default' secure={false} />
+          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#D90429'} boardType='email-address' secure={false} />
+          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
         </View>
 
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => {navigation.navigate('Home')}} style={styles.button}>
+          <TouchableOpacity onPress={() => { signUp() }} style={styles.button}>
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>
 
           <View style={styles.signUpContainer}>
-            <Text style={{ color: '#FFF', fontSize: 12, fontWeight: 500}}>Already Have An Account?</Text>
+            <Text style={{ color: '#FFF', fontSize: 12, fontWeight: 500 }}>Already Have An Account?</Text>
             <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={[styles.buttonOutline]}>
               <Text style={styles.buttonOutlineText}> Sign In</Text>
             </TouchableOpacity>
@@ -67,7 +103,7 @@ const LoginScreen = ({ navigation }) => {
   )
 }
 
-export default LoginScreen
+export default RegisterScreen
 
 const styles = StyleSheet.create({
   container: {

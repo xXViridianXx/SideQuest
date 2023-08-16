@@ -2,9 +2,9 @@ import { View, Text, TextInput, StyleSheet} from 'react-native'
 import React, {useState} from 'react'
 
 
-const LoginInputs = ({labelText, inputStyles, color, boardType, secure}) => {
+const LoginInputs = ({labelText, input, setInput, color, boardType, secure}) => {
 
-    const [input, setInput] = useState('')
+    // const [input, setInput] = useState('')
     // const [password, setPassword] = useState('')
     // const [username, setUsername] = useState('')
     // const [confirmPassword, setConfirmPassword] = useState('')
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#E63946',
         paddingHorizontal: 8,
-        paddingVertical: 3,
+        paddingVertical: 10,
         borderRadius: 10,
         marginTop: 15,
-        borderBottomWidth: 2,
-        borderBottomColor: '#D90429',
+        borderWidth: 2,
+        borderColor: '#D90429',
         color: '#FFF',
       }
 })
