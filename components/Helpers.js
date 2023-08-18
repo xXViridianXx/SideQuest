@@ -1,9 +1,17 @@
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth'
 import { Alert } from 'react-native'
 
-import { database, doc, setDoc} from '../firebaseConfig'
+import { database, doc, setDoc } from '../firebaseConfig'
 import { collection } from 'firebase/firestore'
+import Toast from 'react-native-root-toast'
 
+const showToast = (text) => {
+  let toast = Toast.show(text, {
+    duration: Toast.durations.SHORT,
+    backgroundColor: '#D90429',
+    position: 150,
+  });
+};
 
 const createDocument = async (email, username, uid) => {
   try {
@@ -23,36 +31,36 @@ const signIn = async (email, password) => {
   if (email && password) {
     try {
       let userSignInInfo = await signInWithEmailAndPassword(auth, email, password)
-      
+
       const user = userSignInInfo.user
       console.log('Logged In With', user.email)
     }
     catch (error) {
       if (error.code === 'auth/user-not-found') {
-        Alert.alert("Invalid email address")
+        showToast('Invalid email address')
       }
       if (error.code === 'auth/wrong-password') {
-        Alert.alert("Invalid password")
+        showToast('Invalid password')
       }
+      showToast('Invalid credentials')
       console.error('Error signing in: ', error.message)
     }
   }
   else if (email) {
-    Alert.alert('Enter password')
+    showToast('Enter password')
   }
   else if (password) {
-    Alert.alert('Enter email')
+    showToast('Enter email')
   }
   else {
-    Alert.alert('Enter email')
-    Alert.alert('Enter password')
+    showToast('Enter email and password')
   }
 }
 
 const signUp = async (email, password, confirmPassword, username) => {
   const auth = getAuth()
   if (password != confirmPassword) {
-    Alert.alert('Password Do Not Match')
+    showToast('Password Do Not Match')
     return
   }
   if (email && password) {
@@ -66,10 +74,10 @@ const signUp = async (email, password, confirmPassword, username) => {
     }
     catch (error) {
       if (error.code === 'auth/email-already-in-use') {
-        Alert.alert('The email is already in use')
+        showToast('The email is already in use')
       }
       if (error.code === 'auth/invalid-email') {
-        Alert.alert("Invalid email")
+        showToast("Invalid email")
       }
 
       console.error('Error creating account', error.message)
@@ -77,8 +85,8 @@ const signUp = async (email, password, confirmPassword, username) => {
     }
   }
   else {
-    Alert.alert('Missing required fields')
+    showToast('Missing required fields')
   }
 }
 
-export { signIn, signUp}
+export { signIn, signUp }

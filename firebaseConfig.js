@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 // import * as firebase from 'firebase'
 import { getAuth } from 'firebase/auth'
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc} from 'firebase/firestore';
 
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
@@ -32,7 +32,8 @@ export {
   auth,
   database,
   doc,
-  setDoc
+  setDoc,
+  getDoc
 }
 
 // For more information on how to access Firebase in your project,

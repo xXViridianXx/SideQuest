@@ -28,7 +28,7 @@ const HomeScreen = () => {
                     <Text style={styles.logoText}>SideQuest</Text>
                 </View>
                 <TouchableOpacity>
-                    <UserCircleIcon size='50' color='#D90429' style={styles.profile} />
+                    <UserCircleIcon size='50' color='#E63946' style={styles.profile} />
                 </TouchableOpacity>
             </View>
 
@@ -39,7 +39,7 @@ const HomeScreen = () => {
                     <TextInput placeholder='Math Tutor' keyboardType='default' style={styles.searchInput} />
                 </View>
                 <TouchableOpacity>
-                    <AdjustmentsHorizontalIcon size='30' color='#D90429' style={styles.filterIcon} />
+                    <AdjustmentsHorizontalIcon size='30' color='#E63946' style={styles.filterIcon} />
                 </TouchableOpacity>
 
             </View>
@@ -60,7 +60,7 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#E63946',
+        backgroundColor: '#FFF',
         flex: 1
     },
     searchContainer: {
@@ -92,19 +92,24 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         width: '76%',
         backgroundColor: '#FFFFFF',
-        borderRadius: 5,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#E63946'
     },
     searchInput: {
         backgroundColor: '#FFFFFF',
         padding: 10,
         width: '78%',
+        // borderRadius: 10,
+        // borderBottomWidth: 3,
+        borderBottomColor: '#E63946'
     },
     logoContainer: {
         flex: 1,
         justifyContent: 'center',
     },
     logoText: {
-        color: '#FFFFFF',
+        color: '#E63946',
         fontSize: 20,
         fontWeight: '600',
 
