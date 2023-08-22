@@ -2,15 +2,41 @@ import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView,
 // import { StatusBar } from 'expo-status-bar';
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
+
 import {
     UserCircleIcon,
     AdjustmentsHorizontalIcon,
     MagnifyingGlassIcon
 } from "react-native-heroicons/outline";
-import { SearchBar } from 'react-native-screens';
+import { getAuth, signOut } from 'firebase/auth';
 
 
 
+const DummyData = {
+    James: {
+        distance: 3,
+        post: 'I need help fixing my car\'s engine. I\'m not really sure what\'s wrong. It would be awesome if someone could help',
+        payType: 'flat',
+        pay: 50
+    },
+    Aaron: {
+        distance: .5,
+        post: 'I need someone to help me cook a large amount of food for this upcomming event on Saturday. I will be making pizza, and a giant chocolate cake',
+        payType: 'hr',
+        pay: 30
+    },
+    Tim: {
+        distance: 5,
+        post: 'My daughter is struggling in math and she could really use the help in geomerty and calculs. Pay is negotaible',
+        payType: 'hr',
+        pay: 25
+    }
+}
+
+const logout = async () => {
+    console.log('logging out')
+    await signOut(getAuth())
+}
 const HomeScreen = () => {
 
     // gives access to navigation object
@@ -28,7 +54,7 @@ const HomeScreen = () => {
                     <Text style={styles.logoText}>SideQuest</Text>
                 </View>
                 <TouchableOpacity>
-                    <UserCircleIcon size='50' color='#E63946' style={styles.profile} />
+                    <UserCircleIcon size='40' color='#E63946' style={styles.profile} onPress={logout}/>
                 </TouchableOpacity>
             </View>
 
@@ -46,11 +72,15 @@ const HomeScreen = () => {
 
             {/* body */}
 
-            <ScrollView>
+            <View style= {styles.questsContainer}>
+                <Text style={styles.questsText}>Quests in your Area</Text>
+            </View>
 
+            <ScrollView>
             </ScrollView>
 
             {/* Side Quests near you */}
+
 
         </SafeAreaView>
     )
@@ -86,23 +116,21 @@ const styles = StyleSheet.create({
         marginRight: 25
     },
     Search: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
 
         marginLeft: 25,
-        width: '76%',
+        width: '80%',
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#E63946'
     },
     searchInput: {
         backgroundColor: '#FFFFFF',
         padding: 10,
-        width: '78%',
-        // borderRadius: 10,
-        // borderBottomWidth: 3,
-        borderBottomColor: '#E63946'
+        width: '80%',
     },
     logoContainer: {
         flex: 1,
@@ -112,7 +140,21 @@ const styles = StyleSheet.create({
         color: '#E63946',
         fontSize: 20,
         fontWeight: '600',
-
     },
+    questsContainer: {
+        alignItems: 'center',
+        marginTop: 50,
+        borderBottomWidth: 2,
+        borderBottomColor: '#e5e5e5',
+        marginRight: 25,
+        marginLeft: 25,
+        padding: 10
+    },
+    questsText: {
+        color: '#E63946',
+        fontSize: 20,
+        fontWeight: '600',
+
+    }
 })
 

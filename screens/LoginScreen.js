@@ -1,7 +1,6 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, StatusBar, Alert } from 'react-native'
-import React, { useState, useLayoutEffect, useEffect } from 'react'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard} from 'react-native'
+import React, { useState, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
-
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from '../firebaseConfig'
@@ -16,14 +15,16 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.replace('Home')
-      }
-    })
-  })
+  // useEffect(() => {
+  //   const auth = getAuth()
+  //   onAuthStateChanged(auth, (user) => {
+
+  //     // console.log(user.email)
+  //     if (user) {
+  //       navigation.replace('Home')
+  //     }
+  //   })
+  // })
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -63,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { (signIn(email, password)) }} style={styles.button}>
+          <TouchableOpacity onPress={() => { (signIn(email, password))}} style={styles.button}>
             <Text style={styles.buttonText}>Sign in</Text>
           </TouchableOpacity>
 
@@ -165,9 +166,6 @@ const styles = StyleSheet.create({
   },
   buttonOutline: {
     backgroundColor: '#E63946',
-    // marginTop: 10,
-    // borderColor: '#D90429',
-    // borderWidth: 3
 
   },
   buttonOutlineText: {

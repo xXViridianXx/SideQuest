@@ -1,15 +1,15 @@
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth'
-import { Alert } from 'react-native'
-
 import { database, doc, setDoc } from '../firebaseConfig'
-import { collection } from 'firebase/firestore'
+
 import Toast from 'react-native-root-toast'
+
 
 const showToast = (text) => {
   let toast = Toast.show(text, {
     duration: Toast.durations.SHORT,
     backgroundColor: '#D90429',
     position: 150,
+    shadow: false,
   });
 };
 
@@ -33,6 +33,7 @@ const signIn = async (email, password) => {
       let userSignInInfo = await signInWithEmailAndPassword(auth, email, password)
 
       const user = userSignInInfo.user
+
       console.log('Logged In With', user.email)
     }
     catch (error) {
