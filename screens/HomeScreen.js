@@ -1,5 +1,4 @@
-import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
-// import { StatusBar } from 'expo-status-bar';
+import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
@@ -12,26 +11,75 @@ import { getAuth, signOut } from 'firebase/auth';
 
 
 
-const DummyData = {
-    James: {
+const dummyData = [
+    {
+        id: 1,
+        username: 'James',
+        title: 'Car trouble',
         distance: 3,
         post: 'I need help fixing my car\'s engine. I\'m not really sure what\'s wrong. It would be awesome if someone could help',
-        payType: 'flat',
+        payType: null,
         pay: 50
     },
-    Aaron: {
+    {
+        id: 2,
+        username: 'Aaron',
+        title: 'Cooking assistant',
         distance: .5,
         post: 'I need someone to help me cook a large amount of food for this upcomming event on Saturday. I will be making pizza, and a giant chocolate cake',
         payType: 'hr',
         pay: 30
     },
-    Tim: {
+    {
+        id: 3,
+        username: 'Tim',
+        title: 'Math tutor wanted',
         distance: 5,
         post: 'My daughter is struggling in math and she could really use the help in geomerty and calculs. Pay is negotaible',
         payType: 'hr',
         pay: 25
+    },
+    {
+        id: 4,
+        username: 'Viridian',
+        title: 'App development',
+        distance: 5,
+        post: 'I\'m coding an app and it would be really cool if someone in the neighborhood could help me',
+        payType: 'hr',
+        pay: 15
     }
-}
+]
+
+const DATA = [
+    {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        title: 'First Item',
+    },
+    {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        title: 'Second Item',
+    },
+    {
+        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        title: 'Third Item',
+    },
+];
+const Item = ({ post }) => (
+
+
+    <TouchableOpacity style={styles.item}>
+        <View style={styles.content}>
+            <View style={styles.tag}>
+            <Text style={{fontSize: 20, fontWeight: 600, color: '#e5e5e5'}}>${post.payType ? `${post.pay}/${post.payType}` : `${post.pay}`}</Text> 
+            </View>
+
+            <View style={{padding: 25, width: '60%'}}>
+                <Text style={{marginBottom: 0, fontSize: 10, fontWeight: 500, color: '#2b2d42'}}>{post.username}</Text>
+                <Text style={{marginBottom: 0, fontSize: 25, fontWeight: 600, color: '#2b2d42'}}>{post.title}</Text>
+            </View>
+        </View>
+    </TouchableOpacity>
+);
 
 const logout = async () => {
     console.log('logging out')
@@ -54,7 +102,7 @@ const HomeScreen = () => {
                     <Text style={styles.logoText}>SideQuest</Text>
                 </View>
                 <TouchableOpacity>
-                    <UserCircleIcon size='40' color='#E63946' style={styles.profile} onPress={logout}/>
+                    <UserCircleIcon size='40' color='#E63946' style={styles.profile} onPress={logout} />
                 </TouchableOpacity>
             </View>
 
@@ -72,16 +120,18 @@ const HomeScreen = () => {
 
             {/* body */}
 
-            <View style= {styles.questsContainer}>
+            <View style={styles.questsContainer}>
                 <Text style={styles.questsText}>Quests in your Area</Text>
             </View>
-
-            <ScrollView>
-            </ScrollView>
-
-            {/* Side Quests near you */}
-
-
+            <View >
+                <FlatList
+                    data={dummyData}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) => <Item post={item} />}
+                    keyExtractor={item => item.id}
+                />
+            </View>
         </SafeAreaView>
     )
 }
@@ -155,6 +205,36 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '600',
 
+    },
+    item: {
+        justifyContent: 'center',
+        // alignItems: 'center',
+        marginRight: 25,
+        marginLeft: 25,
+        marginTop: 25,
+        backgroundColor: '#FFF',
+        borderWidth: 3,
+        borderColor: '#E63946',
+        borderRadius: 10,
+
+        // also need to do for android using elevation
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
+    tag: {
+        backgroundColor: '#E63946',
+        width: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // borderRadius: 10,
+
+        padding: 25
+    },
+    content: {
+        flexDirection: 'row',
+        flex: 1
     }
 })
 
