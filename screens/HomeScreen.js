@@ -69,13 +69,13 @@ const Item = ({ post }) => (
 
     <TouchableOpacity style={styles.item}>
         <View style={styles.content}>
-            <View style={styles.tag}>
-            <Text style={{fontSize: 20, fontWeight: 600, color: '#e5e5e5'}}>${post.payType ? `${post.pay}/${post.payType}` : `${post.pay}`}</Text> 
+            <View style={{ padding: 25, width: '60%' }}>
+                <Text style={{fontSize: 10, fontWeight: 500, color: '#2b2d42' }}>{post.username}</Text>
+                <Text style={{ marginBottom: 0, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>{post.title}</Text>
+                <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 600, color: '#ECB8BC' }}>{post.distance} miles</Text>
             </View>
-
-            <View style={{padding: 25, width: '60%'}}>
-                <Text style={{marginBottom: 0, fontSize: 10, fontWeight: 500, color: '#2b2d42'}}>{post.username}</Text>
-                <Text style={{marginBottom: 0, fontSize: 25, fontWeight: 600, color: '#2b2d42'}}>{post.title}</Text>
+            <View style={styles.tag}>
+                <Text style={{ fontSize: 20, fontWeight: 600, color: '#FFF' }}>${post.payType ? `${post.pay}/${post.payType}` : `${post.pay}`}</Text>
             </View>
         </View>
     </TouchableOpacity>
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         padding: 10,
         width: '80%',
+        fontWeight: 600,
     },
     logoContainer: {
         flex: 1,
