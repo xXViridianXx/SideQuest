@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from '../screens/HomeScreen'
+import CreatePostScreen from '../screens/CreatePost'
 import { View } from "react-native";
 import {
   HomeIcon,
@@ -29,15 +30,13 @@ function MyTabs() {
       tabBarStyle: {
         backgroundColor: '#FFF',
         height: 90,
-        // borderRadius: 15,
-        // width: '70%'
-        elevation: 0,
+        borderTopWidth: 0,
 
 
       }
     }}>
 
-      <Tab.Screen name="Post" component={HomeScreen} options={{
+      <Tab.Screen name="Post" component={CreatePostScreen} options={{
         headerShown: false, tabBarIcon: ({ focused }) => {
           return (
             <View>

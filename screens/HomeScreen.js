@@ -2,12 +2,12 @@ import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView,
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
-import {
-    UserCircleIcon,
-    AdjustmentsHorizontalIcon,
-    MagnifyingGlassIcon
-} from "react-native-heroicons/outline";
+
 import { getAuth, signOut } from 'firebase/auth';
+import Item from '../components/Post'
+import NoSideQuests from '../components/NoSideQuests';
+import LogoTopLeft from '../components/LogoTopLeft';
+import SearchBar from '../components/SearchBar';
 
 
 
@@ -50,37 +50,6 @@ const dummyData = [
     }
 ]
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-];
-const Item = ({ post }) => (
-
-
-    <TouchableOpacity style={styles.item}>
-        <View style={styles.content}>
-            <View style={{ padding: 25, width: '60%' }}>
-                <Text style={{fontSize: 10, fontWeight: 500, color: '#2b2d42' }}>{post.username}</Text>
-                <Text style={{ marginBottom: 0, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>{post.title}</Text>
-                <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 600, color: '#ECB8BC' }}>{post.distance} miles</Text>
-            </View>
-            <View style={styles.tag}>
-                <Text style={{ fontSize: 20, fontWeight: 600, color: '#FFF' }}>${post.payType ? `${post.pay}/${post.payType}` : `${post.pay}`}</Text>
-            </View>
-        </View>
-    </TouchableOpacity>
-);
-
 const logout = async () => {
     console.log('logging out')
     await signOut(getAuth())
@@ -94,38 +63,21 @@ const HomeScreen = () => {
         <SafeAreaView style={styles.container} behavior='padding'>
 
             {/* status bar */}
-            <StatusBar barStyle="light-content" />
+            {/* <StatusBar barStyle="light-content" /> */}
             {/* Header: Search, profile, logo */}
-
-            <View style={styles.headerContainer}>
-                <View style={styles.logoContainer}>
-                    <Text style={styles.logoText}>SideQuest</Text>
-                </View>
-                <TouchableOpacity>
-                    <UserCircleIcon size='40' color='#E63946' style={styles.profile} onPress={logout} />
-                </TouchableOpacity>
-            </View>
+            <LogoTopLeft profileColor={'#E63946'}/>
 
             {/* Search Bar */}
-            <View style={styles.searchContainer}>
-                <View style={styles.Search}>
-                    <MagnifyingGlassIcon size='25' color='#ECB8BC' style={styles.searchIcon} />
-                    <TextInput placeholder='Math Tutor' keyboardType='default' style={styles.searchInput} />
-                </View>
-                <TouchableOpacity>
-                    <AdjustmentsHorizontalIcon size='30' color='#E63946' style={styles.filterIcon} />
-                </TouchableOpacity>
-
-            </View>
-
+            <SearchBar/>
             {/* body */}
 
             <View style={styles.questsContainer}>
                 <Text style={styles.questsText}>Quests in your Area</Text>
             </View>
-            <View >
+            <View style={{height: 500, backgroundColor: '#FFF'}}>
                 <FlatList
                     data={dummyData}
+                    ListEmptyComponent={NoSideQuests}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => <Item post={item} />}
@@ -143,55 +95,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         flex: 1
     },
-    searchContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 15,
-        marginRight: 50,
-        width: '100%',
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        marginTop: 25,
-        paddingRight: 20,
-        paddingLeft: 25,
-
-    },
-    searchIcon: {
-        marginLeft: 10,
-        marginRight: 4,
-    },
-    filterIcon: {
-        marginLeft: 10,
-        marginRight: 25
-    },
-    Search: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-
-        marginLeft: 25,
-        width: '80%',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#E63946'
-    },
-    searchInput: {
-        backgroundColor: '#FFFFFF',
-        padding: 10,
-        width: '80%',
-        fontWeight: 600,
-    },
-    logoContainer: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    logoText: {
-        color: '#E63946',
-        fontSize: 20,
-        fontWeight: '600',
-    },
     questsContainer: {
         alignItems: 'center',
         marginTop: 50,
@@ -205,37 +108,6 @@ const styles = StyleSheet.create({
         color: '#E63946',
         fontSize: 20,
         fontWeight: '600',
-
     },
-    item: {
-        justifyContent: 'center',
-        // alignItems: 'center',
-        marginRight: 25,
-        marginLeft: 25,
-        marginTop: 25,
-        backgroundColor: '#FFF',
-        borderWidth: 3,
-        borderColor: '#E63946',
-        borderRadius: 10,
-
-        // also need to do for android using elevation
-        shadowColor: 'black',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-    },
-    tag: {
-        backgroundColor: '#E63946',
-        width: '40%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // borderRadius: 10,
-
-        padding: 25
-    },
-    content: {
-        flexDirection: 'row',
-        flex: 1
-    }
 })
 
