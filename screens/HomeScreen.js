@@ -62,19 +62,18 @@ const HomeScreen = () => {
     return (
         <SafeAreaView style={styles.container} behavior='padding'>
 
-            {/* status bar */}
-            {/* <StatusBar barStyle="light-content" /> */}
-            {/* Header: Search, profile, logo */}
-            <LogoTopLeft profileColor={'#E63946'}/>
+                {/* status bar */}
+                {/* <StatusBar barStyle="light-content" /> */}
+                {/* Header: Search, profile, logo */}
+                <LogoTopLeft profileColor={'#E63946'} />
 
-            {/* Search Bar */}
-            <SearchBar/>
-            {/* body */}
-
+                {/* Search Bar */}
+                <SearchBar />
+                {/* body */}
             <View style={styles.questsContainer}>
                 <Text style={styles.questsText}>Quests in your Area</Text>
             </View>
-            <View style={{height: 500, backgroundColor: '#FFF'}}>
+            <View style={{ height: 500, backgroundColor: '#FFF' }}>
                 <FlatList
                     data={dummyData}
                     ListEmptyComponent={NoSideQuests}
@@ -84,6 +83,7 @@ const HomeScreen = () => {
                     keyExtractor={item => item.id}
                 />
             </View>
+
         </SafeAreaView>
     )
 }

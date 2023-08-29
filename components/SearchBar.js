@@ -5,6 +5,13 @@ import {
     MagnifyingGlassIcon
 } from "react-native-heroicons/outline";
 
+import { getAuth, signOut } from 'firebase/auth';
+
+const logout = async () => {
+    console.log('logging out')
+    await signOut(getAuth())
+}
+
 const SearchBar = () => {
     return (
         <View style={styles.searchContainer}>
@@ -13,7 +20,7 @@ const SearchBar = () => {
                 <TextInput placeholder='Math Tutor' keyboardType='default' style={styles.searchInput} />
             </View>
             <TouchableOpacity>
-                <AdjustmentsHorizontalIcon size='30' color='#E63946' style={styles.filterIcon} />
+                <AdjustmentsHorizontalIcon size='30' color='#E63946' style={styles.filterIcon} onPress={logout}/>
             </TouchableOpacity>
 
         </View>
