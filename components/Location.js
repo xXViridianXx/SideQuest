@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#D90429',
         // // borderRadius: 5,
-        // padding: 10,
+        paddingLeft: 10,
         // marginTop: 10,
         // marginBottom: 25,
         // color: '#FFF',
-        // height: 40,
+        height: 40,
         // width: '70%',
         marginTop: 10,
-        marginBottom: 25,
+        marginBottom: 20,
       },
       inputStyle: {
         
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         padding: 10,
 
 
-        height: 40,
+        // height: 40,
         width: '30%'
       }
 })

@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 25,
         color: '#FFF',
-        flexDirection: 'row',
+        height: 70,
+        // flexDirection: 'row',
     },
 })

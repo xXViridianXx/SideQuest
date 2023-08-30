@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import LogoTopLeft from '../components/LogoTopLeft';
 import DynamicTextInput from '../components/DynamicTextInput';
 import Location from '../components/Location';
-
+import Reward from '../components/Reward';
 
 const CreatePost = () => {
 
@@ -18,10 +18,10 @@ const CreatePost = () => {
 
   return (
     <SafeAreaView style={styles.container} behavior='padding'>
-      <KeyboardAvoidingView style={{flex: 1}} behavior='padding'>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <LogoTopLeft profileColor={'#FFF'} />
+          {/* <LogoTopLeft profileColor={'#FFF'} /> */}
 
           <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 25, marginRight: 25, marginLeft: 25 }}>
             <View>
@@ -36,23 +36,9 @@ const CreatePost = () => {
             <Text style={styles.textStyle}>Title</Text>
             <TextInput style={styles.inputStyle} />
 
-
-            <Text style={styles.textStyle}>Reward</Text>
-
-            <View style={styles.inputStyle}>
-              <View >
-                <Text style={{ color: '#FFF' }}>$ </Text>
-              </View>
-              <TextInput style={{ color: '#FFF' }} placeholder='20' placeholderTextColor={'#E63946'} />
+            <View >
+              <Reward />
             </View>
-
-            {/* <Text style={styles.textStyle}>Location</Text>
-          <View style={styles.locationButton}>
-            <TextInput style={styles.inputStyle} />
-            <TouchableOpacity style={{ width: '25%', height: 30, backgroundColor: 'e5e5e5' }}>
-              <Text style={{ backgroundColor: '#FFF' }}>Use Current</Text>
-            </TouchableOpacity>
-          </View> */}
             <Location />
 
 
@@ -102,13 +88,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40
   },
-  money: {
-    flexDirection: 'row',
-    // justifyContent: 'center',
-    alignItems: 'center',
-  },
-  locationButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  }
 })
