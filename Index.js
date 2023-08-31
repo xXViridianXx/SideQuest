@@ -2,8 +2,8 @@
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import QuestInfoScreen from './screens/QuestInfoScreen';
 import { React, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +11,6 @@ import Tabs from './components/Tab';
 import { setUser } from './redux/slices/user';
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +63,7 @@ export default function Index() {
         <Stack.Navigator>
           {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+          <Stack.Screen name="QuestInfoScreen" component={QuestInfoScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     );

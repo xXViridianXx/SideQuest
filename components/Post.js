@@ -1,9 +1,14 @@
 import { View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import React from 'react'
 
-const Post = ({ post }) => {
+import { useNavigation } from '@react-navigation/native'
+
+
+const Post = ({ post}) => {
+
+    const navigation = useNavigation()
     return (
-        <TouchableOpacity style={styles.item}>
+        <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', {postTitle: post.title, distance: post.distance, username: post.username, pay: post.pay, payType: post.payType, description: post.post}) }}>
             <View style={styles.content}>
                 <View style={{ padding: 25, width: '60%' }}>
                     <Text style={{ fontSize: 10, fontWeight: 500, color: '#252422' }}>{post.username}</Text>

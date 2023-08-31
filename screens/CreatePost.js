@@ -32,7 +32,7 @@ const CreatePost = () => {
             </View>
           </View>
 
-          <View style={{ backgroundColor: '#E63946', padding: 25, borderRadius: 25, height: '100%' }}>
+          <View style={{ backgroundColor: '#FFF', padding: 25, borderRadius: 25}}>
             <Text style={styles.textStyle}>Title</Text>
             <TextInput style={styles.inputStyle} />
 
@@ -46,6 +46,16 @@ const CreatePost = () => {
             <Text style={styles.textStyle}>Description</Text>
             <DynamicTextInput />
           </View>
+
+          <View>
+            <TouchableOpacity>
+              <View style={{backgroundColor: '#D90429', justifyContent: 'center', alignItems: 'center', borderRadius: 20, height: 40,marginLeft: 25, marginRight: 25, marginBottom: 25}}>
+                <Text style={{color: '#FFF', fontSize: 20, fontWeight: '600'}}>Post</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -71,21 +81,34 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     marginTop: 15,
-    marginBottom: 15
+    marginBottom: 15,
+
   },
   textStyle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#FFF'
+    color: '#E63946'
   },
   inputStyle: {
-    backgroundColor: '#D90429',
+    backgroundColor: '#E63946',
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
     marginBottom: 25,
     color: '#FFF',
     flexDirection: 'row',
-    height: 40
+    height: 40,
+
+    ...Platform.select({
+      ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: -2, height: 4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 3,
+      },
+      android: {
+          elevation: 5,
+      },
+  }),
   },
 })

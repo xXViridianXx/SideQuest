@@ -73,7 +73,7 @@ const HomeScreen = () => {
             <View style={styles.questsContainer}>
                 <Text style={styles.questsText}>Quests in your Area</Text>
             </View>
-            <View style={{ height: 500, backgroundColor: '#FFF' }}>
+            <View style={{ height: 490, backgroundColor: '#FFF' }}>
                 <FlatList
                     data={dummyData}
                     ListEmptyComponent={NoSideQuests}

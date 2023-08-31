@@ -13,7 +13,7 @@ const DynamicTextInput = () => {
     }
     return (
         <View>
-            <TextInput multiline value={text} onChangeText={changeSize} style={styles.inputStyle}/>
+            <TextInput multiline value={text} onChangeText={changeSize} style={styles.inputStyle} />
         </View>
     )
 }
@@ -22,13 +22,28 @@ export default DynamicTextInput
 
 const styles = StyleSheet.create({
     inputStyle: {
-        backgroundColor: '#D90429',
+        backgroundColor: '#E63946',
         borderRadius: 5,
-        padding: 10,
+        // padding: 10,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
         marginTop: 10,
-        marginBottom: 25,
         color: '#FFF',
         height: 70,
+
+        ...Platform.select({
+            ios: {
+                shadowColor: 'black',
+                shadowOffset: { width: -2, height: 4 },
+                shadowOpacity: 0.2,
+                shadowRadius: 3,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
         // flexDirection: 'row',
     },
 })
