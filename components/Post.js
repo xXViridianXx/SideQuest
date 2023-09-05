@@ -11,8 +11,8 @@ const Post = ({ post}) => {
         <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', {postTitle: post.title, distance: post.distance, username: post.username, pay: post.pay, payType: post.payType, description: post.post}) }}>
             <View style={styles.content}>
                 <View style={{ padding: 25, width: '60%' }}>
-                    <Text style={{ fontSize: 10, fontWeight: 500, color: '#252422' }}>{post.username}</Text>
-                    <Text style={{ marginBottom: 0, fontSize: 23, fontWeight: 600, color: '#252422' }}>{post.title}</Text>
+                    <Text style={{ fontSize: 10, fontWeight: 500, color: '#2b2d42' }}>{post.username}</Text>
+                    <Text style={{ marginBottom: 0, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>{post.title}</Text>
                     <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 600, color: '#ECB8BC' }}>{post.distance} miles</Text>
                 </View>
                 <View style={styles.tag}>
