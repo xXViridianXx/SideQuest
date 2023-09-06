@@ -59,11 +59,12 @@ const QuestInfoScreen = ({ route }) => {
             </View>
           </View>
 
-          <View>
+          {/* <View>
             <View style={{ borderBottomWidth: 3, borderBottomColor: '#e5e5e5', paddingBottom: 10, marginTop: 25 }}>
               <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#2b2d42' }}>Location</Text>
             </View>
-          </View>
+          </View> */}
+
         </ScrollView>
       </View>
 
@@ -92,5 +93,10 @@ const styles = StyleSheet.create({
   },
   metaDataContainer: {
     flexDirection: 'row', justifyContent: 'space-between', margin: 25
-  }
+  },
+
+  map: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 })

@@ -1,14 +1,41 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function Location() {
+export default function Location({ address }) {
+
+  const [location, setLocation] = useState()
+
+  useEffect(() => {
+    const askPermission = async () => {
+
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location)
+    }
+
+    askPermission()
+  }, [])
+
+  const getLocation = async () => {
+
+
+    let currentLocation = await Location.getCurrentPositionAsync(address)
+    setLocation(currentLocation)
+    console.log(currentLocation)
+  }
   return (
     <View >
       <Text style={styles.textStyle}>Location</Text>
       <View style={styles.locationButton}>
         <TextInput style={{ width: '70%', backgroundColor: '#E63946', borderRadius: 5 }} />
-        <TouchableOpacity style={styles.buttonStyle}>
-          <Text style={{ color: '#FFF', fontWeight: 600, textAlign: 'center' }}>Current</Text>
+        <TouchableOpacity style={styles.buttonStyle} >
+          <Text style={{ color: '#FFF', fontWeight: 600, textAlign: 'center' }} >Current</Text>
         </TouchableOpacity>
       </View>
     </View>
