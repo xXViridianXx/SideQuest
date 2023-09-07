@@ -1,6 +1,7 @@
 import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView, TouchableOpacity, FlatList } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useState, useEffect} from 'react'
 import { useNavigation } from '@react-navigation/native'
+import * as Location from 'expo-location'
 
 
 import { getAuth, signOut } from 'firebase/auth';
@@ -55,6 +56,20 @@ const logout = async () => {
     await signOut(getAuth())
 }
 const HomeScreen = () => {
+
+
+    useEffect(() => {
+        (async () => {
+          
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }
+        })();
+      }, []);
+
+
 
     // gives access to navigation object
     const navigation = useNavigation()

@@ -25,7 +25,7 @@ const Reward = () => {
                     <View >
                         <Text style={{ color: '#FFF', fontSize: 30, fontWeight: '600' }}>$ </Text>
                     </View>
-                    <TextInput style={{ color: '#FFF', fontSize: 30, fontWeight: '600', flex: 1 }} placeholder='20' placeholderTextColor={'#E63946'} />
+                    <TextInput style={{ color: '#FFF', fontSize: 30, fontWeight: '600', flex: 1 }} placeholder='20' placeholderTextColor={'#D90429'} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 15 }}>
                     <TouchableOpacity onPress={selectFlatType} style={{ marginLeft: 25, backgroundColor: '#FFF' }}>

@@ -1,41 +1,41 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
+// import GetLocation from './GetLocation'
+import * as Loc from 'expo-location'
 
-export default function Location({ address }) {
+export default function LocationInput() {
 
-  const [location, setLocation] = useState()
+  const [address, setAddress] = useState()
 
-  useEffect(() => {
-    const askPermission = async () => {
+  const getCoords = async () => {
+    let geocodedAddress;
 
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      console.log(location)
+    if (address == null) {
+      geocodedAddress = await Loc.getCurrentPositionAsync({});
+      // let coords = `(${}, ${})`
+      let latitude = Number((geocodedAddress.coords.latitude).toFixed(1))
+      let longitude = Number((geocodedAddress.coords.longitude).toFixed(1))
+      let coordinates = `approx: (${latitude}, ${longitude})`
+      setAddress(coordinates)
     }
+    else {
+      geocodedAddress = await Loc.geocodeAsync(address)
 
-    askPermission()
-  }, [])
+      
+    }
+    // console.log(address)
+    // console.log(geocodedAddress.coords.latitude)
 
-  const getLocation = async () => {
-
-
-    let currentLocation = await Location.getCurrentPositionAsync(address)
-    setLocation(currentLocation)
-    console.log(currentLocation)
+    
   }
+
   return (
     <View >
       <Text style={styles.textStyle}>Location</Text>
       <View style={styles.locationButton}>
-        <TextInput style={{ width: '70%', backgroundColor: '#E63946', borderRadius: 5 }} />
+        <TextInput style={{ width: '70%', backgroundColor: '#E63946', borderRadius: 5, color:'#FFF', fontWeight: '600'}} placeholder='address' placeholderTextColor={'#D90429'} value={address} onChangeText={setAddress} />
         <TouchableOpacity style={styles.buttonStyle} >
-          <Text style={{ color: '#FFF', fontWeight: 600, textAlign: 'center' }} >Current</Text>
+          <Text style={{ color: '#FFF', fontWeight: 600, textAlign: 'center' }} onPress={getCoords}>Current</Text>
         </TouchableOpacity>
       </View>
     </View>

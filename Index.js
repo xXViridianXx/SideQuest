@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tabs from './components/Tab';
 import { setUser } from './redux/slices/user';
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, initializeAuth} from 'firebase/auth'
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +31,7 @@ export default function Index() {
 
 
   const auth = getAuth()
+
 
 
 

@@ -34,7 +34,7 @@ const CreatePost = () => {
 
           <View style={{ backgroundColor: '#FFF', padding: 25, borderRadius: 25}}>
             <Text style={styles.textStyle}>Title</Text>
-            <TextInput style={styles.inputStyle} />
+            <TextInput style={styles.inputStyle} placeholder='Soccer Coach Needed' placeholderTextColor={'#D90429'}/>
 
             <View >
               <Reward />
