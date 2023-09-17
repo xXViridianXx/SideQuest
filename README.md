@@ -15,13 +15,13 @@
 
 ### Find nearby SideQuests on the Home screen
 <div class="image-container" style="display: flex; justify-content: space-between;">
-  <img src="https://github.com/xXViridianXx/SideQuest" alt="Home" style="width: 48%; height: 20%">
+  <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/Home.png" alt="Home" style="width: 48%; height: 20%">
   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/Quest.png" alt="Quest" style="width: 48%; height: 20%">
 </div>
 
 ### Post SideQuests and view profiles
 
 <div class="image-container" style="display: flex; justify-content: space-between;">
-  <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn" style="width: 48%; height: 20%;">
+  <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/Post.png" alt="Post" style="width: 48%; height: 20%;">
   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/Profile.png" alt="SignUp" style="width: 48%; height: 20%">
 </div>
