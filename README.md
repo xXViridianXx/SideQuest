@@ -8,7 +8,7 @@
 # Usage
 - Sign In with email and password or Sign Up
 
-  <div class="image-container" style="display: flex; justify-content: space-between; height: 500px">
+  <div class="image-container" style="display: flex; justify-content: space-between; height: 500px;">
    <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn" style="width: 48%; height: 20%;">
    <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp" style="width: 48%; height: 20%">
 </div>
