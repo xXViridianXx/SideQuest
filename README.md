@@ -10,22 +10,18 @@
 - Sign up
 
   <div class="image-container">
-    <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn">
-    <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp">
+   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn">
+   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp">
 </div>
 
-
-- Post a Quest
-- View a Quest nearby
-- Check Profile
-
-- <style>
-    .image-container {
-        display: flex; /* Use flexbox to arrange images side by side */
-        justify-content: space-between; /* Distribute space between images */
-    }
-    img {
-        width: 48%; /* Adjust the width as needed */
-    }
+<style>
+   .image-container {
+       display: flex;
+       justify-content: space-between;
+   }
+   img {
+       width: 48%;
+   }
 </style>
+
 
