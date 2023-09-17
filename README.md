@@ -11,7 +11,7 @@
 
   <div class="image-container">
     <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn">
-    <img src="image2.jpg](https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp">
+    <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp">
 </div>
 
 
