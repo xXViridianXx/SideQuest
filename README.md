@@ -6,12 +6,11 @@
 - Download in run "npm install"
 
 # Usage
-- Sign in
-- Sign up
+- Sign In with email and password or Sign Up
 
   <div class="image-container" style="display: flex; justify-content: space-between;">
-   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn" style="width: 48%; height: 30px;">
-   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp" style="width: 48%; height: 30px">
+   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn" style="width: 48%; height: 20%;">
+   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp" style="width: 48%; height: 20%">
 </div>
 
 
