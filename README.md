@@ -9,19 +9,9 @@
 - Sign in
 - Sign up
 
-  <div class="image-container">
-   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn">
-   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp">
+  <div class="image-container" style="display: flex; justify-content: space-between;">
+   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignIn.png" alt="SignIn" style="width: 48%;">
+   <img src="https://github.com/xXViridianXx/SideQuest/blob/main/images/SignUp.png" alt="SignUp" style="width: 48%;">
 </div>
-
-<style>
-   .image-container {
-       display: flex;
-       justify-content: space-between;
-   }
-   img {
-       width: 10%;
-   }
-</style>
 
 
