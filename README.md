@@ -20,7 +20,7 @@
        justify-content: space-between;
    }
    img {
-       width: 48%;
+       width: 10%;
    }
 </style>
 
