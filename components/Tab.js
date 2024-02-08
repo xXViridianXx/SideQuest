@@ -40,7 +40,7 @@ function MyTabs() {
         headerShown: false, tabBarIcon: ({ focused }) => {
           return (
             <View>
-              <PlusCircleIcon name="homeIcon" size={30} color={focused ? '#E63946' : '#ECB8BC'} />
+              <PlusCircleIcon name="homeIcon" size={30} color={focused ? '#7b2cbf' : '#e0aaff'} />
             </View>
           )
         }
@@ -50,7 +50,7 @@ function MyTabs() {
         tabBarIcon: ({ focused }) => {
           return (
             <View>
-              <HomeIcon name="homeIcon" size={30} color={focused ? '#E63946' : '#ECB8BC'} />
+              <HomeIcon name="homeIcon" size={30} color={focused ? '#7b2cbf' : '#e0aaff'} />
             </View>
           )
         }
@@ -60,7 +60,7 @@ function MyTabs() {
         tabBarIcon: ({ focused }) => {
           return (
             <View>
-              <ChatBubbleOvalLeftEllipsisIcon name="messageIcon" size={30} color={focused ? '#E63946' : '#ECB8BC'} />
+              <ChatBubbleOvalLeftEllipsisIcon name="messageIcon" size={30} color={focused ? '#7b2cbf' : '#e0aaff'} />
             </View>
           )
         }

@@ -15,39 +15,38 @@ import SearchBar from '../components/SearchBar';
 const dummyData = [
     {
         id: 1,
-        username: 'James',
-        title: 'Car trouble',
-        distance: 3,
+        day: 'Monday',
+        caffeine: 50,
+        steps: 3000,
+        sleepQuality: 5,
         post: 'I need help fixing my car\'s engine. I\'m not really sure what\'s wrong. It would be awesome if someone could help',
         payType: null,
-        pay: 50
     },
     {
         id: 2,
-        username: 'Aaron',
-        title: 'Cooking assistant',
-        distance: .5,
+        day: 'Tuesday',
+        caffeine: 20,
+        steps: 10000,
+        sleepQuality: 8,
         post: 'I need someone to help me cook a large amount of food for this upcomming event on Saturday. I will be making pizza, and a giant chocolate cake',
         payType: 'hr',
         pay: 30
     },
     {
         id: 3,
-        username: 'Tim',
-        title: 'Math tutor wanted',
-        distance: 5,
+        day: 'Thursday',
+        caffeine: 0,
+        steps: 7000,
+        sleepQuality: 9,
         post: 'My daughter is struggling in math and she could really use the help in geomerty and calculs. Pay is negotaible',
-        payType: 'hr',
-        pay: 25
     },
     {
         id: 4,
-        username: 'Viridian',
-        title: 'App development',
-        distance: 5,
+        day: 'Friday',
+        caffeine: 15,
+        steps: 5000,
+        sleepQuality: 9,
         post: 'I\'m coding an app and it would be really cool if someone in the neighborhood could help me',
-        payType: 'hr',
-        pay: 15
     }
 ]
 
@@ -80,13 +79,13 @@ const HomeScreen = () => {
                 {/* status bar */}
                 {/* <StatusBar barStyle="light-content" /> */}
                 {/* Header: Search, profile, logo */}
-                <LogoTopLeft profileColor={'#E63946'} />
+                <LogoTopLeft profileColor={'#7b2cbf'} />
 
                 {/* Search Bar */}
                 <SearchBar />
                 {/* body */}
             <View style={styles.questsContainer}>
-                <Text style={styles.questsText}>Quests in your Area</Text>
+                <Text style={styles.questsText}>Sleep Data</Text>
             </View>
             <View style={{ height: 490, backgroundColor: '#FFF' }}>
                 <FlatList
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     questsText: {
-        color: '#E63946',
+        color: '#7b2cbf',
         fontSize: 20,
         fontWeight: '600',
     },

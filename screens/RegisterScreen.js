@@ -29,7 +29,7 @@ const RegisterScreen = ({ navigation }) => {
         behavior='padding'
       >
         <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>SideQuest</Text>
+          <Text style={styles.logoText}>Siesta</Text>
         </View>
 
         <View style={styles.introContainer}>
@@ -38,10 +38,10 @@ const RegisterScreen = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          <LoginInputs labelText={'Username'} input={username} setInput={setUsername} style={styles.input} color={'#D90429'} boardType='default' secure={false} />
-          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#D90429'} boardType='email-address' secure={false} />
-          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
-          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#D90429'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Username'} input={username} setInput={setUsername} style={styles.input} color={'#3c096c'} boardType='default' secure={false} />
+          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3c096c'} boardType='email-address' secure={false} />
+          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3c096c'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#3c096c'} boardType='default' secure={true} />
         </View>
 
         <View
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E63946',
+    backgroundColor: '#240046',
   },
 
   signUpContainer: {
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#D90429',
     color: '#FFF',
   },
-
   buttonContainer: {
     width: '70%',
     justifyContent: 'center',
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    backgroundColor: '#D90429',
+    backgroundColor: '#3c096c',
     color: '#FFF',
     padding: 15,
     borderRadius: 10,
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     color: '#e5e5e5'
   },
   buttonOutline: {
-    backgroundColor: '#E63946',
+    // backgroundColor: '#E63946',
     // marginTop: 10,
     // borderColor: '#D90429',
     // borderWidth: 3
@@ -155,6 +154,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     color: '#FFF'
-
   }
 })

@@ -1,22 +1,27 @@
-import { View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 
 import { useNavigation } from '@react-navigation/native'
 
 
-const Post = ({ post}) => {
+const Post = ({ post }) => {
 
     const navigation = useNavigation()
     return (
-        <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', {postTitle: post.title, distance: post.distance, username: post.username, pay: post.pay, payType: post.payType, description: post.post}) }}>
+        <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', { postTitle: post.title, steps: post.steps, day: post.day, caffeine: post.caffeine, sleepQuality: post.sleepQuality, description: post.post }) }}>
             <View style={styles.content}>
-                <View style={{ padding: 25, width: '60%' }}>
-                    <Text style={{ fontSize: 10, fontWeight: 500, color: '#2b2d42' }}>{post.username}</Text>
-                    <Text style={{ marginBottom: 0, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>{post.title}</Text>
-                    <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 600, color: '#ECB8BC' }}>{post.distance} miles</Text>
+                <View style={{ padding: 15, width: '60%' }}>
+                    <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#7b2cbf', marginBottom: 20, padding: 10, alignItems: 'center'}}>
+                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#7b2cbf'}}>{post.day}</Text>
+                    </View>
+                    <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Caffeine</Text>
+                    <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Steps</Text>
+                    <Text style={{ marginBottom: 10, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Sleep Quality</Text>
                 </View>
                 <View style={styles.tag}>
-                    <Text style={{ fontSize: 20, fontWeight: 600, color: '#FFF' }}>${post.payType ? `${post.pay}/${post.payType}` : `${post.pay}`}</Text>
+                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.caffeine} mg</Text>
+                    <Text style={{ marginTop: 35, marginBottom: 15, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.steps}</Text>
+                    <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.sleepQuality}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -33,7 +38,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
         backgroundColor: '#FFF',
         borderWidth: 3,
-        borderColor: '#E63946',
+        borderColor: '#7b2cbf',
         borderRadius: 10,
 
         // also need to do for android using elevation
@@ -51,11 +56,10 @@ const styles = StyleSheet.create({
 
     },
     tag: {
-        backgroundColor: '#E63946',
+        backgroundColor: '#7b2cbf',
         width: '40%',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 25
     },
     content: {
         flexDirection: 'row',
