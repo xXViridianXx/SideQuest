@@ -4,6 +4,10 @@
 
 # Run
 ### Download and run "npm install"
+To get the latest build from EAS client use ```eas build:run -p ios```
+To run the build on the simulator run ```npx expo start --dev-client```
+To build an app on EAS (ONLY USE WHEN INSTALLING LIBRARIES TO THE APP we are limited to 15 builds) run 
+```eas build --profile development-simulator --platform ios```
 
 # Usage
 ### Sign In with email and password or Sign Up
