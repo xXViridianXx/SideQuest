@@ -16,11 +16,11 @@ const SearchBar = () => {
     return (
         <View style={styles.searchContainer}>
             <View style={styles.Search}>
-                <MagnifyingGlassIcon size='25' color='#7b2cbf' style={styles.searchIcon} />
+                <MagnifyingGlassIcon size='25' color='#3d3dac' style={styles.searchIcon} />
                 <TextInput placeholder='Sleep greater than 8' keyboardType='default' style={styles.searchInput} />
             </View>
             <TouchableOpacity>
-                <AdjustmentsHorizontalIcon size='30' color='#7b2cbf' style={styles.filterIcon} onPress={logout}/>
+                <AdjustmentsHorizontalIcon size='30' color='#3d3dac' style={styles.filterIcon} onPress={logout}/>
             </TouchableOpacity>
 
         </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: '#7b2cbf'
+        borderColor: '#3d3dac'
     },
     searchInput: {
         backgroundColor: '#FFFFFF',

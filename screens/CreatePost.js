@@ -25,37 +25,25 @@ const CreatePost = () => {
 
           <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 25, marginRight: 25, marginLeft: 25 }}>
             <View>
-              <Text style={styles.postText}>Post A Quest</Text>
+              <Text style={styles.postText}>Rate Sleep Quality</Text>
             </View>
             <View>
-              <Image style={styles.imageStyles} source={require("../images/hero.png")} />
+              <Image style={styles.imageStyles} source={require("../images/sleep.jpg")} />
             </View>
           </View>
 
-          <View style={{ backgroundColor: '#FFF', padding: 25, borderRadius: 25}}>
-            <Text style={styles.textStyle}>Title</Text>
-            <TextInput style={styles.inputStyle} placeholder='Soccer Coach Needed' placeholderTextColor={'#D90429'}/>
-
-            <View >
-              <Reward />
-            </View>
-            <Location />
-
-
-
-            <Text style={styles.textStyle}>Description</Text>
-            <DynamicTextInput />
-          </View>
-
+          {/* <View style={{ backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}> */}
+            <Reward />
+          {/* </View> */}
           <View>
             <TouchableOpacity>
-              <View style={{backgroundColor: '#D90429', justifyContent: 'center', alignItems: 'center', borderRadius: 20, height: 40,marginLeft: 25, marginRight: 25, marginBottom: 25}}>
-                <Text style={{color: '#FFF', fontSize: 20, fontWeight: '600'}}>Post</Text>
+              <View style={{ backgroundColor: '#32328f', justifyContent: 'center', alignItems: 'center', borderRadius: 10, height: 70, marginLeft: 25, marginRight: 25}}>
+                <Text style={{ color: '#FFF', fontSize: 20, fontWeight: '600' }}>Post</Text>
               </View>
             </TouchableOpacity>
           </View>
 
-          
+
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -68,20 +56,20 @@ export default CreatePost
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#3d3dac',
     flex: 1
   },
   postText: {
-    color: '#E63946',
+    color: '#FFF',
     fontSize: 25,
     fontWeight: '600',
     textAlign: 'center',
   },
   imageStyles: {
-    height: 150,
-    width: 150,
-    marginTop: 15,
-    marginBottom: 15,
+    height: 200,
+    width: 200,
+    // marginTop: 15,
+    // marginBottom: 15,
 
   },
   textStyle: {
@@ -101,14 +89,14 @@ const styles = StyleSheet.create({
 
     ...Platform.select({
       ios: {
-          shadowColor: 'black',
-          shadowOffset: { width: -2, height: 4 },
-          shadowOpacity: 0.2,
-          shadowRadius: 3,
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
       },
       android: {
-          elevation: 5,
+        elevation: 5,
       },
-  }),
+    }),
   },
 })

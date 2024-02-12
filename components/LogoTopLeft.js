@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logoText: {
-        color: '#7b2cbf',
+        color: '#3d3dac',
         fontSize: 20,
         fontWeight: '600',
     },
