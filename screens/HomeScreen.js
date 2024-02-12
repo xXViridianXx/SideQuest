@@ -2,6 +2,7 @@ import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView,
 import React, { useState, useEffect} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import * as Location from 'expo-location'
+import HealthKit from '../components/HealthKit'
 
 
 import { getAuth, signOut } from 'firebase/auth';
@@ -65,6 +66,9 @@ const HomeScreen = () => {
             setErrorMsg('Permission to access location was denied');
             return;
           }
+
+          HealthKit()
+
         })();
       }, []);
 
