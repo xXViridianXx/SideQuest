@@ -83,7 +83,7 @@ const HomeScreen = () => {
                 {/* status bar */}
                 {/* <StatusBar barStyle="light-content" /> */}
                 {/* Header: Search, profile, logo */}
-                <LogoTopLeft profileColor={'#7b2cbf'} />
+                <LogoTopLeft profileColor={'#3d3dac'} />
 
                 {/* Search Bar */}
                 <SearchBar />
@@ -91,7 +91,7 @@ const HomeScreen = () => {
             <View style={styles.questsContainer}>
                 <Text style={styles.questsText}>Sleep Data</Text>
             </View>
-            <View style={{ height: 490, backgroundColor: '#FFF' }}>
+            <View style={{ height: 550, backgroundColor: '#FFF' }}>
                 <FlatList
                     data={dummyData}
                     ListEmptyComponent={NoSideQuests}
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     questsText: {
-        color: '#7b2cbf',
+        color: '#3d3dac',
         fontSize: 20,
         fontWeight: '600',
     },

@@ -11,8 +11,8 @@ const Post = ({ post }) => {
         <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', { postTitle: post.title, steps: post.steps, day: post.day, caffeine: post.caffeine, sleepQuality: post.sleepQuality, description: post.post }) }}>
             <View style={styles.content}>
                 <View style={{ padding: 15, width: '60%' }}>
-                    <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#7b2cbf', marginBottom: 20, padding: 10, alignItems: 'center'}}>
-                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#7b2cbf'}}>{post.day}</Text>
+                    <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#3d3dac', marginBottom: 20, padding: 10, alignItems: 'center'}}>
+                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#3d3dac'}}>{post.day}</Text>
                     </View>
                     <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Caffeine</Text>
                     <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Steps</Text>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 
     },
     tag: {
-        backgroundColor: '#7b2cbf',
+        backgroundColor: '#3d3dac',
         width: '40%',
         justifyContent: 'center',
         alignItems: 'center',
