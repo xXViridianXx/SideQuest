@@ -1,33 +1,21 @@
 import { StyleSheet, Text, View, TextInput, Touchable, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-const Reward = () => {
+const Reward = (props) => {
 
-    const [number, setNumber] = useState(5)
-
-    const addOne = () => {
-        if (number < 10) {
-            setNumber(number + 1)
-        }
-    }
-    const subOne = () => {
-        if (number > 1) {
-            setNumber(number - 1)
-        }
-    }
+    const { sleepQuality, add, sub } = props
     return (
         <View style={{ flexDirection: 'center', alignItems: 'center' }}>
             <View style={styles.inputStyle}>
                 {/* <TextInput style={{ color: '#FFF', fontSize: 200, fontWeight: '600', flex: 1, textAlign: 'center' }} placeholder='7' placeholderTextColor={'#32328f'} /> */}
-                <Text style={{ color: '#FFF', fontSize: 200, fontWeight: '600', flex: 1, textAlign: 'center' }}>{number}</Text>
+                <Text style={{ color: '#FFF', fontSize: 200, fontWeight: '600', flex: 1, textAlign: 'center' }}>{sleepQuality}</Text>
             </View>
             <View style={{ flexDirection: 'row'}}>
                 <View>
-                    <TouchableOpacity style={styles.button} onPress={subOne}>
+                    <TouchableOpacity style={styles.button} onPress={sub}>
                         <Text style={styles.buttonText}>-1</Text>
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.button} onPress={addOne}>
+                    <TouchableOpacity style={styles.button} onPress={add}>
                         <Text style={styles.buttonText}>+1</Text>
                     </TouchableOpacity>
                 </View>

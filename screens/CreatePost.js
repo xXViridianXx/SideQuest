@@ -1,10 +1,7 @@
 import { Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, View, Text, SafeAreaView, StyleSheet, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
-
-import LogoTopLeft from '../components/LogoTopLeft';
-import DynamicTextInput from '../components/DynamicTextInput';
-import Location from '../components/Location';
+import { postSleepData } from '../components/Helpers'
 import Reward from '../components/Reward';
 
 const CreatePost = () => {
@@ -15,6 +12,19 @@ const CreatePost = () => {
 
   // gives access to navigation object
   const navigation = useNavigation()
+
+  const [number, setNumber] = useState(5)
+
+  const addOne = () => {
+    if (number < 10) {
+      setNumber(number + 1)
+    }
+  }
+  const subOne = () => {
+    if (number > 1) {
+      setNumber(number - 1)
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container} behavior='padding'>
@@ -33,11 +43,11 @@ const CreatePost = () => {
           </View>
 
           {/* <View style={{ backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}> */}
-            <Reward />
+          <Reward sleepQuality={number} add={addOne} sub={subOne}/>
           {/* </View> */}
           <View>
-            <TouchableOpacity>
-              <View style={{ backgroundColor: '#32328f', justifyContent: 'center', alignItems: 'center', borderRadius: 10, height: 70, marginLeft: 25, marginRight: 25}}>
+            <TouchableOpacity onPress={() => (postSleepData(number))}>
+              <View style={{ backgroundColor: '#32328f', justifyContent: 'center', alignItems: 'center', borderRadius: 10, height: 70, marginLeft: 25, marginRight: 25 }}>
                 <Text style={{ color: '#FFF', fontSize: 20, fontWeight: '600' }}>Post</Text>
               </View>
             </TouchableOpacity>

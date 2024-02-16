@@ -53,8 +53,8 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3c096c'} boardType='email-address' secure={false} />
-          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3c096c'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3d3dac'} boardType='email-address' secure={false} />
+          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} />
 
           <TouchableOpacity onPress={() => { }}>
             <Text style={{ color: '#FFF', fontWeight: 500, padding: 8, fontSize: 12 }}>Forgot Password</Text>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#240046',
+    backgroundColor: '#3d3dac',
   },
 
   signUpContainer: {
@@ -131,16 +131,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '70%',
   },
-  input: {
-    backgroundColor: '#5a189a',
-    paddingHorizontal: 8,
-    paddingVertical: 1,
-    borderRadius: 10,
-    marginTop: 15,
-    borderBottomWidth: 2,
-    borderBottomColor: '#5a189a',
-    color: '#FFF',
-  },
   buttonContainer: {
     width: '70%',
     justifyContent: 'center',
@@ -149,7 +139,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    backgroundColor: '#5a189a',
+    backgroundColor: '#32328a',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -161,7 +151,7 @@ const styles = StyleSheet.create({
     color: '#FFF'
   },
   buttonOutline: {
-    backgroundColor: '#240046',
+    backgroundColor: '#3d3dac',
 
   },
   buttonOutlineText: {

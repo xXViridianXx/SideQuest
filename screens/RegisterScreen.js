@@ -38,10 +38,10 @@ const RegisterScreen = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          <LoginInputs labelText={'Username'} input={username} setInput={setUsername} style={styles.input} color={'#3c096c'} boardType='default' secure={false} />
-          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3c096c'} boardType='email-address' secure={false} />
-          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3c096c'} boardType='default' secure={true} />
-          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#3c096c'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Username'} input={username} setInput={setUsername} style={styles.input} color={'#3d3dac'} boardType='default' secure={false} />
+          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3d3dac'} boardType='email-address' secure={false} />
+          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} />
         </View>
 
         <View
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#240046',
+    backgroundColor: '#3d3dac',
   },
 
   signUpContainer: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    backgroundColor: '#3c096c',
+    backgroundColor: '#32328a',
     color: '#FFF',
     padding: 15,
     borderRadius: 10,
