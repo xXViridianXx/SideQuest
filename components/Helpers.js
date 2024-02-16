@@ -1,7 +1,8 @@
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth'
-import { database, doc, setDoc } from '../firebaseConfig'
+import { database, doc, setDoc, addDoc } from '../firebaseConfig'
 
 import Toast from 'react-native-root-toast'
+import { collection, getDoc } from 'firebase/firestore';
 
 
 const showToast = (text) => {
@@ -14,17 +15,86 @@ const showToast = (text) => {
 };
 
 const createDocument = async (email, username, uid) => {
+  // getting current date
+  const currentDate = new Date().toISOString().slice(0, 10)
   try {
-    await setDoc(doc(database, 'users', uid), {
+    const userRef = doc(database, 'users', uid)
+    await setDoc(userRef, {
       email: email,
-      username: username
+      username: username,
+      lastDate: currentDate
     })
+
+    const sleepDataCollectionRef = collection(userRef, "sleepData")
+
+    // creating date document
+    const dateDoc = doc(sleepDataCollectionRef, currentDate)
+
+    const userInfo = {
+      sleepQuality: 0
+    }
+
+    try {
+      await setDoc(dateDoc, userInfo)
+    }
+    catch (error) {
+      console.log('Error, submitting sleep info')
+    }
     console.log(`Data submitted; uid: ${uid}`)
   }
   catch (error) {
     console.log('Error' + error.message)
   }
 }
+
+const postSleepData = async (sleepQuality) => {
+
+  // getting current user id
+  const auth = getAuth()
+  const user = auth.currentUser
+  uid = user.uid
+
+  // getting user from database
+  const userRef = doc(database, 'users', uid)
+  console.log(userRef)
+  const lastDate = ""
+
+  // getting user's last entry
+  try {
+    const userInfo = await getDoc(userRef)
+    lastDate = userInfo.lastDate
+    console.log(lastDate)
+    if (!userInfo.exists) {
+      console.log("User info doesn't exist")
+      return null
+    }
+  }
+  catch (error) {
+    console.log('failed to get last entry date')
+    return null
+  }
+
+  // getting current date
+  const currentDate = new Date().toISOString().slice(0, 10)
+
+  // checking if current date equals last entry
+  if (currentDate == lastDate) {
+    showToast('Already submitted post for today!') 
+    return null
+  }
+
+  const sleepDataCollection = collection(userRef, "sleepData")
+  const dateDoc = doc(sleepDataCollection, currentDate)
+  try {
+    await setDoc(dateDoc, {
+      sleepQuality: sleepQuality
+    })
+  
+  } catch (error) {
+    console.log("error posting sleep")
+  }
+}
+
 
 const signIn = async (email, password) => {
   const auth = getAuth()
@@ -90,4 +160,4 @@ const signUp = async (email, password, confirmPassword, username) => {
   }
 }
 
-export { signIn, signUp }
+export { signIn, signUp, postSleepData}

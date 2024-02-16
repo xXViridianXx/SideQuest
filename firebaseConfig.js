@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 // import * as firebase from 'firebase'
 import { getAuth, getReactNativePersistence, initializeAuth} from 'firebase/auth'
-import { getFirestore, doc, setDoc, getDoc} from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, addDoc} from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Optionally import the services that you want to use
@@ -42,6 +42,7 @@ export {
   database,
   doc,
   setDoc,
+  addDoc,
   getDoc
 }
 

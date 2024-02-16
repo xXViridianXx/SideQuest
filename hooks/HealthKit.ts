@@ -3,7 +3,7 @@ import AppleHealthKit, {
   HealthKitPermissions,
   HealthActivitySummary,
 } from 'react-native-health'
-import App from '../App'
+// import App from '../App'
 
 /* Permission options */
 const permissions = {
