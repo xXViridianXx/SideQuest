@@ -2,7 +2,8 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWith
 import { database, doc, setDoc, addDoc } from '../firebaseConfig'
 
 import Toast from 'react-native-root-toast'
-import { collection, getDoc } from 'firebase/firestore';
+import { collection, getDoc, updateDoc } from 'firebase/firestore';
+import { err } from 'react-native-svg';
 
 
 const showToast = (text) => {
@@ -56,42 +57,54 @@ const postSleepData = async (sleepQuality) => {
 
   // getting user from database
   const userRef = doc(database, 'users', uid)
-  console.log(userRef)
-  const lastDate = ""
-
+  lastDate = ""  
   // getting user's last entry
   try {
-    const userInfo = await getDoc(userRef)
-    lastDate = userInfo.lastDate
-    console.log(lastDate)
-    if (!userInfo.exists) {
-      console.log("User info doesn't exist")
-      return null
+    const userSnapShot = await getDoc(userRef)
+    if (userSnapShot.exists()) {
+      userInfo = userSnapShot.data()
+      lastDate = userInfo.lastDate
+    }
+    else {
+      console.log("failed to get user data")
     }
   }
   catch (error) {
-    console.log('failed to get last entry date')
+    console.log('failed to last entry date ', error.message)
     return null
   }
 
   // getting current date
   const currentDate = new Date().toISOString().slice(0, 10)
 
+  // console.log(currentDate, lastDate)
   // checking if current date equals last entry
-  if (currentDate == lastDate) {
-    showToast('Already submitted post for today!') 
+  // only post if last date different
+  if (currentDate === lastDate) {
+    showToast('Already submitted post for today!')
     return null
   }
 
+  // posting sleep quality
   const sleepDataCollection = collection(userRef, "sleepData")
   const dateDoc = doc(sleepDataCollection, currentDate)
   try {
     await setDoc(dateDoc, {
       sleepQuality: sleepQuality
     })
-  
+
   } catch (error) {
-    console.log("error posting sleep")
+    console.log("error posting sleep ", error.message)
+  }
+
+  // updating last user entry date
+  try {
+    await updateDoc(userRef, {
+      lastDate: currentDate
+    })
+  }
+  catch(error) {
+    console.log("error updating data: ", error.message)
   }
 }
 
@@ -160,4 +173,4 @@ const signUp = async (email, password, confirmPassword, username) => {
   }
 }
 
-export { signIn, signUp, postSleepData}
+export { signIn, signUp, postSleepData }
