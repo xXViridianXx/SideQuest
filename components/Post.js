@@ -3,25 +3,49 @@ import React from 'react'
 
 import { useNavigation } from '@react-navigation/native'
 
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const month = date.getMonth() + 1; // Months are zero-based, so add 1
+    const day = date.getDate();
+    const year = date.getFullYear();
+    
+    return `${month}-${day}-${year}`;
+}
 
 const Post = ({ post }) => {
 
     const navigation = useNavigation()
+    // return (
+    //     <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', { postTitle: post.title, steps: post.steps, day: post.day, caffeine: post.caffeine, sleepQuality: post.sleepQuality, description: post.post }) }}>
+    //         <View style={styles.content}>
+    //             <View style={{ padding: 15, width: '60%' }}>
+    //                 <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#3d3dac', marginBottom: 20, padding: 10, alignItems: 'center'}}>
+    //                     <Text style={{ fontSize: 20, fontWeight: 800, color: '#3d3dac'}}>{post.day}</Text>
+    //                 </View>
+    //                 <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Caffeine</Text>
+    //                 <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Steps</Text>
+    //                 <Text style={{ marginBottom: 10, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Sleep Quality</Text>
+    //             </View>
+    //             <View style={styles.tag}>
+    //                 <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.caffeine} mg</Text>
+    //                 <Text style={{ marginTop: 35, marginBottom: 15, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.steps}</Text>
+    //                 <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.sleepQuality}</Text>
+    //             </View>
+    //         </View>
+    //     </TouchableOpacity>
+    // )
+
     return (
-        <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', { postTitle: post.title, steps: post.steps, day: post.day, caffeine: post.caffeine, sleepQuality: post.sleepQuality, description: post.post }) }}>
+        <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', { Date: post.Date, Time: post.Time }) }}>
             <View style={styles.content}>
                 <View style={{ padding: 15, width: '60%' }}>
-                    <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#3d3dac', marginBottom: 20, padding: 10, alignItems: 'center'}}>
-                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#3d3dac'}}>{post.day}</Text>
+                    <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#3d3dac', marginBottom: 20, padding: 10, alignItems: 'center' }}>
+                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#3d3dac' }}>{ formatDate(post.Date) }</Text>
                     </View>
-                    <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Caffeine</Text>
-                    <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Steps</Text>
-                    <Text style={{ marginBottom: 10, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Sleep Quality</Text>
+                    <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Duration</Text>
                 </View>
                 <View style={styles.tag}>
-                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.caffeine} mg</Text>
-                    <Text style={{ marginTop: 35, marginBottom: 15, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.steps}</Text>
-                    <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.sleepQuality}</Text>
+                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.Time}</Text>
                 </View>
             </View>
         </TouchableOpacity>

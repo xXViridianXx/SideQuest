@@ -1,5 +1,5 @@
 import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView, TouchableOpacity, FlatList } from 'react-native'
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import * as Location from 'expo-location'
 import HealthKit from '../components/HealthKit'
@@ -10,6 +10,7 @@ import Item from '../components/Post'
 import NoSideQuests from '../components/NoSideQuests';
 import LogoTopLeft from '../components/LogoTopLeft';
 import SearchBar from '../components/SearchBar';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
@@ -57,22 +58,37 @@ const logout = async () => {
 }
 const HomeScreen = () => {
 
+    const [sleepData, setSleepData] = React.useState();
+
 
     useEffect(() => {
         (async () => {
-          
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-            return;
-          }
 
-          HealthKit()
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            HealthKit()
+
+            console.log()
+
+            try {
+                const data = JSON.parse(await AsyncStorage.getItem("SleepData"))
+                setSleepData(data)
+
+            } catch (error) {
+                console.log("Fetch Sleep Data Error: ", error)
+
+            } finally {
+                console.log("Sleep Data: ", sleepData)
+            }
+
+
 
         })();
-      }, []);
-
-
+    }, []);
 
     // gives access to navigation object
     const navigation = useNavigation()
@@ -80,20 +96,20 @@ const HomeScreen = () => {
     return (
         <SafeAreaView style={styles.container} behavior='padding'>
 
-                {/* status bar */}
-                {/* <StatusBar barStyle="light-content" /> */}
-                {/* Header: Search, profile, logo */}
-                <LogoTopLeft profileColor={'#3d3dac'} />
+            {/* status bar */}
+            {/* <StatusBar barStyle="light-content" /> */}
+            {/* Header: Search, profile, logo */}
+            <LogoTopLeft profileColor={'#3d3dac'} />
 
-                {/* Search Bar */}
-                <SearchBar />
-                {/* body */}
+            {/* Search Bar */}
+            <SearchBar />
+            {/* body */}
             <View style={styles.questsContainer}>
                 <Text style={styles.questsText}>Sleep Data</Text>
             </View>
             <View style={{ height: 550, backgroundColor: '#FFF' }}>
                 <FlatList
-                    data={dummyData}
+                    data={sleepData}
                     ListEmptyComponent={NoSideQuests}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
