@@ -36,7 +36,7 @@ const Post = ({ post }) => {
     // )
 
     return (
-        <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate('QuestInfoScreen', { Date: post.date, Time: post.sleepDuration }) }}>
+        <TouchableOpacity style={styles.item} activeOpacity={1} onPress={() => { }}>
             <View style={styles.content}>
                 <View style={{ padding: 15, width: '60%' }}>
                     <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#3d3dac', marginBottom: 20, padding: 10, alignItems: 'center' }}>
@@ -58,10 +58,13 @@ export default Post
 
 const styles = StyleSheet.create({
     item: {
+        width: 'auto',
+        alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 25,
-        marginLeft: 25,
-        marginTop: 25,
+        marginRight: '10%',
+        marginLeft: '10%',
+        marginTop: '0%',
+        marginBottom: '3%',
         backgroundColor: '#FFF',
         borderWidth: 3,
         borderColor: '#7b2cbf',

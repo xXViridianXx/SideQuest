@@ -1,5 +1,6 @@
 import * as Calendar from 'expo-calendar';
 
+// Make it so it returns the first biggest nap slot
 function NapAlgorithm({events}) {
 
     const startTime = new Date()
@@ -33,7 +34,16 @@ function NapAlgorithm({events}) {
         });
     });
 
-    return availableTimeSlots
+    // let bestSlot = {}
+
+    // availableTimeSlots.forEach(event => {
+    //     const eventStartTime = new Date(event.startTime)
+    //     const eventEndTime = new Date(event.endTime)
+
+    //     // if 
+    // })
+
+    return availableTimeSlots[0]
 }
 
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import * as Location from 'expo-location'
 import * as Calendar from 'expo-calendar';
-import HealthKit, { sleepData, activityData } from '../components/HealthKit'
+import HealthKit from '../components/HealthKit'
 import sampleHealthData from '../Data/sampleHealthData'
 import { NapAlgorithm, getEventsForCurrentDay } from '../components/NapAlgorithm';
 
@@ -18,6 +18,8 @@ const logout = async () => {
     await signOut(getAuth())
 }
 const HomeScreen = () => {
+
+    const [sleepLogs, setSleepLogs] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -34,7 +36,9 @@ const HomeScreen = () => {
                 availableTimeSlots = NapAlgorithm({ events })
             }
 
-            HealthKit()
+            let { sleepData, activityData } = HealthKit()
+
+            setSleepLogs(sleepData)
 
             console.log("Available Nap Slots: ", availableTimeSlots)
             console.log("Sleep Data: ", sleepData)
@@ -63,7 +67,7 @@ const HomeScreen = () => {
             </View>
             <View style={{ height: 550, backgroundColor: '#FFF' }}>
                 <FlatList
-                    data={sampleHealthData}
+                    data={sleepLogs}
                     ListEmptyComponent={NoSideQuests}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}

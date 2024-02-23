@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from '../screens/HomeScreen'
+import Home from '../screens/Home'
 import CreatePostScreen from '../screens/CreatePost'
 import { View } from "react-native";
 import {
@@ -45,7 +46,7 @@ function MyTabs() {
           )
         }
       }} />
-      <Tab.Screen name="Home" style={{ justifyContent: 'center', alignItems: 'center' }} component={HomeScreen} options={{
+      <Tab.Screen name="Home" style={{ justifyContent: 'center', alignItems: 'center' }} component={Home} options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           return (
@@ -55,7 +56,7 @@ function MyTabs() {
           )
         }
       }} />
-      <Tab.Screen name="Messages" component={HomeScreen} options={{
+      <Tab.Screen name="Messages" component={Home} options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           return (

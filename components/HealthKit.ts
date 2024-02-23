@@ -12,8 +12,8 @@ function convertMilliseconds(ms) {
     return `${hours}:${minutes}`;
 }
 
-export let activityData = {}
-export let sleepData = {}
+let activityData = []
+let sleepData = []
 
 const HealthKit = () => {
 
@@ -54,7 +54,7 @@ const HealthKit = () => {
                     return {
                         "id": id,
                         "actvivityDate": Date.now(),
-                        "duration": key.appleExerciseTime
+                        "activityDuration": key.appleExerciseTime
                     }
                 })
 
@@ -95,7 +95,7 @@ const HealthKit = () => {
         )
 
     })
-
+    return { sleepData, activityData }
 }
 
 export default HealthKit

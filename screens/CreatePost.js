@@ -30,10 +30,10 @@ const CreatePost = () => {
     <SafeAreaView style={styles.container} behavior='padding'>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
           {/* <LogoTopLeft profileColor={'#FFF'} /> */}
 
-          <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 25, marginRight: 25, marginLeft: 25 }}>
+          <View style={{ display: 'flex', flex: 0, justifyContent: 'center', alignItems: 'center',  }}>
             <View>
               <Text style={styles.postText}>Rate Sleep Quality</Text>
             </View>
@@ -45,8 +45,8 @@ const CreatePost = () => {
           {/* <View style={{ backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}> */}
           <Reward sleepQuality={number} add={addOne} sub={subOne}/>
           {/* </View> */}
-          <View>
-            <TouchableOpacity onPress={() => (postSleepData(number))}>
+          <View style={{display: 'flex'}}>
+            <TouchableOpacity style={{position: 'absolute', alignSelf: 'center', top: -100, width: 250}} onPress={() => (postSleepData(number))}>
               <View style={{ backgroundColor: '#32328f', justifyContent: 'center', alignItems: 'center', borderRadius: 10, height: 70, marginLeft: 25, marginRight: 25 }}>
                 <Text style={{ color: '#FFF', fontSize: 20, fontWeight: '600' }}>Post</Text>
               </View>
@@ -54,7 +54,7 @@ const CreatePost = () => {
           </View>
 
 
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
 
@@ -67,6 +67,7 @@ export default CreatePost
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#3d3dac',
+    display: 'flex',
     flex: 1
   },
   postText: {
