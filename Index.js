@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tabs from './components/Tab';
 import { setUser } from './redux/slices/user';
 
-import { getAuth, onAuthStateChanged, initializeAuth} from 'firebase/auth'
+import { getAuth, onAuthStateChanged, initializeAuth } from 'firebase/auth'
+
+import HelloWorldScreen from './screens/HelloWorldScreen';
+import ActivityScreen from './screens/ActivityScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -25,39 +29,39 @@ const Stack = createNativeStackNavigator();
 export default function Index() {
 
 
-  // gives root state in call back: user slice
-  const user = useSelector(state => state.user.currentUser)
+    // gives root state in call back: user slice
+    const user = useSelector(state => state.user.currentUser)
 
-  const dispatch = useDispatch()
-
-
-  const auth = getAuth()
+    const dispatch = useDispatch()
 
 
+    const auth = getAuth()
 
 
-  // useEffect(() => {
-
-  onAuthStateChanged(auth, (u) => {
-
-    // console.log(`Look it's ${u.email}`)
-    let email = null
-    if (u != null) {
-      email = u.email
-    }
-
-    dispatch(setUser(email))
-
-    // dispatch(setUser(0))
-    // console.log(`Look it's ${u.email}`)
-
-    // if (user) {
-    //   navigation.replace('Home')
-    // }
 
 
-  })
-  // })
+    // useEffect(() => {
+
+    onAuthStateChanged(auth, (u) => {
+
+        // console.log(`Look it's ${u.email}`)
+        let email = null
+        if (u != null) {
+            email = u.email
+        }
+
+        dispatch(setUser(email))
+
+        // dispatch(setUser(0))
+        // console.log(`Look it's ${u.email}`)
+
+        // if (user) {
+        //   navigation.replace('Home')
+        // }
+
+
+    })
+    // })
 
   if (user) {
     return (
