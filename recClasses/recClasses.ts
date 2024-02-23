@@ -1,10 +1,11 @@
-class ItemCategory {
-  itemName: string
+export class ItemCategory {
+  name: string
   categoryNames: string[]; // item's main categories
   subCategory: string[]; // item's subcategories (MIGHT BE ABLE TO MERGE THIS WITH THE LINE ABOVE)
   indScore: number; // individual score of the item
 
-  constructor(categoryNames: string[], subCategory: string[], indScore: number) {
+  constructor(name: string, categoryNames: string[], subCategory: string[], indScore: number) {
+      this.name = name;
       this.categoryNames = categoryNames;
       this.subCategory = subCategory;
       this.indScore = indScore;
@@ -12,8 +13,6 @@ class ItemCategory {
 }
 
 let SCORE_MAP: Map<string, number> = new Map()
-
-
 /*
 - Each item will be created on startup with the ItemCategory class
 - Store these items in an array of tuples [[score, ItemCategory item], ...]
