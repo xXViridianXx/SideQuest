@@ -10,7 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tabs from './components/Tab';
 import { setUser } from './redux/slices/user';
 
-import { getAuth, onAuthStateChanged, initializeAuth} from 'firebase/auth'
+import { getAuth, onAuthStateChanged, initializeAuth } from 'firebase/auth'
+
+import HelloWorldScreen from './screens/HelloWorldScreen';
+import ActivityScreen from './screens/ActivityScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -24,62 +28,70 @@ const Stack = createNativeStackNavigator();
 export default function Index() {
 
 
-  // gives root state in call back: user slice
-  const user = useSelector(state => state.user.currentUser)
+    // gives root state in call back: user slice
+    const user = useSelector(state => state.user.currentUser)
 
-  const dispatch = useDispatch()
-
-
-  const auth = getAuth()
+    const dispatch = useDispatch()
 
 
+    const auth = getAuth()
 
 
-  // useEffect(() => {
 
-  onAuthStateChanged(auth, (u) => {
 
-    // console.log(`Look it's ${u.email}`)
-    let email = null
-    if (u != null) {
-      email = u.email
+    // useEffect(() => {
+
+    onAuthStateChanged(auth, (u) => {
+
+        // console.log(`Look it's ${u.email}`)
+        let email = null
+        if (u != null) {
+            email = u.email
+        }
+
+        dispatch(setUser(email))
+
+        // dispatch(setUser(0))
+        // console.log(`Look it's ${u.email}`)
+
+        // if (user) {
+        //   navigation.replace('Home')
+        // }
+
+
+    })
+    // })
+
+    if (user) {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
+                    <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+                    <Stack.Screen name="QuestInfoScreen" component={QuestInfoScreen} options={{ headerShown: false }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
     }
-
-    dispatch(setUser(email))
-
-    // dispatch(setUser(0))
-    // console.log(`Look it's ${u.email}`)
-
-    // if (user) {
-    //   navigation.replace('Home')
-    // }
-
-
-  })
-  // })
-
-  if (user) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
-          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-          <Stack.Screen name="QuestInfoScreen" component={QuestInfoScreen} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-  else {
-    return (
-      <NavigationContainer initialRouteName='Login'>
-        <Stack.Navigator >
-          <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='Register' component={RegisterScreen} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Tabs" component={Tabs} /> */}
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+    else {
+        return (
+            <NavigationContainer initialRouteName='Login'>
+                <Stack.Navigator >
+                    <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name='Register' component={RegisterScreen} options={{ headerShown: false }} />
+                    {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="Tabs" component={Tabs} /> */}
+                </Stack.Navigator>
+            </NavigationContainer>
+            // <NavigationContainer>
+            //     <Stack.Navigator>
+            //         {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
+            //         <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+            //         <Stack.Screen name="QuestInfoScreen" component={QuestInfoScreen} options={{ headerShown: false }} />
+            //         <Stack.Screen name="HelloWorld" component={HelloWorldScreen} options={{ headerShown: false }} />
+            //     </Stack.Navigator>
+            // </NavigationContainer>
+        );
+    }
 
 }
