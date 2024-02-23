@@ -12,7 +12,6 @@ import { setUser } from './redux/slices/user';
 
 import { getAuth, onAuthStateChanged, initializeAuth } from 'firebase/auth'
 
-import HelloWorldScreen from './screens/HelloWorldScreen';
 import ActivityScreen from './screens/ActivityScreen';
 
 
