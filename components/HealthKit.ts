@@ -20,7 +20,7 @@ const HealthKit = () => {
     /* Permission options */
     const permissions = {
         permissions: {
-            read: [AppleHealthKit.Constants.Permissions.ActivitySummary, AppleHealthKit.Constants.Permissions.DateOfBirth, AppleHealthKit.Constants.Permissions.SleepAnalysis]
+            read: [AppleHealthKit.Constants.Permissions.ActivitySummary, AppleHealthKit.Constants.Permissions.SleepAnalysis]
 
         },
     } as HealthKitPermissions
@@ -61,7 +61,7 @@ const HealthKit = () => {
                 const saveData = async () => {
                     await AsyncStorage.setItem("ActivityData", JSON.stringify(activityData))
                 }
-                saveData()
+                // saveData()
             },
         )
 
@@ -88,7 +88,7 @@ const HealthKit = () => {
                 const saveData = async () => {
                     await AsyncStorage.setItem("SleepData", JSON.stringify(sleepData))
                 }
-                saveData()
+                // saveData()
                 // console.log(sleepData)
                 
             },
