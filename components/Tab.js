@@ -47,7 +47,7 @@ function MyTabs() {
           )
         }
       }} />
-      <Tab.Screen name="Home" style={{ justifyContent: 'center', alignItems: 'center' }} component={ActivityScreen} options={{
+      <Tab.Screen name="Home" style={{ justifyContent: 'center', alignItems: 'center' }} component={Home} options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           return (
@@ -57,7 +57,7 @@ function MyTabs() {
           )
         }
       }} />
-      <Tab.Screen name="Messages" component={Home} options={{
+      <Tab.Screen name="Messages" component={ActivityScreen} options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           return (
