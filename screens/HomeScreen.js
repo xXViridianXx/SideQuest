@@ -2,26 +2,22 @@ import { StatusBar, View, Text, SafeAreaView, StyleSheet, TextInput, ScrollView,
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import * as Location from 'expo-location'
+import * as Calendar from 'expo-calendar';
 import HealthKit, { sleepData, activityData } from '../components/HealthKit'
-import { sampleHealthData } from '../Data/sampleHealthData'
-
+import sampleHealthData from '../Data/sampleHealthData'
+import { NapAlgorithm, getEventsForCurrentDay } from '../components/NapAlgorithm';
 
 import { getAuth, signOut } from 'firebase/auth';
 import Item from '../components/Post'
 import NoSideQuests from '../components/NoSideQuests';
 import LogoTopLeft from '../components/LogoTopLeft';
 import SearchBar from '../components/SearchBar';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
 
 const logout = async () => {
     console.log('logging out')
     await signOut(getAuth())
 }
 const HomeScreen = () => {
-
-    // const [sleepData, setSleepData] = React.useState();
-
 
     useEffect(() => {
         (async () => {
@@ -32,9 +28,17 @@ const HomeScreen = () => {
                 return;
             }
 
+            ({ status } = await Calendar.requestCalendarPermissionsAsync());
+            if (status === 'granted') {
+                const events = await getEventsForCurrentDay();
+                availableTimeSlots = NapAlgorithm({ events })
+            }
+
             HealthKit()
-            // console.log("Sleep Data: ", sleepData)
-            // console.log("Activity Data: ", activityData)
+
+            console.log("Available Nap Slots: ", availableTimeSlots)
+            console.log("Sleep Data: ", sleepData)
+            console.log("Activity Data: ", activityData)
             // console.log("Activity Data: ", sampleHealthData)
 
         })();
