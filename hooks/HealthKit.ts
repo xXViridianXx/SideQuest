@@ -10,7 +10,7 @@ const permissions = {
   permissions: {
     // read: [AppleHealthKit.Constants.Permissions.HeartRate],
     // write: [AppleHealthKit.Constants.Permissions.Steps],
-    read: [AppleHealthKit.Constants.Permissions.ActivitySummary, AppleHealthKit.Constants.Permissions.DateOfBirth, AppleHealthKit.Constants.Permissions.SleepAnalysis]
+    read: [AppleHealthKit.Constants.Permissions.ActivitySummary, AppleHealthKit.Constants.Permissions.SleepAnalysis]
   },
 } as HealthKitPermissions
 

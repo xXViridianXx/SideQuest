@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from '../screens/HomeScreen'
 import ActivityScreen from '../screens/ActivityScreen'
-import HelloWorldScreen from '../screens/HelloWorldScreen'
+import Home from '../screens/Home'
 import CreatePostScreen from '../screens/CreatePost'
 import { View } from "react-native";
 import {
@@ -38,37 +38,37 @@ function MyTabs() {
             }
         }}>
 
-            <Tab.Screen name="Post" component={CreatePostScreen} options={{
-                headerShown: false, tabBarIcon: ({ focused }) => {
-                    return (
-                        <View>
-                            <PlusCircleIcon name="homeIcon" size={30} color={focused ? '#3d3dac' : '#e5e5e5'} />
-                        </View>
-                    )
-                }
-            }} />
-            <Tab.Screen name="Home" style={{ justifyContent: 'center', alignItems: 'center' }} component={HomeScreen} options={{
-                headerShown: false,
-                tabBarIcon: ({ focused }) => {
-                    return (
-                        <View>
-                            <HomeIcon name="homeIcon" size={30} color={focused ? '#3d3dac' : '#e5e5e5'} />
-                        </View>
-                    )
-                }
-            }} />
-            <Tab.Screen name="Messages" component={ActivityScreen} options={{
-                headerShown: false,
-                tabBarIcon: ({ focused }) => {
-                    return (
-                        <View>
-                            <ChatBubbleOvalLeftEllipsisIcon name="messageIcon" size={30} color={focused ? '#3d3dac' : '#e5e5e5'} />
-                        </View>
-                    )
-                }
-            }} />
-        </Tab.Navigator>
-    );
+      <Tab.Screen name="Post" component={CreatePostScreen} options={{
+        headerShown: false, tabBarIcon: ({ focused }) => {
+          return (
+            <View>
+              <PlusCircleIcon name="homeIcon" size={30} color={focused ? '#3d3dac' : '#e5e5e5'} />
+            </View>
+          )
+        }
+      }} />
+      <Tab.Screen name="Home" style={{ justifyContent: 'center', alignItems: 'center' }} component={ActivityScreen} options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => {
+          return (
+            <View>
+              <HomeIcon name="homeIcon" size={30} color={focused ? '#3d3dac' : '#e5e5e5'} />
+            </View>
+          )
+        }
+      }} />
+      <Tab.Screen name="Messages" component={Home} options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => {
+          return (
+            <View>
+              <ChatBubbleOvalLeftEllipsisIcon name="messageIcon" size={30} color={focused ? '#3d3dac' : '#e5e5e5'} />
+            </View>
+          )
+        }
+      }} />
+    </Tab.Navigator>
+  );
 }
 
 export default MyTabs
