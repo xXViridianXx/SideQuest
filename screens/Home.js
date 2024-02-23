@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, FlatList } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { Dimensions } from 'react-native';
 import Item from '../components/Post'
 import { sampleHealthData } from '../Data/sampleHealthData'
 import { NapAlgorithm, getEventsForCurrentDay } from '../components/NapAlgorithm';
 import NoSideQuests from '../components/NoSideQuests';
 import * as Calendar from 'expo-calendar';
+import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 
 const width = Dimensions.get('window').width;
+
+const logout = async () => {
+    console.log('logging out')
+    await signOut(getAuth())
+}
 
 export default function Home() {
 
@@ -44,7 +50,14 @@ export default function Home() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
+                <View>
                 <Text style={{ fontSize: 40 }}>Siesta</Text>
+                </View>
+                <View>
+                <TouchableOpacity onPress={logout}>
+                    <Text>Logout</Text>
+                </TouchableOpacity>
+                </View>
             </View>
 
             <View style={styles.body}>
@@ -85,6 +98,11 @@ const styles = StyleSheet.create({
         width: width,
         borderBottomWidth: 1,
         alignItems: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     body: {
         display: 'flex',
