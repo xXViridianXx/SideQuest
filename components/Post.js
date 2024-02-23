@@ -36,18 +36,18 @@ const Post = ({ post }) => {
     // )
 
     return (
-        <TouchableOpacity style={styles.item} activeOpacity={1} onPress={() => { }}>
+        <TouchableOpacity style={styles.item} activeOpacity={.75} onPress={() => { navigation.navigate('SleepInfoScreen'), { } }}>
             <View style={styles.content}>
                 <View style={{ padding: 15, width: '60%' }}>
                     <View style={{ borderRadius: 0, backgroundColor: '#FFF', borderBottomWidth: 2, borderColor: '#3d3dac', marginBottom: 20, padding: 10, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#3d3dac' }}>{ formatDate(post.date) }</Text>
+                        <Text style={{ fontSize: 20, fontWeight: 800, color: '#3d3dac' }}>{ formatDate(post.date ? post.date : '00-00-0000') }</Text>
                     </View>
                     <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Sleep Duration</Text>
                     <Text style={{ marginBottom: 30, fontSize: 23, fontWeight: 600, color: '#2b2d42' }}>Activity Duration</Text>
                 </View>
                 <View style={styles.tag}>
-                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.sleepDuration}</Text>
-                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.activityDuration} mins</Text>
+                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.sleepDuration ? post.sleepDuration : '0:00'}</Text>
+                    <Text style={{ marginTop: 65, fontSize: 20, fontWeight: 600, color: '#FFF' }}>{post.activityDuration ? post.activityDuration : 0}  mins</Text>
                 </View>
             </View>
         </TouchableOpacity>

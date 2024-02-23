@@ -81,7 +81,7 @@ const HealthKit = () => {
                     return {
                         "id": id,
                         "date": startDate,
-                        "duration": convertMilliseconds(diff)
+                        "sleepDuration": convertMilliseconds(diff)
                     }
                 })
 

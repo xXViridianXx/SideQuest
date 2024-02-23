@@ -16,13 +16,22 @@ const logout = async () => {
     await signOut(getAuth())
 }
 
+function formatTime(date) {
+    const formattedTime = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+        timeZone: 'America/Los_Angeles'
+    }).format(date);
+
+    return formattedTime
+}
 export default function Home() {
 
     const activityRec = "Go Workout"
     const [sleepLogs, setSleepLogs] = useState(null)
     const [startTime, setStartTime] = useState(null)
     const [endTime, setEndTime] = useState(null)
-    const napRec = "2:30 - 3:00"
 
     useEffect(() => {
         (async () => {
@@ -36,12 +45,12 @@ export default function Home() {
             let { sleepData, activityData } = HealthKit()
 
             setSleepLogs(sleepData)
-            // setStartTime(availableTimeSlots.startTime)
-            // setEndTime(availableTimeSlots.endTime)
+            setStartTime(formatTime(availableTimeSlots.startTime))
+            setEndTime(formatTime(availableTimeSlots.endTime))
 
-            console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
-            console.log("Sleep Data: ", sleepData)
-            console.log("Activity Data: ", activityData)
+            // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
+            console.log("Sleep Data: ", sleepLogs)
+            // console.log("Activity Data: ", activityData)
             // console.log("Activity Data: ", sampleHealthData)
 
         })();
@@ -51,12 +60,12 @@ export default function Home() {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <View>
-                <Text style={{ fontSize: 40 }}>Siesta</Text>
+                    <Text style={{ fontSize: 40 }}>Siesta</Text>
                 </View>
                 <View>
-                <TouchableOpacity onPress={logout}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={logout}>
+                        <Text>Logout</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -68,13 +77,13 @@ export default function Home() {
 
                 <View style={styles.nap}>
                     <Text style={{ fontSize: 30, paddingBottom: 10 }}>Recommended Nap Time</Text>
-                    <Text style={styles.napRec}>{napRec}</Text>
+                    <Text style={styles.napRec}>{startTime} - {endTime}</Text>
                 </View>
 
                 <View style={styles.sleepLogs}>
                     <FlatList
-                        style={{height: '50%'}}
-                        data={sampleHealthData}
+                        style={{ height: '50%' }}
+                        data={sleepLogs}
                         ListEmptyComponent={NoSideQuests}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}

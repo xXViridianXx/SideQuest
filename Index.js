@@ -3,7 +3,8 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import QuestInfoScreen from './screens/QuestInfoScreen';
+// import QuestInfoScreen from './screens/QuestInfoScreen';
+import SleepInfoScreen from './screens/SleepInfoScreen';
 import { React, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,7 +65,7 @@ export default function Index() {
         <Stack.Navigator>
           {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-          <Stack.Screen name="QuestInfoScreen" component={QuestInfoScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="SleepInfoScreen" component={SleepInfoScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     );
