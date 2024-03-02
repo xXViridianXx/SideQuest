@@ -8,6 +8,7 @@ import NoSideQuests from '../components/NoSideQuests';
 import * as Calendar from 'expo-calendar';
 import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const width = Dimensions.get('window').width;
 
@@ -28,10 +29,20 @@ function formatTime(date) {
 }
 export default function Home() {
 
-    const activityRec = "Go Workout"
+    const activityRec = "Go Workout" // update this with actual workout
     const [sleepLogs, setSleepLogs] = useState(null)
     const [startTime, setStartTime] = useState(null)
     const [endTime, setEndTime] = useState(null)
+
+    useEffect(() => {
+        AsyncStorage.getItem("logged_sleep").then((value) => {
+            if (value && value === 'true') {
+                // AsyncStorage.setItem('logged_sleep', 'false')
+                // navigate to the 
+                // navigation (whattttt)
+            }
+        })
+    },[])
 
     useEffect(() => {
         (async () => {

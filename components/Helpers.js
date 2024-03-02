@@ -4,7 +4,7 @@ import { database, doc, setDoc, addDoc } from '../firebaseConfig'
 import Toast from 'react-native-root-toast'
 import { collection, getDoc, updateDoc } from 'firebase/firestore';
 import { err } from 'react-native-svg';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const showToast = (text) => {
   let toast = Toast.show(text, {
@@ -49,6 +49,10 @@ const createDocument = async (email, username, uid) => {
 }
 
 const postSleepData = async (sleepQuality) => {
+
+  AsyncStorage.setItem('logged_sleep', 'true').then(() => {
+    console.log('logged_sleep set to true.');
+  })
 
   // getting current user id
   const auth = getAuth()

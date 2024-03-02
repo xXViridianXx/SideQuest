@@ -46,7 +46,7 @@ const CreatePost = () => {
           <Reward sleepQuality={number} add={addOne} sub={subOne}/>
           {/* </View> */}
           <View style={{display: 'flex'}}>
-            <TouchableOpacity style={{position: 'absolute', alignSelf: 'center', top: -100, width: 250}} onPress={() => (postSleepData(number))}>
+            <TouchableOpacity style={{position: 'absolute', alignSelf: 'center', top: -100, width: 250}} onPress={() => (postSleepData(number), navigation.navigate('Tabs'))}>
               <View style={{ backgroundColor: '#32328f', justifyContent: 'center', alignItems: 'center', borderRadius: 10, height: 70, marginLeft: 25, marginRight: 25 }}>
                 <Text style={{ color: '#FFF', fontSize: 20, fontWeight: '600' }}>Post</Text>
               </View>
