@@ -8,6 +8,10 @@ import NoSideQuests from '../components/NoSideQuests';
 import * as Calendar from 'expo-calendar';
 import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Make a workout time slot finder by finding a time slot for their remaining time left for exercise in the morning or evening
+
 
 const width = Dimensions.get('window').width;
 
@@ -23,7 +27,7 @@ function formatTime(date) {
         hour12: true,
         timeZone: 'America/Los_Angeles'
     }).format(date);
-
+// 
     return formattedTime
 }
 export default function Home() {
@@ -43,7 +47,8 @@ export default function Home() {
             }
 
             let { sleepData, activityData } = HealthKit()
-
+            
+            // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
             setSleepLogs(sleepData)
             setStartTime(formatTime(availableTimeSlots.startTime))
             setEndTime(formatTime(availableTimeSlots.endTime))
