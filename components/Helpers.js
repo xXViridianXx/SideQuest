@@ -50,10 +50,14 @@ const createDocument = async (email, username, uid) => {
 
 const postSleepData = async (sleepQuality) => {
 
-  AsyncStorage.setItem('logged_sleep', 'true').then(() => {
-    console.log('logged_sleep set to true.');
-  })
-
+  try {
+    await AsyncStorage.setItem('logged_sleep', 'true')
+    await console.log("posted sleep data!")
+  }
+  catch(e) {
+    console.log("error updating Async variable")
+  }
+  
   // getting current user id
   const auth = getAuth()
   const user = auth.currentUser
@@ -101,6 +105,8 @@ const postSleepData = async (sleepQuality) => {
     console.log("error posting sleep ", error.message)
   }
 
+  
+
   // updating last user entry date
   try {
     await updateDoc(userRef, {
@@ -110,6 +116,8 @@ const postSleepData = async (sleepQuality) => {
   catch(error) {
     console.log("error updating data: ", error.message)
   }
+
+
 }
 
 

@@ -15,6 +15,8 @@ const width = Dimensions.get('window').width;
 const logout = async () => {
     console.log('logging out')
     await signOut(getAuth())
+    // await AsyncStorage.setItem('logged_sleep', 'false')
+    // console.log("set to false")
 }
 
 function formatTime(date) {
