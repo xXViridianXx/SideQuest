@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Make a workout time slot finder by finding a time slot for their remaining time left for exercise in the morning or evening
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const width = Dimensions.get('window').width;
 
@@ -32,10 +33,20 @@ function formatTime(date) {
 }
 export default function Home() {
 
-    const activityRec = "Go Workout"
+    const activityRec = "Go Workout" // update this with actual workout
     const [sleepLogs, setSleepLogs] = useState(null)
     const [startTime, setStartTime] = useState(null)
     const [endTime, setEndTime] = useState(null)
+
+    useEffect(() => {
+        AsyncStorage.getItem("logged_sleep").then((value) => {
+            if (value && value === 'true') {
+                // AsyncStorage.setItem('logged_sleep', 'false')
+                // navigate to the 
+                // navigation (whattttt)
+            }
+        })
+    },[])
 
     useEffect(() => {
         (async () => {
