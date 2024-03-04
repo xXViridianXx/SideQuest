@@ -51,8 +51,10 @@ const createDocument = async (email, username, uid) => {
 const postSleepData = async (sleepQuality) => {
 
   try {
+    const currentDate = new Date().toDateString()
     await AsyncStorage.setItem('logged_sleep', 'true')
-    await console.log("posted sleep data!")
+    await AsyncStorage.setItem("logged_date", currentDate)
+    console.log("posted sleep data!")
   }
   catch(e) {
     console.log("error updating Async variable")

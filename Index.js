@@ -40,54 +40,58 @@ export default function Index() {
 
   // let loggedSleepAsync = false
 
-  const [loggedSleepAsync, setLoggedSleepAsync] = useState(true);
+  const [loggedSleepAsync, setLoggedSleepAsync] = useState(false);
+
   // setup logged_sleep async boolean value
-  // useEffect(() => {
-  //   AsyncStorage.getItem('logged_sleep').then(value => {
-  //     if (value && value === 'true') {
-  //       console.log('Already logged sleep')
-  //       // This gets the hours of the current day
-  //       // If the hours is past 5 then set the logged_sleep and loggedSleepAsync to false so it forces the user to post sleep
-  //       console.log(new Date().getHours());
-  //       if (new Date().getHours() >= 5) {
-  //         AsyncStorage.setItem('logged_sleep', 'false').then(() => {
-  //           console.log('logged_sleep stored as false successfully.');
-  //         })
-  //           .catch(error => {
-  //             console.error('Error storing boolean value:', error);
-  //           });
-  //       }
-  //       setLoggedSleepAsync(true)
-  //     }
-  //     else if (!value) {
-  //       console.log('logged value does not exist')
+  useEffect(() => {
+    // function that checks if user logged sleep for the day
+    const checkLoggedSleep = async () => {
+      // gets logged sleep status, current date as a string, and the date user logged sleep
+      const logged_sleep = await AsyncStorage.getItem('logged_sleep');
+      const currentDate = new Date().toDateString()
+      const postedDate = await AsyncStorage.getItem('logged_date');
 
-  //       AsyncStorage.setItem('logged_sleep', 'false').then(() => {
-  //         console.log('logged_sleep stored as false successfully.');
-  //       })
-  //         .catch(error => {
-  //           console.error('Error storing boolean value:', error);
-  //         });
-  //     }
-  //     else if (value === 'false') {
-  //       console.log('Logged sleep was false')
-  //       setLoggedSleepAsync(false)
-  //     }
-  //   }).catch(error => {
-  //     console.log(error)
-  //   })
-  // }, []);
+      // checks if logged sleep exists
+      if (logged_sleep) {
+        // if user logged sleep we will check if the user entered sleep for the current date
+        if (logged_sleep === 'true') {
 
-  const getAsyncSleepLog = async () => {
-    try {
-      const logged = await AsyncStorage.getItem("logged_sleep")
-      console.log("In getAsyncSleepLog logged: " + logged)
-      setLoggedSleepAsync(logged === 'false' ? false : true);
+          // if the current date and posted date are the same then the user already posted sleep for the current date
+          if (currentDate === postedDate) {
+
+            console.log('Already logged sleep')
+            setLoggedSleepAsync(true)
+
+            // else the user should be prompted to enter the sleep logs since it is a new day
+            // this only happens when the user opens the app for the first time on a new day
+          } else {
+
+            console.log('New day log sleep again')
+            await AsyncStorage.setItem("loggged_sleep", "false")
+            setLoggedSleepAsync(false)
+
+          }
+
+          // if the user never entered sleep logs for the current day then make them do it
+        } else {
+
+          console.log('Logged sleep was false')
+          setLoggedSleepAsync(false)
+
+        }
+
+      // if the logged sleep doesnt exist then make user log sleep anyways
+      } else {
+
+          console.log('logged value does not exist')
+          await AsyncStorage.setItem('logged_sleep', 'false')
+          setLoggedSleepAsync(false)
+
+      }
     }
-    catch (e) {
-      console.log("In didUserLogSleep: " + e)
-    }
-  }
+
+    checkLoggedSleep();
+  }, []);
 
   onAuthStateChanged(auth, (u) => {
     let email = null
@@ -98,52 +102,9 @@ export default function Index() {
     dispatch(setUser(email))
   })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await getAsyncSleepLog();
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const checkTime = async () => {
-      const currentDate = new Date();
-      const currentHour = currentDate.getHours();
-      console.log("current hour: " + currentHour, "logged: " + loggedSleepAsync)
-      // Check if the current time is past 5 AM and the check hasn't been made for today
-      if (currentHour >= 5 && loggedSleepAsync) {
-        const checkMadeForToday = await AsyncStorage.getItem('checkMadeForToday');
-        console.log("check for today: " + checkMadeForToday)
-        if (!checkMadeForToday) {
-          await AsyncStorage.setItem('checkMadeForToday', 'true');
-          await AsyncStorage.setItem('logged_sleep', 'false');
-          setLoggedSleepAsync(false);
-        }
-      }
-    };
-
-    checkTime();
-  }, [loggedSleepAsync]); // Run the effect when loggedSleepAsync changes
-
-  useEffect(() => {
-    const resetDay = async () => {
-      const currentDate = new Date();
-      const currentDay = currentDate.getDate();
-      const storedDay = await AsyncStorage.getItem('currentDay');
-      console.log("storedDate: " + storedDay)
-      console.log("currentDate: " + currentDate)
-      if (storedDay !== currentDay.toString()) {
-        await AsyncStorage.setItem('checkMadeForToday', ''); // Clear check for today
-        await AsyncStorage.setItem('currentDay', currentDay.toString());
-      }
-    }
-    resetDay()
-  })
 
   if (user) {
-    // console.log("bruhhhh " + loggedSleepAsync)
-    if (false == loggedSleepAsync) {
+    if (!loggedSleepAsync) {
       return (
         <NavigationContainer>
           <Stack.Navigator>
@@ -153,7 +114,6 @@ export default function Index() {
         </NavigationContainer>
       );
     }
-    // console.log("in else statement")
     return (
       <NavigationContainer>
         <Stack.Navigator>

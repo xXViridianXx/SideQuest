@@ -12,8 +12,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Make a workout time slot finder by finding a time slot for their remaining time left for exercise in the morning or evening
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const width = Dimensions.get('window').width;
 
 const logout = async () => {
