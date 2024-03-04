@@ -8,6 +8,8 @@ import NoSideQuests from '../components/NoSideQuests';
 import * as Calendar from 'expo-calendar';
 import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const width = Dimensions.get('window').width;
 
@@ -26,16 +28,23 @@ function formatTime(date) {
 
     return formattedTime
 }
-export default function Home() {
+export default function Home({route}) {
+    var activityRec = "Go Workout";
+    // if we want to use the items in the route:
+    if (route.params?.items) {
+        activityRec = route.params?.items[0];
+    }
+    const [sleepLogs, setSleepLogs] = useState(null);
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
+    const [selectedItems, setSelectedItems] = useState([]);
 
-    const activityRec = "Go Workout"
-    const [sleepLogs, setSleepLogs] = useState(null)
-    const [startTime, setStartTime] = useState(null)
-    const [endTime, setEndTime] = useState(null)
+    const items = route.params?.items || [];
+    console.log("items in home page: ", items);
+
 
     useEffect(() => {
         (async () => {
-
             let { status } = await Calendar.requestCalendarPermissionsAsync();
             if (status === 'granted') {
                 const events = await getEventsForCurrentDay();
@@ -55,7 +64,6 @@ export default function Home() {
 
         })();
     }, []);
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>

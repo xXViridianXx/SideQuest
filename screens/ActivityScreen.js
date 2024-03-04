@@ -1,21 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ItemCategory, itemList } from '../recClasses/ItemCategory';
 import SelectableList from '../components/SelectableList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ActivityScreen = () => {
-    const navigation = useNavigation(); // Access navigation object
-    console.log("testing item list: ", itemList);
+    const navigation = useNavigation();
+    // console.log("testing item list: ", itemList);
     var itemNames = itemList.map((item) => item.itemName);
-    const handleItemSelect = (selectedItem) => {
-        console.log("select4ed item: ", selectedItem);
-        
+
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const handleItemSelect = (newSelectedItems) => {
+        //selectedItem is a list that get updated whenever someone selects/deselects item
+        console.log("select4ed item: ", newSelectedItems);
+        setSelectedItems(newSelectedItems);
     };
 
-    const handleButtonPress = () => {
-        navigation.navigate('Home');
+    const handleButtonPress = async () => {
+        // navigation.navigate('Home');
+        try {
+            const jsonValue = JSON.stringify(selectedItems);
+            await AsyncStorage.setItem('selectedItems', jsonValue);
+            console.log("selected items saved to async storage");
+
+        } catch (e) {
+            console.error("failed to save into async storage: ", e);
+        }
+
+        await something();
+        navigation.navigate('Home', { items: selectedItems });
+        console.log("after home: ", selectedItems);
     }
+
+    const something = async () => {
+        const jsonValue = await AsyncStorage.getItem('selectedItems');
+        if (jsonValue !== null) {
+            setSelectedItems(JSON.parse(jsonValue));
+            console.log("selected items after async", selectedItems);
+        }
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -24,6 +50,7 @@ const ActivityScreen = () => {
             </View>
             <Button title="Take Action!" onPress={handleButtonPress}></Button>
         </SafeAreaView>
+
     );
 };
 

@@ -3,7 +3,7 @@ import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const SelectableList = ({ data, onItemSelect }) => {
     const [selectedItems, setSelectedItems] = useState([]);
-    console.log("Props in SelectableList:", { data, onItemSelect });
+    // console.log("Props in SelectableList:", { data, onItemSelect });
 
     const toggleItem = (item) => {
         // Check if the item is already selected
