@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, Button, StyleSheet, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ItemCategory, itemList } from '../recClasses/ItemCategory';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ActivityScreen = () => {
-    const navigation = useNavigation();
-    // console.log("testing item list: ", itemList);
-    var itemNames = itemList.map((item) => item.itemName);
+    const navigation = useNavigation(); // used for navigating to other screens
+    var itemNames = itemList.map((item) => item.itemName); // get the names of the activities like Walk, Run, etc
 
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
+    // initialized with two values: current state value and function that allows you to update the state
 
     const handleItemSelect = (newSelectedItems) => {
         //selectedItem is a list that get updated whenever someone selects/deselects item
@@ -18,36 +18,33 @@ const ActivityScreen = () => {
         setSelectedItems(newSelectedItems);
     };
 
-    const handleButtonPress = async () => {
+    const handleButtonPress = async () => { // take action button
         // navigation.navigate('Home');
-        try {
-            const jsonValue = JSON.stringify(selectedItems);
-            await AsyncStorage.setItem('selectedItems', jsonValue);
-            console.log("selected items saved to async storage");
-
-        } catch (e) {
-            console.error("failed to save into async storage: ", e);
-        }
-
-        await something();
         navigation.navigate('Home', { items: selectedItems });
-        console.log("after home: ", selectedItems);
     }
-
-    const something = async () => {
-        const jsonValue = await AsyncStorage.getItem('selectedItems');
-        if (jsonValue !== null) {
-            setSelectedItems(JSON.parse(jsonValue));
-            console.log("selected items after async", selectedItems);
-        }
+    const handleAddActivity = (userInput) => {
+        const updatedItems = [...selectedItems, userInput];
+        setSelectedItems(updatedItems);
     }
-
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.selectableListContainer}>
                 <SelectableList data={itemNames} onItemSelect={handleItemSelect} />
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Enter your activity: "
+                    />
+                    <Button
+                        title="Add"
+                        // onpress={handleAddActivity}
+                        color="#3498db"
+                        onPress={handleAddActivity}
+                    />
+                </View>
             </View>
+
             <Button title="Take Action!" onPress={handleButtonPress}></Button>
         </SafeAreaView>
 
@@ -69,6 +66,20 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 2,
         borderColor: '#3d3dac',
+    },
+    textInput: {
+        height: 40, // Set a fixed height
+        flex: 1, // Take remaining space
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingLeft: 10,
+        backgroundColor: '#ecf0f1',
+        marginRight: 10, // Add some margin between TextInput and Button
+    },
+    inputContainer: {
+        flexDirection: 'row', // Arrange children horizontally
+        alignItems: 'center', // Center vertically
+        margin: 10,
     },
     text: {
         fontSize: 40,
