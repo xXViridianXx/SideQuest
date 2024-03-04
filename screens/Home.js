@@ -9,8 +9,7 @@ import * as Calendar from 'expo-calendar';
 import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Make a workout time slot finder by finding a time slot for their remaining time left for exercise in the morning or evening
+import { useFocusEffect } from '@react-navigation/native';
 
 const width = Dimensions.get('window').width;
 
@@ -28,15 +27,23 @@ function formatTime(date) {
         hour12: true,
         timeZone: 'America/Los_Angeles'
     }).format(date);
-// 
+    // 
     return formattedTime
 }
-export default function Home() {
+export default function Home({ route }) {
 
-    const activityRec = "Go Workout" // update this with actual workout
-    const [sleepLogs, setSleepLogs] = useState(null)
-    const [startTime, setStartTime] = useState(null)
-    const [endTime, setEndTime] = useState(null)
+    var activityRec = "Go Workout" // update this with actual workout
+
+    if (route.params?.items) {
+        activityRec = route.params?.items[0];
+    }
+    const [sleepLogs, setSleepLogs] = useState(null);
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const items = route.params?.items || [];
+    console.log("items in home page: ", items);
 
     useEffect(() => {
         AsyncStorage.getItem("logged_sleep").then((value) => {
@@ -44,13 +51,13 @@ export default function Home() {
                 // AsyncStorage.setItem('logged_sleep', 'false')
                 // navigate to the 
                 // navigation (whattttt)
+                console.log("they logged sleep!");
             }
         })
-    },[])
+    }, [])
 
     useEffect(() => {
         (async () => {
-
             let { status } = await Calendar.requestCalendarPermissionsAsync();
             if (status === 'granted') {
                 const events = await getEventsForCurrentDay();
@@ -58,7 +65,7 @@ export default function Home() {
             }
 
             let { sleepData, activityData } = HealthKit()
-            
+
             // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
             setSleepLogs(sleepData)
             setStartTime(formatTime(availableTimeSlots.startTime))
@@ -71,7 +78,6 @@ export default function Home() {
 
         })();
     }, []);
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>

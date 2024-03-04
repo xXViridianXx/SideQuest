@@ -33,8 +33,6 @@ function MyTabs() {
                 backgroundColor: '#FFF',
                 height: 90,
                 borderTopWidth: 0,
-
-
             }
         }}>
 
