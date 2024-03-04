@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 import {
     AdjustmentsHorizontalIcon,
@@ -20,7 +20,7 @@ const SearchBar = () => {
                 <TextInput placeholder='Sleep greater than 8' keyboardType='default' style={styles.searchInput} />
             </View>
             <TouchableOpacity>
-                <AdjustmentsHorizontalIcon size='30' color='#3d3dac' style={styles.filterIcon} onPress={logout}/>
+                <AdjustmentsHorizontalIcon size='30' color='#3d3dac' style={styles.filterIcon} onPress={logout} />
             </TouchableOpacity>
 
         </View>
