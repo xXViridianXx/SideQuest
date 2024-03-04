@@ -16,6 +16,8 @@ const width = Dimensions.get('window').width;
 const logout = async () => {
     console.log('logging out')
     await signOut(getAuth())
+    // await AsyncStorage.setItem('logged_sleep', 'false')
+    // console.log("set to false")
 }
 
 function formatTime(date) {
@@ -25,12 +27,13 @@ function formatTime(date) {
         hour12: true,
         timeZone: 'America/Los_Angeles'
     }).format(date);
-
+    // 
     return formattedTime
 }
-export default function Home({route}) {
-    var activityRec = "Go Workout";
-    // if we want to use the items in the route:
+export default function Home({ route }) {
+
+    var activityRec = "Go Workout" // update this with actual workout
+
     if (route.params?.items) {
         activityRec = route.params?.items[0];
     }
@@ -42,6 +45,16 @@ export default function Home({route}) {
     const items = route.params?.items || [];
     console.log("items in home page: ", items);
 
+    useEffect(() => {
+        AsyncStorage.getItem("logged_sleep").then((value) => {
+            if (value && value === 'true') {
+                // AsyncStorage.setItem('logged_sleep', 'false')
+                // navigate to the 
+                // navigation (whattttt)
+                console.log("they logged sleep!");
+            }
+        })
+    }, [])
 
     useEffect(() => {
         (async () => {
@@ -53,6 +66,7 @@ export default function Home({route}) {
 
             let { sleepData, activityData } = HealthKit()
 
+            // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
             setSleepLogs(sleepData)
             setStartTime(formatTime(availableTimeSlots.startTime))
             setEndTime(formatTime(availableTimeSlots.endTime))

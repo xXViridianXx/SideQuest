@@ -4,7 +4,7 @@ import { database, doc, setDoc, addDoc } from '../firebaseConfig'
 import Toast from 'react-native-root-toast'
 import { collection, getDoc, updateDoc } from 'firebase/firestore';
 import { err } from 'react-native-svg';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const showToast = (text) => {
   let toast = Toast.show(text, {
@@ -50,6 +50,16 @@ const createDocument = async (email, username, uid) => {
 
 const postSleepData = async (sleepQuality) => {
 
+  try {
+    const currentDate = new Date().toDateString()
+    await AsyncStorage.setItem('logged_sleep', 'true')
+    await AsyncStorage.setItem("logged_date", currentDate)
+    console.log("posted sleep data!")
+  }
+  catch(e) {
+    console.log("error updating Async variable")
+  }
+  
   // getting current user id
   const auth = getAuth()
   const user = auth.currentUser
@@ -97,6 +107,8 @@ const postSleepData = async (sleepQuality) => {
     console.log("error posting sleep ", error.message)
   }
 
+  
+
   // updating last user entry date
   try {
     await updateDoc(userRef, {
@@ -106,6 +118,8 @@ const postSleepData = async (sleepQuality) => {
   catch(error) {
     console.log("error updating data: ", error.message)
   }
+
+
 }
 
 
