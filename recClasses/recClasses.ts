@@ -1,18 +1,24 @@
+
+// let SCORE_MAP: Map<string, number> = new Map() // string is Activity.name, number is the score
+let SCORE_MAP = new Map();
+let categoryMap = new Map();
+
 // let CATEGORY_SCORE_MAP: Map<string, number> = new Map() // string is Activity.name, number is the score
 let CATEGORY_SCORE_MAP = new Map();
+
 let SLEEP_GOAL: number
 
 export class Activity {
     name: string;
     numPicks: number;
     categoryNames: string[]; // item's main categories
-    subCategory: string[]; // item's subcategories (MIGHT BE ABLE TO MERGE THIS WITH THE LINE ABOVE)
+    // subCategory: string[]; // item's subcategories (MIGHT BE ABLE TO MERGE THIS WITH THE LINE ABOVE)
     indScore: number; // individual score of the item
 
-    constructor(name: string, categoryNames: string[], subCategory: string[], indScore: number) {
+    constructor(name: string, categoryNames: string[], indScore: number) {
         this.name = name;
         this.categoryNames = categoryNames;
-        this.subCategory = subCategory;
+        // this.subCategory = subCategory;
         this.indScore = indScore;
         this.numPicks = 0;
     }
@@ -45,6 +51,7 @@ export class Activity {
                 console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
             }
         });
+
     }
 
     getScore() {
@@ -59,6 +66,7 @@ export class Activity {
             }
             numCats += 1
         });
+
         this.subCategory.forEach(catName => {
             if (CATEGORY_SCORE_MAP[catName]) {
                 categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
@@ -110,36 +118,78 @@ CATEGORY_SCORE_MAP.set("Talk through your day", 0);
 CATEGORY_SCORE_MAP.set("Puzzle", 0);
 CATEGORY_SCORE_MAP.set("Coloring/Craft", 0);
 
-// Create instances with scores from CATEGORY_SCORE_MAP
-const walk = new Activity("Walk", ["Active"], ["Outdoors", "Low Intensity"], CATEGORY_SCORE_MAP.get("Walk"));
-const natureHike = new Activity("Nature Hike", ["Active"], ["Outdoors", "Medium Intensity"], CATEGORY_SCORE_MAP.get("Nature Hike"));
-const bike = new Activity("Bike", ["Active"], ["Outdoors", "Medium Intensity"], CATEGORY_SCORE_MAP.get("Bike"));
-const gym = new Activity("Gym", ["Active"], ["Indoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Gym"));
-const swim = new Activity("Swim", ["Active"], ["Indoors", "Medium Intensity"], CATEGORY_SCORE_MAP.get("Swim"));
-const soccer = new Activity("Soccer", ["Active"], ["Outdoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Soccer"));
-const basketball = new Activity("Basketball", ["Active"], ["Indoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Basketball"));
-const baseball = new Activity("Baseball", ["Active"], ["Outdoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Baseball"));
-const run = new Activity("Run", ["Active"], ["Outdoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Run"));
-const yoga = new Activity("Yoga", ["Active"], ["Indoors", "Low Intensity"], CATEGORY_SCORE_MAP.get("Yoga"));
-const dance = new Activity("Dance", ["Active"], ["Indoors", "Medium Intensity"], CATEGORY_SCORE_MAP.get("Dance"));
-const calisthenics = new Activity("Calisthenics", ["Active"], ["Indoors", "Medium Intensity"], CATEGORY_SCORE_MAP.get("Calisthenics"));
-const climbing = new Activity("Climbing", ["Active"], ["Indoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Climbing"));
-const volleyball = new Activity("Volleyball", ["Active"], ["Outdoors", "High Intensity"], CATEGORY_SCORE_MAP.get("Volleyball"));
-const golf = new Activity("Golf", ["Active"], ["Outdoors", "Low Intensity"], CATEGORY_SCORE_MAP.get("Golf"));
 
-const focusedMeditation = new Activity("Focused Meditation", ["Mindfulness"], ["Meditation"], CATEGORY_SCORE_MAP.get("Meditation"));
-const breathingExercises = new Activity("Breathing Exercises", ["Mindfulness"], ["Meditation"], CATEGORY_SCORE_MAP.get("Breathing Exercises"));
-const musicListening = new Activity("Music Listening", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Music Listening"));
-const journaling = new Activity("Journaling", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Journaling"));
-const read = new Activity("Read", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Read"));
-const watchShow = new Activity("Watch a Show", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Watch a show"));
-const phoneBreak = new Activity("Phone Break", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Phone break"));
-const tmrToDo = new Activity("Tomorrow's To-Do List Creation", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Tomorrow's to-do list creation"));
-const stretch = new Activity("Stretch", ["Mindfulness"], ["Low Intensity"], CATEGORY_SCORE_MAP.get("Stretch"));
-const hotShower = new Activity("Hot Shower/Bath", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Hot shower/bath"));
-const talkThrough = new Activity("Talk Through Your Day", ["Mindfulness"], [], CATEGORY_SCORE_MAP.get("Talk through your day"));
+// Create instances with scores from SCORE_MAP
+// const walk = new Activity("Walk", ["Active"], ["Outdoors", "Low Intensity"], SCORE_MAP.get("Walk"));
+// const natureHike = new Activity("Nature Hike", ["Active"], ["Outdoors", "Medium Intensity"], SCORE_MAP.get("Nature Hike"));
+// const bike = new Activity("Bike", ["Active"], ["Outdoors", "Medium Intensity"], SCORE_MAP.get("Bike"));
+// const gym = new Activity("Gym", ["Active"], ["Indoors", "High Intensity"], SCORE_MAP.get("Gym"));
+// const swim = new Activity("Swim", ["Active"], ["Indoors", "Medium Intensity"], SCORE_MAP.get("Swim"));
+// const soccer = new Activity("Soccer", ["Active"], ["Outdoors", "High Intensity"], SCORE_MAP.get("Soccer"));
+// const basketball = new Activity("Basketball", ["Active"], ["Indoors", "High Intensity"], SCORE_MAP.get("Basketball"));
+// const baseball = new Activity("Baseball", ["Active"], ["Outdoors", "High Intensity"], SCORE_MAP.get("Baseball"));
+// const run = new Activity("Run", ["Active"], ["Outdoors", "High Intensity"], SCORE_MAP.get("Run"));
+// const yoga = new Activity("Yoga", ["Active"], ["Indoors", "Low Intensity"], SCORE_MAP.get("Yoga"));
+// const dance = new Activity("Dance", ["Active"], ["Indoors", "Medium Intensity"], SCORE_MAP.get("Dance"));
+// const calisthenics = new Activity("Calisthenics", ["Active"], ["Indoors", "Medium Intensity"], SCORE_MAP.get("Calisthenics"));
+// const climbing = new Activity("Climbing", ["Active"], ["Indoors", "High Intensity"], SCORE_MAP.get("Climbing"));
+// const volleyball = new Activity("Volleyball", ["Active"], ["Outdoors", "High Intensity"], SCORE_MAP.get("Volleyball"));
+// const golf = new Activity("Golf", ["Active"], ["Outdoors", "Low Intensity"], SCORE_MAP.get("Golf"));
 
-const puzzle = new Activity("Puzzle", ["Mindfulness"], [], 0);
-const coloringCraft = new Activity("Coloring/Craft", ["Mindfulness"], [], 0);
+// const focusedMeditation = new Activity("Focused Meditation", ["Mindfulness"], ["Meditation"], SCORE_MAP.get("Meditation"));
+// const breathingExercises = new Activity("Breathing Exercises", ["Mindfulness"], ["Meditation"], SCORE_MAP.get("Breathing Exercises"));
+// const musicListening = new Activity("Music Listening", ["Mindfulness"], [], SCORE_MAP.get("Music Listening"));
+// const journaling = new Activity("Journaling", ["Mindfulness"], [], SCORE_MAP.get("Journaling"));
+// const read = new Activity("Read", ["Mindfulness"], [], SCORE_MAP.get("Read"));
+// const watchShow = new Activity("Watch a Show", ["Mindfulness"], [], SCORE_MAP.get("Watch a show"));
+// const phoneBreak = new Activity("Phone Break", ["Mindfulness"], [], SCORE_MAP.get("Phone break"));
+// const tmrToDo = new Activity("Tomorrow's To-Do List Creation", ["Mindfulness"], [], SCORE_MAP.get("Tomorrow's to-do list creation"));
+// const stretch = new Activity("Stretch", ["Mindfulness"], ["Low Intensity"], SCORE_MAP.get("Stretch"));
+// const hotShower = new Activity("Hot Shower/Bath", ["Mindfulness"], [], SCORE_MAP.get("Hot shower/bath"));
+// const talkThrough = new Activity("Talk Through Your Day", ["Mindfulness"], [], SCORE_MAP.get("Talk through your day"));
+
+// const puzzle = new Activity("Puzzle", ["Mindfulness"], [], 0);
+// const coloringCraft = new Activity("Coloring/Craft", ["Mindfulness"], [], 0);
+
+const walk = new Activity("Walk", ["Active", "Outdoors", "Low Intensity"], SCORE_MAP.get("Walk"));
+const natureHike = new Activity("Nature Hike", ["Active", "Outdoors", "Medium Intensity"], SCORE_MAP.get("Nature Hike"));
+const bike = new Activity("Bike", ["Active", "Outdoors", "Medium Intensity"], SCORE_MAP.get("Bike"));
+const gym = new Activity("Gym", ["Active", "Indoors", "High Intensity"], SCORE_MAP.get("Gym"));
+const swim = new Activity("Swim", ["Active", "Indoors", "Medium Intensity"], SCORE_MAP.get("Swim"));
+const soccer = new Activity("Soccer", ["Active", "Outdoors", "High Intensity"], SCORE_MAP.get("Soccer"));
+const basketball = new Activity("Basketball", ["Active", "Indoors", "High Intensity"], SCORE_MAP.get("Basketball"));
+const baseball = new Activity("Baseball", ["Active", "Outdoors", "High Intensity"], SCORE_MAP.get("Baseball"));
+const run = new Activity("Run", ["Active", "Outdoors", "High Intensity"], SCORE_MAP.get("Run"));
+const yoga = new Activity("Yoga", ["Active", "Indoors", "Low Intensity"], SCORE_MAP.get("Yoga"));
+const dance = new Activity("Dance", ["Active", "Indoors", "Medium Intensity"], SCORE_MAP.get("Dance"));
+const calisthenics = new Activity("Calisthenics", ["Active", "Indoors", "Medium Intensity"], SCORE_MAP.get("Calisthenics"));
+const climbing = new Activity("Climbing", ["Active", "Indoors", "High Intensity"], SCORE_MAP.get("Climbing"));
+const volleyball = new Activity("Volleyball", ["Active", "Outdoors", "High Intensity"], SCORE_MAP.get("Volleyball"));
+const golf = new Activity("Golf", ["Active", "Outdoors", "Low Intensity"], SCORE_MAP.get("Golf"));
+
+const focusedMeditation = new Activity("Focused Meditation", ["Mindfulness", "Meditation"], SCORE_MAP.get("Meditation"));
+const breathingExercises = new Activity("Breathing Exercises", ["Mindfulness", "Meditation"], SCORE_MAP.get("Breathing Exercises"));
+const musicListening = new Activity("Music Listening", ["Mindfulness"], SCORE_MAP.get("Music Listening"));
+const journaling = new Activity("Journaling", ["Mindfulness"], SCORE_MAP.get("Journaling"));
+const read = new Activity("Read", ["Mindfulness"], SCORE_MAP.get("Read"));
+const watchShow = new Activity("Watch a Show", ["Mindfulness"], SCORE_MAP.get("Watch a show"));
+const phoneBreak = new Activity("Phone Break", ["Mindfulness"], SCORE_MAP.get("Phone break"));
+const tmrToDo = new Activity("Tomorrow's To-Do List Creation", ["Mindfulness"], SCORE_MAP.get("Tomorrow's to-do list creation"));
+const stretch = new Activity("Stretch", ["Mindfulness", "Low Intensity"], SCORE_MAP.get("Stretch"));
+const hotShower = new Activity("Hot Shower/Bath", ["Mindfulness"], SCORE_MAP.get("Hot shower/bath"));
+const talkThrough = new Activity("Talk Through Your Day", ["Mindfulness"], SCORE_MAP.get("Talk through your day"));
+
+const puzzle = new Activity("Puzzle", ["Mindfulness"], 0);
+const coloringCraft = new Activity("Coloring/Craft", ["Mindfulness"], 0);
+
+
+let categoryList = ["Walk", "Nature Hike", "Bike", "Gym", "Swim", "Soccer", "Basketball", "Baseball", "Run", "Yoga", "Dance", "Calisthenics", "Climbing", "Volleyball", "Golf", "Focused Meditation", "Breathing Exercises", "Music Listening", "Journaling", "Read", "Watch a show", "Phone break", "Tomorrow's to-do list creation", "Stretch", "Hot shower/bath", "Talk through your day", "Puzzle", "Coloring/Craft", "Active", "Mindfulness", "Outdoors", "Indoors", "Low Intensity", "Medium Intensity", "High Intensity"];
+
+for (let i = 0; i < categoryList.length; i++) {
+    categoryMap[categoryList[i]] = 0;
+}
+
 
 export const itemList = [walk, natureHike, bike, gym, swim, soccer, basketball, baseball, run, yoga, dance, calisthenics, climbing, volleyball, golf, focusedMeditation, breathingExercises, musicListening, journaling, read, watchShow, phoneBreak, tmrToDo, stretch, hotShower, talkThrough, puzzle, coloringCraft];
+export const categoryMapList = categoryMap;
+
