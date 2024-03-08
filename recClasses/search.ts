@@ -1,8 +1,8 @@
-import {ItemCategory} from './recClasses'
+import {Activity} from './recClasses'
 
 type scoreAndItem = {
   'score': number;
-  'item': ItemCategory;
+  'item': Activity;
 }
 
 export function filterList(searchQuery: string, data: scoreAndItem[]): scoreAndItem[] {
