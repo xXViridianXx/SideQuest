@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { ItemCategory, itemList } from '../recClasses/ItemCategory';
+// import { Activity, itemList } from '../recClasses/Activity';
+import { itemList, categoryMapList } from '../recClasses/recClasses';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ActivityScreen = () => {
     const navigation = useNavigation(); // used for navigating to other screens
-    var itemNames = itemList.map((item) => item.itemName); // get the names of the activities like Walk, Run, etc
+    var itemNames = itemList.map((item) => item.name); // get the names of the activities like Walk, Run, etc
 
     const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
     // initialized with two values: current state value and function that allows you to update the state
+    useEffect(() => {
+        const updateAsyncStorage = async () => {
+            try {
+                if (selectedItems.length > 0) {
+                    await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+                } else {
+                    const defaultSelectedItems = [];
+                    await AsyncStorage.setItem('selectedItems', JSON.stringify(defaultSelectedItems));
+                }
+            } catch (error) {
+                console.log('Error storing selected items');
+            }
+        };
+
+        updateAsyncStorage();
+    }, [selectedItems]);
 
     const handleItemSelect = (newSelectedItems) => {
         //selectedItem is a list that get updated whenever someone selects/deselects item
@@ -20,6 +37,21 @@ const ActivityScreen = () => {
 
     const handleButtonPress = async () => { // take action button
         // navigation.navigate('Home');
+        // we are going to store the selected items in async storage
+        try {
+            if (selectedItems.length > 0) {
+                await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            }
+            // get the async item first and then modify that
+            console.log('selected Items: ', selectedItems)
+            if (selectedItems.length == 0) {
+                console.log('No items selected');
+                await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            }
+        }
+        catch (error) {
+            console.log('Error storing selected items');
+        }
         navigation.navigate('Home', { items: selectedItems });
     }
     const handleAddActivity = (userInput) => {
