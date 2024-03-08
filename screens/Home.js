@@ -37,24 +37,14 @@ export default function Home({ route }) {
     if (route.params?.items) {
         activityRec = route.params?.items[0];
     }
-    const [sleepLogs, setSleepLogs] = useState(null);
+    const [userLogs, setUserLogs] = useState(null);
+    // const [activityLogs, setActivityLogs] = useState(null);
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
 
     const items = route.params?.items || [];
-    console.log("items in home page: ", items);
-
-    useEffect(() => {
-        AsyncStorage.getItem("logged_sleep").then((value) => {
-            if (value && value === 'true') {
-                // AsyncStorage.setItem('logged_sleep', 'false')
-                // navigate to the 
-                // navigation (whattttt)
-                console.log("they logged sleep!");
-            }
-        })
-    }, [])
+    // console.log("items in home page: ", items);
 
     useEffect(() => {
         (async () => {
@@ -62,21 +52,23 @@ export default function Home({ route }) {
             if (status === 'granted') {
                 const events = await getEventsForCurrentDay();
                 availableTimeSlots = NapAlgorithm({ events })
+                setStartTime(formatTime(availableTimeSlots.startTime))
+                setEndTime(formatTime(availableTimeSlots.endTime))
             }
 
-            let { sleepData, activityData } = HealthKit()
-
-            // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
-            setSleepLogs(sleepData)
-            setStartTime(formatTime(availableTimeSlots.startTime))
-            setEndTime(formatTime(availableTimeSlots.endTime))
-
-            // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
-            console.log("Sleep Data: ", sleepLogs)
-            // console.log("Activity Data: ", activityData)
-            // console.log("Activity Data: ", sampleHealthData)
-
         })();
+
+        let { sleepData, activityData } = HealthKit()
+
+        // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
+        setUserLogs(sleepData)
+        // setActivityLogs(activityData)
+        
+
+        // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
+        console.log("User Logs: ", userLogs)
+        // console.log("Activity Data: ", activityLogs)
+        // console.log("Activity Data: ", sampleHealthData)
     }, []);
     return (
         <SafeAreaView style={styles.container}>
@@ -105,7 +97,7 @@ export default function Home({ route }) {
                 <View style={styles.sleepLogs}>
                     <FlatList
                         style={{ height: '50%' }}
-                        data={sleepLogs}
+                        data={userLogs}
                         ListEmptyComponent={NoSideQuests}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}

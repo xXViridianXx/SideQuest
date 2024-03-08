@@ -1,17 +1,12 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
-import { signUp, create} from '../components/Helpers'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
 
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterInfo = ({ navigation }) => {
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  
 
 
   const dismissKeyboard = () => {
@@ -33,31 +28,31 @@ const RegisterScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.introContainer}>
-          <Text style={styles.introText}>Welcome Aboard</Text>
+          <Text style={styles.introText}>Some Information About You</Text>
         </View>
 
         <View style={styles.inputContainer}>
 
-          <LoginInputs labelText={'Username'} input={username} setInput={setUsername} style={styles.input} color={'#3d3dac'} boardType='default' secure={false} />
+          {/* <LoginInputs labelText={'Sleep Goal'} input={username} setInput={setUsername} style={styles.input} color={'#3d3dac'} boardType='default' secure={false} />
           <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3d3dac'} boardType='email-address' secure={false} />
           <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} />
-          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} />
+          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} /> */}
         </View>
 
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { navigation.navigate('Info') }} style={styles.button}>
+          <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username) }} style={styles.button}>
           {/* <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}> */}
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>
 
-          <View style={styles.signUpContainer}>
+          {/* <View style={styles.signUpContainer}>
             <Text style={{ color: '#FFF', fontSize: 12, fontWeight: 500 }}>Already Have An Account?</Text>
             <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={[styles.buttonOutline]}>
               <Text style={styles.buttonOutlineText}> Sign In</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
         </View>
       </KeyboardAvoidingView>
@@ -66,7 +61,7 @@ const RegisterScreen = ({ navigation }) => {
   )
 }
 
-export default RegisterScreen
+export default RegisterInfo
 
 const styles = StyleSheet.create({
   container: {
