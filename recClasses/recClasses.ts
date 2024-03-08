@@ -1,6 +1,11 @@
+
 // let SCORE_MAP: Map<string, number> = new Map() // string is Activity.name, number is the score
 let SCORE_MAP = new Map();
 let categoryMap = new Map();
+
+// let CATEGORY_SCORE_MAP: Map<string, number> = new Map() // string is Activity.name, number is the score
+let CATEGORY_SCORE_MAP = new Map();
+
 let SLEEP_GOAL: number
 
 export class Activity {
@@ -30,45 +35,47 @@ export class Activity {
         //update category scores
 
         this.categoryNames.forEach(catName => {
-            if (SCORE_MAP[catName]) {
-                SCORE_MAP[catName] += (diff / 5) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+            if (CATEGORY_SCORE_MAP[catName]) {
+                CATEGORY_SCORE_MAP[catName] += (diff / 5) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
             }
             else {
-                console.log("ERROR: category name not found in SCORE_MAP")
+                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
             }
         });
 
-        // this.subCategory.forEach(catName => {
-        //     if (SCORE_MAP[catName]) {
-        //         SCORE_MAP[catName] += (diff / 5) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
-        //     }
-        //     else {
-        //         console.log("ERROR: category name not found in SCORE_MAP")
-        //     }
-        // });
+        this.subCategory.forEach(catName => {
+            if (CATEGORY_SCORE_MAP[catName]) {
+                CATEGORY_SCORE_MAP[catName] += (diff / 5) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+            }
+            else {
+                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
+            }
+        });
+
     }
 
     getScore() {
         let categoryScore: number = 0;
         let numCats: number = 0;
         this.categoryNames.forEach(catName => {
-            if (SCORE_MAP[catName]) {
-                categoryScore += SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+            if (CATEGORY_SCORE_MAP[catName]) {
+                categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
             }
             else {
-                console.log("ERROR: category name not found in SCORE_MAP")
+                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
             }
             numCats += 1
         });
-        // this.subCategory.forEach(catName => {
-        //     if (SCORE_MAP[catName]) {
-        //         categoryScore += SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
-        //     }
-        //     else {
-        //         console.log("ERROR: category name not found in SCORE_MAP")
-        //     }
-        //     numCats += 1
-        // });
+
+        this.subCategory.forEach(catName => {
+            if (CATEGORY_SCORE_MAP[catName]) {
+                categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+            }
+            else {
+                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
+            }
+            numCats += 1
+        });
 
         return this.indScore + (categoryScore / numCats)
     }
@@ -82,34 +89,35 @@ export class Activity {
 */
 
 // Set all scores to 0
-SCORE_MAP.set("Walk", 0);
-SCORE_MAP.set("Meditation", 0);
-SCORE_MAP.set("Nature Hike", 0);
-SCORE_MAP.set("Bike", 0);
-SCORE_MAP.set("Gym", 0);
-SCORE_MAP.set("Swim", 0);
-SCORE_MAP.set("Soccer", 0);
-SCORE_MAP.set("Basketball", 0);
-SCORE_MAP.set("Baseball", 0);
-SCORE_MAP.set("Run", 0);
-SCORE_MAP.set("Yoga", 0);
-SCORE_MAP.set("Dance", 0);
-SCORE_MAP.set("Calisthenics", 0);
-SCORE_MAP.set("Climbing", 0);
-SCORE_MAP.set("Volleyball", 0);
-SCORE_MAP.set("Golf", 0);
-SCORE_MAP.set("Focused Meditation", 0);
-SCORE_MAP.set("Breathing Exercises", 0);
-SCORE_MAP.set("Journaling", 0);
-SCORE_MAP.set("Read", 0);
-SCORE_MAP.set("Watch a show", 0);
-SCORE_MAP.set("Phone break", 0);
-SCORE_MAP.set("Tomorrow's to-do list creation", 0);
-SCORE_MAP.set("Stretch", 0);
-SCORE_MAP.set("Hot shower/bath", 0);
-SCORE_MAP.set("Talk through your day", 0);
-SCORE_MAP.set("Puzzle", 0);
-SCORE_MAP.set("Coloring/Craft", 0);
+CATEGORY_SCORE_MAP.set("Walk", 0);
+CATEGORY_SCORE_MAP.set("Meditation", 0);
+CATEGORY_SCORE_MAP.set("Nature Hike", 0);
+CATEGORY_SCORE_MAP.set("Bike", 0);
+CATEGORY_SCORE_MAP.set("Gym", 0);
+CATEGORY_SCORE_MAP.set("Swim", 0);
+CATEGORY_SCORE_MAP.set("Soccer", 0);
+CATEGORY_SCORE_MAP.set("Basketball", 0);
+CATEGORY_SCORE_MAP.set("Baseball", 0);
+CATEGORY_SCORE_MAP.set("Run", 0);
+CATEGORY_SCORE_MAP.set("Yoga", 0);
+CATEGORY_SCORE_MAP.set("Dance", 0);
+CATEGORY_SCORE_MAP.set("Calisthenics", 0);
+CATEGORY_SCORE_MAP.set("Climbing", 0);
+CATEGORY_SCORE_MAP.set("Volleyball", 0);
+CATEGORY_SCORE_MAP.set("Golf", 0);
+CATEGORY_SCORE_MAP.set("Focused Meditation", 0);
+CATEGORY_SCORE_MAP.set("Breathing Exercises", 0);
+CATEGORY_SCORE_MAP.set("Journaling", 0);
+CATEGORY_SCORE_MAP.set("Read", 0);
+CATEGORY_SCORE_MAP.set("Watch a show", 0);
+CATEGORY_SCORE_MAP.set("Phone break", 0);
+CATEGORY_SCORE_MAP.set("Tomorrow's to-do list creation", 0);
+CATEGORY_SCORE_MAP.set("Stretch", 0);
+CATEGORY_SCORE_MAP.set("Hot shower/bath", 0);
+CATEGORY_SCORE_MAP.set("Talk through your day", 0);
+CATEGORY_SCORE_MAP.set("Puzzle", 0);
+CATEGORY_SCORE_MAP.set("Coloring/Craft", 0);
+
 
 // Create instances with scores from SCORE_MAP
 // const walk = new Activity("Walk", ["Active"], ["Outdoors", "Low Intensity"], SCORE_MAP.get("Walk"));
@@ -184,3 +192,4 @@ for (let i = 0; i < categoryList.length; i++) {
 
 export const itemList = [walk, natureHike, bike, gym, swim, soccer, basketball, baseball, run, yoga, dance, calisthenics, climbing, volleyball, golf, focusedMeditation, breathingExercises, musicListening, journaling, read, watchShow, phoneBreak, tmrToDo, stretch, hotShower, talkThrough, puzzle, coloringCraft];
 export const categoryMapList = categoryMap;
+
