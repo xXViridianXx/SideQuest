@@ -64,7 +64,10 @@ const createDocument = async (email, username, uid) => {
 }
 
 const postSleepData = async (sleepQuality) => {
-    storeItemList()
+    // only call storeItemList when async storage for 'itemList' and 'categoryMapList' is empty
+    if (await AsyncStorage.getItem('itemList') == null || await AsyncStorage.getItem('categoryMapList') == null) {
+        storeItemList()
+    }
     updateActivityScores(sleepQuality)
 
     try {
