@@ -10,6 +10,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { getWeatherInfo, getLocalTime} from '../components/Helpers';
 
 const width = Dimensions.get('window').width;
 
@@ -153,6 +154,12 @@ export default function Home({ route }) {
                 <View>
                     <TouchableOpacity onPress={logout}>
                         <Text>Logout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={getWeatherInfo}>
+                        <Text>Test Weather</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={getLocalTime}>
+                        <Text>Test Time</Text>
                     </TouchableOpacity>
                 </View>
             </View>

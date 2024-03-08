@@ -6,6 +6,8 @@ import { collection, getDoc, updateDoc } from 'firebase/firestore';
 import { err } from 'react-native-svg';
 import { itemList, initializeItemList, Activity, initializeCategories } from '../recClasses/recClasses';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Loc from 'expo-location'
+import { useState } from 'react';
 
 const showToast = (text) => {
     let toast = Toast.show(text, {
@@ -270,4 +272,48 @@ const signUp = async (email, password, confirmPassword, username) => {
     }
 }
 
-export { signIn, signUp, postSleepData }
+
+// const getCoords = async () => {
+//     let geocodedAddress;
+//     // const [address, setAddress] = useState()
+
+//     // if (address == null) {
+//     geocodedAddress = await Loc.getCurrentPositionAsync({});
+//     // let latitude = Number((geocodedAddress.coords.latitude))
+//     // let longitude = Number((geocodedAddress.coords.longitude))
+//     // let coordinates = `approx: (${latitude}, ${longitude})`
+//     console.log(latitude, longitude)
+//     return geocodedAddress
+// }
+
+const getWeatherInfo = async () => {
+    try {
+        let geocodedAddress = await Loc.getCurrentPositionAsync({});
+        let latitude = Number((geocodedAddress.coords.latitude))
+        let longitude = Number((geocodedAddress.coords.longitude))
+        const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${longitude},${latitude}`
+        const headers = {
+            'X-RapidAPI-Key': '886a660e26msh8db0f67e0667606p1f561ejsn7a7ec6f630d9',
+            'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+        }
+
+        const response = await fetch(url, { method: 'GET', headers });
+        const data = await response.json();
+        console.log(data);
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+
+const getLocalTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    console.log(hours, minutes, seconds)
+    return {hours: hours, minutes: minutes, seconds: seconds};
+  };
+
+
+export { signIn, signUp, postSleepData, getWeatherInfo, getLocalTime}

@@ -1,7 +1,7 @@
 import { Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, View, Text, SafeAreaView, StyleSheet, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { postSleepData } from '../components/Helpers'
+import { postSleepData} from '../components/Helpers'
 import Reward from '../components/Reward';
 
 const CreatePost = () => {
