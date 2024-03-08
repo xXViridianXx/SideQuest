@@ -21,6 +21,13 @@ const ActivityScreen = () => {
 
     const handleButtonPress = async () => { // take action button
         // navigation.navigate('Home');
+        // we are going to store the selected items in async storage
+        try {
+            await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+        }
+        catch (error) {
+            console.log('Error storing selected items');
+        }
         navigation.navigate('Home', { items: selectedItems });
     }
     const handleAddActivity = (userInput) => {
