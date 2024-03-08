@@ -272,31 +272,22 @@ const signUp = async (email, password, confirmPassword, username) => {
     }
 }
 
-
-// const getCoords = async () => {
-//     let geocodedAddress;
-//     // const [address, setAddress] = useState()
-
-//     // if (address == null) {
-//     geocodedAddress = await Loc.getCurrentPositionAsync({});
-//     // let latitude = Number((geocodedAddress.coords.latitude))
-//     // let longitude = Number((geocodedAddress.coords.longitude))
-//     // let coordinates = `approx: (${latitude}, ${longitude})`
-//     console.log(latitude, longitude)
-//     return geocodedAddress
-// }
-
+// return realtime weather information based on coords
 const getWeatherInfo = async () => {
     try {
+        // retreives coords
         let geocodedAddress = await Loc.getCurrentPositionAsync({});
         let latitude = Number((geocodedAddress.coords.latitude))
         let longitude = Number((geocodedAddress.coords.longitude))
+
+        // api settings
         const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${longitude},${latitude}`
         const headers = {
             'X-RapidAPI-Key': '886a660e26msh8db0f67e0667606p1f561ejsn7a7ec6f630d9',
             'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
         }
 
+        // making api call and converting data to json
         const response = await fetch(url, { method: 'GET', headers });
         const data = await response.json();
         console.log(data);
