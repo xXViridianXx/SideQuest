@@ -18,9 +18,13 @@ export class Activity {
     }
 
     //CALCULATE THE SCORE BASED ON THE QUALITY OF SLEEP THEY GOT PREVIOUSLY AND THE NUMBER OF TIMES THEY HAD PICKED THE ITEM (if the number of times is high, this sleep would only effect the time minorly)
-    updateScore(prevNightSleep: number, sleepGoal: number) {
+    updateScore(prevNightSleep: number, sleepGoal: number, sleepQuality: number) {
+    //    ubtract by 6 and dvide by 2 
+        sleepQuality -= 6;
+        sleepQuality /= 2;
         let diff = (prevNightSleep - sleepGoal) / sleepGoal; // percentage difference between prevNightSleep and sleepGoal
         diff *= 10; // so if its 0.1 difference, the diff will be 1
+        diff += sleepQuality;
         this.indScore += diff / this.numPicks; // divide by numPicks to regularize the results (don't want it to change a lot if this item has a history of being good/bad)
         if (this.numPicks < 7) {
             this.numPicks += 1;

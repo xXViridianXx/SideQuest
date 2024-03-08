@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // import { Activity, itemList } from '../recClasses/Activity';
-import { itemList } from '../recClasses/recClasses';
+import { itemList, categoryMapList} from '../recClasses/recClasses';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
