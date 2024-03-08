@@ -104,7 +104,7 @@ export default function Index() {
 
 
   if (user) {
-    if (!loggedSleepAsync) {
+    if (loggedSleepAsync) {
       return (
         <NavigationContainer>
           <Stack.Navigator>

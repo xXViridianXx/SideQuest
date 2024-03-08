@@ -4,6 +4,7 @@ import { database, doc, setDoc, addDoc } from '../firebaseConfig'
 import Toast from 'react-native-root-toast'
 import { collection, getDoc, updateDoc } from 'firebase/firestore';
 import { err } from 'react-native-svg';
+import { itemList, initializeItemList, Activity, initializeCategories } from '../recClasses/recClasses';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const showToast = (text) => {
@@ -14,6 +15,20 @@ const showToast = (text) => {
         shadow: false,
     });
 };
+
+const storeItemList = async () => {
+    // in this function we will get the itemList from the recClasses file and store it in async storage
+
+    //call initializeItemList
+    let itemList2 = initializeItemList()
+    let categoryMapList = initializeCategories()
+    try {
+        await AsyncStorage.setItem('itemList', JSON.stringify(itemList2));
+        await AsyncStorage.setItem('categoryMapList', JSON.stringify(categoryMapList))
+    } catch (e) {
+        console.log("error storing item list")
+    }
+}
 
 const createDocument = async (email, username, uid) => {
     // getting current date
@@ -49,13 +64,16 @@ const createDocument = async (email, username, uid) => {
 }
 
 const postSleepData = async (sleepQuality) => {
+    storeItemList()
+    updateActivityScores(sleepQuality)
 
     try {
         const currentDate = new Date().toDateString()
         await AsyncStorage.setItem('logged_sleep', 'true')
         await AsyncStorage.setItem("logged_date", currentDate)
         console.log("posted sleep data!")
-        console.log("the sleep quality was: ", sleepQuality)
+        await AsyncStorage.setItem('sleepQuality', sleepQuality.toString())
+
         // store the sleep quality in async storage?
     }
     catch (e) {
@@ -120,6 +138,66 @@ const postSleepData = async (sleepQuality) => {
     catch (error) {
         console.log("error updating data: ", error.message)
     }
+
+
+}
+
+const updateActivityScores = async (sleepQuality) => {
+    // get the activity from async storage
+
+    let selectedItems = await AsyncStorage.getItem('selectedItems')
+    selectedItems = JSON.parse(selectedItems)
+    console.log("selectedItems: ", selectedItems)
+
+    let activityList = await AsyncStorage.getItem('itemList')
+    activityList = JSON.parse(activityList)
+    activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
+
+
+    // get the category map list from async storage
+    let categoryMapList = await AsyncStorage.getItem('categoryMapList')
+    categoryMapList = JSON.parse(categoryMapList)
+    const map = new Map();
+    for (const [key, value] of Object.entries(categoryMapList)) {
+        map.set(key, value);
+    }
+    categoryMapList = map
+    console.log("categorymaplist type: ", typeof categoryMapList)
+    console.log("categoryMapList: ", categoryMapList)
+
+    // VEDAANT -- get live sleep data from last night -- 
+    // TODO: get sleep goal from async (should be stored when first opening the app along with the sleep quality)
+    let hours = 8;
+    let sleepGoal = 9;
+
+    // debugging categoryMapList and the type for it
+
+    // 1. sleepquality, 2. sleep duration, 3. activities
+
+    // go through the activityList and search for the activities
+    for (let i = 0; i < activityList.length; i++) {
+        let activity = activityList[i]
+        for (let j = 0; j < selectedItems.length; j++) {
+            if (activity.name == selectedItems[j]) {
+                activity.updateScore(hours, sleepGoal, sleepQuality, categoryMapList)
+            }
+        }
+
+        // VEDAANT -- update the score based on sleep quality and sleep duration
+
+    }
+
+    // sort the activityList based on the indScore
+    activityList.sort((a, b) => b.indScore - a.indScore)
+    try {
+        console.log("Updated activityList: ", activityList)
+        await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
+        console.log("Updated activityList stored in AsyncStorage.");
+    } catch (error) {
+        console.error("Error storing updated activityList in AsyncStorage:", error.message);
+    }
+
+
 
 
 }
