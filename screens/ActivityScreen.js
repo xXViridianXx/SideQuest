@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { ItemCategory, itemList } from '../recClasses/ItemCategory';
+// import { ItemCategory, itemList } from '../recClasses/ItemCategory';
+import { itemList } from '../recClasses/recClasses';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ActivityScreen = () => {
     const navigation = useNavigation(); // used for navigating to other screens
-    var itemNames = itemList.map((item) => item.itemName); // get the names of the activities like Walk, Run, etc
+    var itemNames = itemList.map((item) => item.name); // get the names of the activities like Walk, Run, etc
 
     const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
     // initialized with two values: current state value and function that allows you to update the state
