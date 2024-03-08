@@ -43,14 +43,14 @@ export class Activity {
             }
         });
 
-        this.subCategory.forEach(catName => {
-            if (CATEGORY_SCORE_MAP[catName]) {
-                CATEGORY_SCORE_MAP[catName] += (diff / 5) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
-            }
-            else {
-                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
-            }
-        });
+        // this.subCategory.forEach(catName => {
+        //     if (CATEGORY_SCORE_MAP[catName]) {
+        //         CATEGORY_SCORE_MAP[catName] += (diff / 5) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+        //     }
+        //     else {
+        //         console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
+        //     }
+        // });
 
     }
 
@@ -67,15 +67,15 @@ export class Activity {
             numCats += 1
         });
 
-        this.subCategory.forEach(catName => {
-            if (CATEGORY_SCORE_MAP[catName]) {
-                categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
-            }
-            else {
-                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
-            }
-            numCats += 1
-        });
+        // this.subCategory.forEach(catName => {
+        //     if (CATEGORY_SCORE_MAP[catName]) {
+        //         categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+        //     }
+        //     else {
+        //         console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
+        //     }
+        //     numCats += 1
+        // });
 
         return this.indScore + (categoryScore / numCats)
     }
