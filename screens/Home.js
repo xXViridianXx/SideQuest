@@ -30,20 +30,93 @@ function formatTime(date) {
     // 
     return formattedTime
 }
+const accessItemList = async () => {
+    try {
+        const value = await AsyncStorage.getItem('selectedItems');
+        console.log("value itself: ", value);
+        return value;
+    } catch (error) {
+        console.log('Error getting selected items');
+        return [];
+    }
+}
+
+const accessActivityList = async () => {
+    try {
+        const activities = await AsyncStorage.getItem('itemList');
+        return activities;
+    } catch (error) {
+        console.log('Error getting activity list');
+        return [];
+    }
+}
 export default function Home({ route }) {
 
-    var activityRec = "Go Workout" // update this with actual workout
+    // var activityRec = "Go Workout" // update this with actual workout
+    // var activityRec = ["Go Workout", "Walk", "Meditate"]
 
-    if (route.params?.items) {
-        activityRec = route.params?.items[0];
-    }
+    // if (route.params?.items) {
+    //     activityRec = [route.params?.items[0]];
+    // }
+    // get the async data for selectedItems
+    const [activityRec, setActivityRec] = useState([]);
     const [sleepLogs, setSleepLogs] = useState(null);
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
 
-    const items = route.params?.items || [];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await accessItemList();
+                const newItems = result ? JSON.parse(result) : [];
 
+                console.log("activityRec hererere: ", newItems);
+                setActivityRec(newItems);
+                console.log("newItems: ", newItems);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                var result = await accessActivityList();
+                // first parse result into json format
+                // then create the list of strings of this list
+                result = JSON.parse(result);
+                let first = result[0];
+                let second = result[1];
+                let third = result[2];
+                let firstSecondThird = [first, second, third];
+                let activityList = firstSecondThird.map(obj => obj.name);
+                console.log("activityList in useEffect(): ", activityList);
+
+                const newItems = activityList ? activityList : [];
+                setActivityRec(newItems);
+
+                // const newItems = result ? JSON.parse(result) : [];
+
+                // console.log("activityRec hererere: ", newItems);
+                // setActivityRec(newItems);
+                // console.log("newItems: ", newItems);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+
+    console.log("activityRec after useeffect() : ", activityRec);
+
+    const items = route.params?.items || [];
     useEffect(() => {
         AsyncStorage.getItem("logged_sleep").then((value) => {
             if (value && value === 'true') {
@@ -93,7 +166,9 @@ export default function Home({ route }) {
             <View style={styles.body}>
                 <View style={styles.activity}>
                     <Text style={{ fontSize: 30, paddingBottom: 10 }}>Top Activity for the Day</Text>
-                    <Text style={styles.activityRec}>{activityRec}</Text>
+                    {activityRec.map((activity, index) => (
+                        <Text key={index} style={styles.activityRec}>{activity}</Text>
+                    ))}
                 </View>
 
                 <View style={styles.nap}>
