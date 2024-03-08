@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // import { Activity, itemList } from '../recClasses/Activity';
-import { itemList, categoryMapList} from '../recClasses/recClasses';
+import { itemList, categoryMapList } from '../recClasses/recClasses';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +12,22 @@ const ActivityScreen = () => {
 
     const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
     // initialized with two values: current state value and function that allows you to update the state
+    useEffect(() => {
+        const updateAsyncStorage = async () => {
+            try {
+                if (selectedItems.length > 0) {
+                    await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+                } else {
+                    const defaultSelectedItems = [];
+                    await AsyncStorage.setItem('selectedItems', JSON.stringify(defaultSelectedItems));
+                }
+            } catch (error) {
+                console.log('Error storing selected items');
+            }
+        };
+
+        updateAsyncStorage();
+    }, [selectedItems]);
 
     const handleItemSelect = (newSelectedItems) => {
         //selectedItem is a list that get updated whenever someone selects/deselects item
@@ -23,8 +39,15 @@ const ActivityScreen = () => {
         // navigation.navigate('Home');
         // we are going to store the selected items in async storage
         try {
+            if (selectedItems.length > 0) {
+                await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            }
             // get the async item first and then modify that
-            await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            console.log('selected Items: ', selectedItems)
+            if (selectedItems.length == 0) {
+                console.log('No items selected');
+                await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            }
         }
         catch (error) {
             console.log('Error storing selected items');
