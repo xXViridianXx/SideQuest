@@ -43,7 +43,6 @@ export default function Home({ route }) {
     const [selectedItems, setSelectedItems] = useState([]);
 
     const items = route.params?.items || [];
-    console.log("items in home page: ", items);
 
     useEffect(() => {
         AsyncStorage.getItem("logged_sleep").then((value) => {

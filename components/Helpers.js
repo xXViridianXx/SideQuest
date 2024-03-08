@@ -65,7 +65,6 @@ const createDocument = async (email, username, uid) => {
 
 const postSleepData = async (sleepQuality) => {
     storeItemList()
-
     updateActivityScores(sleepQuality)
 
     try {
@@ -74,7 +73,7 @@ const postSleepData = async (sleepQuality) => {
         await AsyncStorage.setItem("logged_date", currentDate)
         console.log("posted sleep data!")
         await AsyncStorage.setItem('sleepQuality', sleepQuality.toString())
-        
+
         // store the sleep quality in async storage?
     }
     catch (e) {
@@ -148,10 +147,11 @@ const updateActivityScores = async (sleepQuality) => {
 
     let selectedItems = await AsyncStorage.getItem('selectedItems')
     selectedItems = JSON.parse(selectedItems)
+    console.log("selectedItems: ", selectedItems)
 
     let activityList = await AsyncStorage.getItem('itemList')
     activityList = JSON.parse(activityList)
-    activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore))
+    activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
 
 
     // get the category map list from async storage
@@ -162,12 +162,16 @@ const updateActivityScores = async (sleepQuality) => {
         map.set(key, value);
     }
     categoryMapList = map
+    console.log("categorymaplist type: ", typeof categoryMapList)
     console.log("categoryMapList: ", categoryMapList)
 
     // VEDAANT -- get live sleep data from last night -- 
     // TODO: get sleep goal from async (should be stored when first opening the app along with the sleep quality)
     let hours = 8;
     let sleepGoal = 9;
+
+    // debugging categoryMapList and the type for it
+
     // 1. sleepquality, 2. sleep duration, 3. activities
 
     // go through the activityList and search for the activities
@@ -180,18 +184,18 @@ const updateActivityScores = async (sleepQuality) => {
         }
 
         // VEDAANT -- update the score based on sleep quality and sleep duration
-        
+
     }
 
     // sort the activityList based on the indScore
     activityList.sort((a, b) => b.indScore - a.indScore)
     try {
+        console.log("Updated activityList: ", activityList)
         await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
         console.log("Updated activityList stored in AsyncStorage.");
     } catch (error) {
         console.error("Error storing updated activityList in AsyncStorage:", error.message);
     }
-    
 
 
 
@@ -263,4 +267,4 @@ const signUp = async (email, password, confirmPassword, username) => {
     }
 }
 
-export { signIn, signUp, postSleepData}
+export { signIn, signUp, postSleepData }

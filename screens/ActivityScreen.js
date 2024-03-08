@@ -23,6 +23,7 @@ const ActivityScreen = () => {
         // navigation.navigate('Home');
         // we are going to store the selected items in async storage
         try {
+            // get the async item first and then modify that
             await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
         }
         catch (error) {
