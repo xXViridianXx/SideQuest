@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, getReactNativePersistence, initializeAuth} from 'firebase/auth'
 import { getFirestore, doc, setDoc, getDoc, addDoc} from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {REACT_APP_FIREBASEKEY} from '@env'
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
 // import {...} from "firebase/database";
@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyBYzweDpGoGU4xmYtQzInP-UjUsZe-eBKQ",
+  apiKey: REACT_APP_FIREBASEKEY,
   authDomain: "sidequest-c97a6.firebaseapp.com",
   projectId: "sidequest-c97a6",
   storageBucket: "sidequest-c97a6.appspot.com",

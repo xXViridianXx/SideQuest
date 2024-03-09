@@ -8,6 +8,7 @@ import { itemList, initializeItemList, Activity, initializeCategories } from '..
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Loc from 'expo-location'
 import { useState } from 'react';
+import { REACT_APP_RAPIDAPIKEY } from '@env'
 
 const showToast = (text) => {
     let toast = Toast.show(text, {
@@ -281,9 +282,12 @@ const getWeatherInfo = async () => {
         let longitude = Number((geocodedAddress.coords.longitude))
 
         // api settings
-        const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${longitude},${latitude}`
+        console.log("latitude: " + latitude)
+        console.log("longitude: " + longitude)
+        // console.log(REACT_APP_RAPIDAPIKEY)
+        const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${latitude},${longitude}`
         const headers = {
-            'X-RapidAPI-Key': '886a660e26msh8db0f67e0667606p1f561ejsn7a7ec6f630d9',
+            'X-RapidAPI-Key': REACT_APP_RAPIDAPIKEY,
             'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
         }
 
@@ -303,8 +307,8 @@ const getLocalTime = () => {
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
     console.log(hours, minutes, seconds)
-    return {hours: hours, minutes: minutes, seconds: seconds};
-  };
+    return { hours: hours, minutes: minutes, seconds: seconds };
+};
 
 
-export { signIn, signUp, postSleepData, getWeatherInfo, getLocalTime}
+export { signIn, signUp, postSleepData, getWeatherInfo, getLocalTime }
