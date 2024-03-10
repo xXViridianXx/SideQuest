@@ -10,6 +10,8 @@ import * as Loc from 'expo-location'
 import { useState } from 'react';
 import { REACT_APP_RAPIDAPIKEY } from '@env'
 
+import HealthKit from './HealthKit';
+
 const showToast = (text) => {
     let toast = Toast.show(text, {
         duration: Toast.durations.SHORT,
@@ -171,9 +173,13 @@ const updateActivityScores = async (sleepQuality) => {
     console.log("categorymaplist type: ", typeof categoryMapList)
     console.log("categoryMapList: ", categoryMapList)
 
+    // get sleep goal from async (should be stored when first opening the app along with the sleep quality
     // VEDAANT -- get live sleep data from last night -- 
-    // TODO: get sleep goal from async (should be stored when first opening the app along with the sleep quality)
-    let hours = 8;
+    let {sleepData} = HealthKit()
+``
+    let sleepHours = Number(sleepData.sleepDuration.split(":")[0])
+    let sleepMins = Number(sleepData.sleepDuration.split(":")[1]) 
+    let sleepDuration = sleepHours + (sleepMins / 60)
     let sleepGoal = 9;
 
     // debugging categoryMapList and the type for it
@@ -185,11 +191,9 @@ const updateActivityScores = async (sleepQuality) => {
         let activity = activityList[i]
         for (let j = 0; j < selectedItems.length; j++) {
             if (activity.name == selectedItems[j]) {
-                activity.updateScore(hours, sleepGoal, sleepQuality, categoryMapList)
+                activity.updateScore(sleepDuration, sleepGoal, sleepQuality, categoryMapList)
             }
         }
-
-        // VEDAANT -- update the score based on sleep quality and sleep duration
 
     }
 
@@ -239,6 +243,22 @@ const signIn = async (email, password) => {
     else {
         showToast('Enter email and password')
     }
+}
+
+const authUserSignUp = async (email, password, confirmPassword, username) => {
+    if (password != confirmPassword) {
+        showToast('Password Do Not Match')
+        return false
+    }
+
+    if (!email || !password || !confirmPassword || !username) {
+
+        showToast('Missing Required Fields')
+        return false
+    }
+
+    return true
+
 }
 
 const signUp = async (email, password, confirmPassword, username) => {
@@ -314,4 +334,4 @@ const getLocalTime = () => {
 };
 
 
-export { signIn, signUp, postSleepData, getWeatherInfo, getLocalTime }
+export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime }
