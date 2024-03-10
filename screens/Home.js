@@ -36,7 +36,6 @@ function formatTime(date) {
 const accessItemList = async () => {
     try {
         const value = await AsyncStorage.getItem('selectedItems');
-        console.log("value itself: ", value);
         return value;
     } catch (error) {
         console.log('Error getting selected items');
@@ -75,9 +74,7 @@ export default function Home({ route }) {
             try {
                 const result = await accessItemList();
                 const newItems = result ? JSON.parse(result) : [];
-                console.log("activityRec hererere: ", newItems);
                 setActivityRec(newItems);
-                console.log("newItems: ", newItems);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -134,7 +131,6 @@ export default function Home({ route }) {
         
 
         // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
-        console.log("User Logs: ", userLogs)
     }, []);
     return (
         <SafeAreaView style={styles.container}>
