@@ -44,9 +44,10 @@ export class Activity {
 
     }
 
-    public getScore(CATEGORY_SCORE_MAP: Map<string, number>) {
+    public getScore(CATEGORY_SCORE_MAP: Map<string, number>, degrees: number, currentTime: number, exerciseDuration: number, exerciseGoal: number) {
         let categoryScore: number = 0;
         let numCats: number = 0;
+
         this.categoryNames.forEach(catName => {
             if (CATEGORY_SCORE_MAP.get(catName) !== undefined) {
                 categoryScore += CATEGORY_SCORE_MAP.get(catName)// divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
@@ -56,8 +57,73 @@ export class Activity {
             }
             numCats += 1
         });
+        let finalScore = this.indScore + (categoryScore / numCats)
+        let weatherDiff = 0;
+        weatherDiff = this.updateWeather(degrees);
+        console.log("weather diff: ", weatherDiff);
+        console.log("final score with weather score affecting it: ", finalScore += weatherDiff);
 
-        return this.indScore + (categoryScore / numCats)
+        let timeDiff = 0;
+        timeDiff = this.updateTime(currentTime);
+
+        let exerciseDiff = 0;
+        let exerciseGoalPlaceholder = 0;
+        exerciseDiff = this.updateExercise(exerciseDuration, exerciseGoalPlaceholder); //3
+        
+        finalScore += weatherDiff + timeDiff + exerciseDiff;
+        return finalScore
+    }
+
+    public updateWeather(degrees: number): number {
+        let diff = 0;
+        if (this.categoryNames.includes("Outdoors")) {
+            if (degrees < 40) {
+                diff -= 10;
+            }
+            else if (degrees > 80) {
+                diff -= 5;
+            }
+        }
+        return diff;
+    }
+
+    public updateTime(currTime: number): number {
+        let diff = 0;
+        let threshold = 0;
+
+        // if (this.categoryNames.includes("Active")) {
+        //     if (currenTime < 6 || currenTime > 20) {
+        //         diff -= 5;
+        //     }
+        // }
+
+        // threshold could be the average time the user sleeps at
+        if (this.categoryNames.includes("High Intensity")) {
+            threshold = 8;
+            if (currTime >= threshold) {
+                diff += threshold - currTime;
+            } 
+        } else if (this.categoryNames.includes("Medium Intensity")) {   
+            threshold = 10;
+            if (currTime >= threshold) {
+                diff += threshold - currTime;
+            }
+        } else if (this.categoryNames.includes("Low Intensity")) {
+            threshold = 11;
+            if (currTime >= threshold) {
+                diff += threshold - currTime;
+            }
+        }
+        return diff;
+    }
+    public updateExercise(exerciseDuration: number, exerciseGoal: number): number {
+        // boost exercise things more if they are far away from the goal
+        // exercise goal - exercise duration = difference
+        // if this is not active return 0
+        if (!this.categoryNames.includes("Active")) {
+            return 0;
+        }
+        return ((exerciseGoal - exerciseDuration) / exerciseGoal) * 5; // scalar to weigh the exercise goal more.
     }
 }
 
@@ -152,11 +218,5 @@ const coloringCraft = new Activity("Coloring/Craft", ["Mindfulness"], 0, 0);
 
 let categoryList = ["Walk", "Nature Hike", "Bike", "Gym", "Swim", "Soccer", "Basketball", "Baseball", "Run", "Yoga", "Dance", "Calisthenics", "Climbing", "Volleyball", "Golf", "Focused Meditation", "Breathing Exercises", "Music Listening", "Journaling", "Read", "Watch a show", "Phone break", "Tomorrow's to-do list creation", "Stretch", "Hot shower/bath", "Talk through your day", "Puzzle", "Coloring/Craft", "Active", "Mindfulness", "Outdoors", "Indoors", "Low Intensity", "Medium Intensity", "High Intensity"];
 
-// for (let i = 0; i < categoryList.length; i++) {
-//     CATEGORY_SCORE_MAP[categoryList[i]] = 0;
-// }
-
-
 export const itemList = [walk, natureHike, bike, gym, swim, soccer, basketball, baseball, run, yoga, dance, calisthenics, climbing, volleyball, golf, focusedMeditation, breathingExercises, musicListening, journaling, read, watchShow, phoneBreak, tmrToDo, stretch, hotShower, talkThrough, puzzle, coloringCraft];
 // export const categoryMapList = CATEGORY_SCORE_MAP;
-

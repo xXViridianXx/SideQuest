@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth'
-import { database, doc, setDoc, addDoc } from '../firebaseConfig'
+import { database, doc, setDoc, addDoc } from '../firebaseConfig';
 
 import Toast from 'react-native-root-toast'
 import { collection, getDoc, updateDoc } from 'firebase/firestore';
@@ -8,7 +8,10 @@ import { itemList, initializeItemList, Activity, initializeCategories } from '..
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Loc from 'expo-location'
 import { useState } from 'react';
-import { REACT_APP_RAPIDAPIKEY } from '@env'
+import { REACT_APP_RAPIDAPIKEY } from '@env';
+import HealthKit from '../components/HealthKit';
+
+// let {sleepdata} = HealthKit()
 
 const showToast = (text) => {
     let toast = Toast.show(text, {
@@ -150,6 +153,27 @@ const postSleepData = async (sleepQuality) => {
 
 const updateActivityScores = async (sleepQuality) => {
     // get the activity from async storage
+    let weatherData = await getWeatherInfo();
+    console.log("weather data in update activityscores: ", weatherData);
+    // get the temperature data from the json
+    let degrees = weatherData.current.temp_f;
+
+    // get the current time
+    let currentTimeJson = getLocalTime();
+    console.log("current time: ", currentTimeJson);
+    let currentTime = currentTimeJson.hours + (currentTimeJson.minutes / 60);
+
+    let { sleepData, activityData } = HealthKit();
+    console.log("Sleep data from healthkit: ", sleepData);
+    let lastSleepData = sleepData[sleepData.length - 1];
+    console.log("last sleep data: ", lastSleepData);
+    let hours = sleepData[sleepData.length - 1]["sleepDuration"];
+    let [hour, minute] = hours.split(":");
+    hours = parseInt(hour) + (parseInt(minute) / 60);
+    console.log("hours: ", hours); // DEBUG
+    
+    // get the exercise duration from healthkit
+
 
     let selectedItems = await AsyncStorage.getItem('selectedItems')
     selectedItems = JSON.parse(selectedItems)
@@ -172,7 +196,7 @@ const updateActivityScores = async (sleepQuality) => {
 
     // VEDAANT -- get live sleep data from last night -- 
     // TODO: get sleep goal from async (should be stored when first opening the app along with the sleep quality)
-    let hours = 8;
+    // let hours = 8;
     let sleepGoal = 9;
 
     // debugging categoryMapList and the type for it
@@ -195,7 +219,7 @@ const updateActivityScores = async (sleepQuality) => {
 
     // sort the activityList based on the indScore
     // activityList.sort((a, b) => b.indScore - a.indScore)
-    activityList.sort((a, b) => b.getScore(categoryMapList) - a.getScore(categoryMapList))
+    activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration))
     try {
         // console.log("Updated activityList: ", activityList)
         await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
@@ -295,6 +319,7 @@ const getWeatherInfo = async () => {
         // making api call and converting data to json
         const response = await fetch(url, { method: 'GET', headers });
         const data = await response.json();
+        return data;
         console.log(data);
     }
     catch (error) {
