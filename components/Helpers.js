@@ -291,6 +291,9 @@ const getWeatherInfo = async () => {
             'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
         }
 
+        console.log(REACT_APP_RAPIDAPIKEY)
+
+
         // making api call and converting data to json
         const response = await fetch(url, { method: 'GET', headers });
         const data = await response.json();
