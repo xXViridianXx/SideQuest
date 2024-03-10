@@ -1,26 +1,20 @@
-// let CATEGORY_SCORE_MAP = new Map();
-import AsyncStorage from '@react-native-async-storage/async-storage';
-let SLEEP_GOAL: number
 
 
 export class Activity {
     name: string;
     numPicks: number;
     categoryNames: string[]; // item's main categories
-    // subCategory: string[]; // item's subcategories (MIGHT BE ABLE TO MERGE THIS WITH THE LINE ABOVE)
     indScore: number; // individual score of the item
 
     constructor(name: string, categoryNames: string[], indScore: number, numPicks: number) {
         this.name = name;
         this.categoryNames = categoryNames;
-        // this.subCategory = subCategory;
         this.indScore = indScore;
         this.numPicks = numPicks;
     }
 
     //CALCULATE THE SCORE BASED ON THE QUALITY OF SLEEP THEY GOT PREVIOUSLY AND THE NUMBER OF TIMES THEY HAD PICKED THE ITEM (if the number of times is high, this sleep would only effect the time minorly)
     public updateScore(prevNightSleep: number, sleepGoal: number, sleepQuality: number, CATEGORY_SCORE_MAP: Map<string, number>) {
-        // ubtract by 6 and dvide by 2 
         if (this.numPicks < 7) {
             this.numPicks += 1;
         }
@@ -43,13 +37,14 @@ export class Activity {
 
     }
 
+    // calculates the "finalScore", this score is not stored, but it is how we sort the recommendations
     public getScore(CATEGORY_SCORE_MAP: Map<string, number>, degrees: number, currentTime: number, exerciseDuration: number, exerciseGoal: number) {
         let categoryScore: number = 0;
         let numCats: number = 0;
 
         this.categoryNames.forEach(catName => {
             if (CATEGORY_SCORE_MAP.get(catName) !== undefined) {
-                categoryScore += CATEGORY_SCORE_MAP.get(catName)// divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+                categoryScore += CATEGORY_SCORE_MAP.get(catName)
             }
             else {
                 console.log("ERROR: category name: " + catName + " not found in CATEGORY_SCORE_MAP")
@@ -77,24 +72,27 @@ export class Activity {
         return finalScore
     }
 
+    //if weather isn't good, decrease score
+    //TODO: rain decriment
     public updateWeather(degrees: number): number {
         let diff = 0;
         if (this.categoryNames.includes("Outdoors")) {
             if (degrees < 40) {
                 diff -= 5;
             }
-            else if (degrees > 80) {
+            else if (degrees > 83) {
                 diff -= 2;
             }
         }
         return diff;
     }
 
+    //if late, decrease recommendation of intense excercises
     public updateTime(currTime: number): number {
         let diff = 0;
         let threshold = 0;
 
-        // threshold could be the average time the user sleeps at
+        // threshold could be the average time the user sleeps at (can maybe impliment later)
         if (this.categoryNames.includes("High Intensity")) {
             threshold = 20;
             if (currTime >= threshold) {
@@ -113,9 +111,9 @@ export class Activity {
         }
         return diff;
     }
+
+    // boost active activities more if they are far away from exercise goal, decrease it if close
     public updateExercise(exerciseDuration: number, exerciseGoal: number): number {
-        // boost exercise things more if they are far away from the goal
-        // exercise goal - exercise duration = difference
         // if this is not active return 0
         if (!this.categoryNames.includes("Active")) {
             return 0;
