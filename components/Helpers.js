@@ -8,10 +8,9 @@ import { itemList, initializeItemList, Activity, initializeCategories } from '..
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Loc from 'expo-location'
 import { useState } from 'react';
-import { REACT_APP_RAPIDAPIKEY } from '@env';
-import HealthKit from '../components/HealthKit';
+import { REACT_APP_RAPIDAPIKEY } from '@env'
 
-// let {sleepdata} = HealthKit()
+import HealthKit from './HealthKit';
 
 const showToast = (text) => {
     let toast = Toast.show(text, {
@@ -163,7 +162,7 @@ const updateActivityScores = async (sleepQuality) => {
     console.log("current time: ", currentTimeJson);
     let currentTime = currentTimeJson.hours + (currentTimeJson.minutes / 60);
 
-    let { sleepData, activityData } = HealthKit();
+    let { sleepData } = HealthKit();
     console.log("Sleep data from healthkit: ", sleepData);
     let lastSleepData = sleepData[sleepData.length - 1];
     console.log("last sleep data: ", lastSleepData);
@@ -171,8 +170,9 @@ const updateActivityScores = async (sleepQuality) => {
     let [hour, minute] = hours.split(":");
     hours = parseInt(hour) + (parseInt(minute) / 60);
     console.log("hours: ", hours); // DEBUG
-    
+
     // get the exercise duration from healthkit
+
 
 
     let selectedItems = await AsyncStorage.getItem('selectedItems')
@@ -182,6 +182,9 @@ const updateActivityScores = async (sleepQuality) => {
     let activityList = await AsyncStorage.getItem('itemList')
     activityList = JSON.parse(activityList)
     activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
+
+    let exerciseGoal = await AsyncStorage.getItem('activityGoal');
+
 
 
     // get the category map list from async storage
@@ -194,9 +197,13 @@ const updateActivityScores = async (sleepQuality) => {
     categoryMapList = map
     console.log("categoryMapList: ", categoryMapList)
 
+    // get sleep goal from async (should be stored when first opening the app along with the sleep quality
     // VEDAANT -- get live sleep data from last night -- 
-    // TODO: get sleep goal from async (should be stored when first opening the app along with the sleep quality)
-    // let hours = 8;
+    // let {sleepData, activityData} = HealthKit()
+    let sleepHours = Number(sleepData[sleepData.length - 1].sleepDuration.split(":")[0])
+    console.log("sleep hours in 201: ", sleepHours);
+    let sleepMins = Number(sleepData[sleepData.length - 1].sleepDuration.split(":")[1])
+    let sleepDuration = sleepHours + (sleepMins / 60)
     let sleepGoal = 9;
 
     // debugging categoryMapList and the type for it
@@ -208,22 +215,21 @@ const updateActivityScores = async (sleepQuality) => {
         let activity = activityList[i]
         for (let j = 0; j < selectedItems.length; j++) {
             if (activity.name == selectedItems[j]) {
-                activity.updateScore(hours, sleepGoal, sleepQuality, categoryMapList)
+                activity.updateScore(sleepDuration, sleepGoal, sleepQuality, categoryMapList)
             }
         }
-
-        // VEDAANT -- update the score based on sleep quality and sleep duration
 
     }
     // console.log("updated category map list: ", categoryMapList)
 
     // sort the activityList based on the indScore
     // activityList.sort((a, b) => b.indScore - a.indScore)
-    activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration))
+    let exerciseDuration = 2;
+    activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal))
     try {
-        // console.log("Updated activityList: ", activityList)
+        console.log("Updated activityList: ", activityList)
         await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
-        console.log("Updated activityList stored in AsyncStorage.");
+        // console.log("Updated activityList stored in AsyncStorage.");
     } catch (error) {
         console.error("Error storing updated activityList in AsyncStorage:", error.message);
     }
@@ -264,6 +270,22 @@ const signIn = async (email, password) => {
     else {
         showToast('Enter email and password')
     }
+}
+
+const authUserSignUp = async (email, password, confirmPassword, username) => {
+    if (password != confirmPassword) {
+        showToast('Password Do Not Match')
+        return false
+    }
+
+    if (!email || !password || !confirmPassword || !username) {
+
+        showToast('Missing Required Fields')
+        return false
+    }
+
+    return true
+
 }
 
 const signUp = async (email, password, confirmPassword, username) => {
@@ -316,6 +338,9 @@ const getWeatherInfo = async () => {
             'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
         }
 
+        console.log(REACT_APP_RAPIDAPIKEY)
+
+
         // making api call and converting data to json
         const response = await fetch(url, { method: 'GET', headers });
         const data = await response.json();
@@ -337,4 +362,4 @@ const getLocalTime = () => {
 };
 
 
-export { signIn, signUp, postSleepData, getWeatherInfo, getLocalTime }
+export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime }

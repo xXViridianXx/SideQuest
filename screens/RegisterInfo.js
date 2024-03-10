@@ -1,17 +1,45 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
+import SelectDropdown from 'react-native-select-dropdown'
+import { signUp, create } from '../components/Helpers'
+import Slider from '@react-native-community/slider';
+import InfoSliders from '../components/InfoSliders'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
+const RegisterInfo = ({ route, navigation }) => {
 
-const RegisterInfo = ({ navigation }) => {
-
-  
-
+  const favoriteCategory = ["Walk", 'Gym', 'Meditation']
+  const bedTimeCategories = ["8:00", "8:30", "9:00", "9:30",]
+  const { email, password, confirmPassword, username } = route.params
+  const [favCategory, setFavCategory] = useState(null);
+  const [sleepGoal, setSleepGoal] = useState(8);
+  const [activityGoal, setActivityGoal] = useState(0);
+  const [bedTime, setBedTime] = useState(null);
+  const [napDur, setNapDur] = useState(0);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
+
+  useEffect(() => {
+    console.log('sleepGoal', sleepGoal)
+    console.log('activityGoal', activityGoal)
+    console.log('favCategory', favCategory)
+    console.log('bedTime', bedTime)
+    console.log('napDur', napDur)
+
+    const storeAsync = async () => {
+      await AsyncStorage.setItem("sleepGoal", sleepGoal.toString())
+      await AsyncStorage.setItem("activityGoal", activityGoal.toString())
+      await AsyncStorage.setItem("favCategory", favCategory)
+      await AsyncStorage.setItem("bedTime", bedTime)
+      await AsyncStorage.setItem("napDur", napDur.toString())
+    }
+
+    storeAsync();
+  }, [sleepGoal, activityGoal, favCategory, bedTime, napDur])
 
   return (
 
@@ -33,26 +61,93 @@ const RegisterInfo = ({ navigation }) => {
 
         <View style={styles.inputContainer}>
 
-          {/* <LoginInputs labelText={'Sleep Goal'} input={username} setInput={setUsername} style={styles.input} color={'#3d3dac'} boardType='default' secure={false} />
-          <LoginInputs labelText={'Email'} input={email} setInput={setEmail} style={styles.input} color={'#3d3dac'} boardType='email-address' secure={false} />
-          <LoginInputs labelText={'Password'} input={password} setInput={setPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} />
-          <LoginInputs labelText={'Confirm Password'} input={confirmPassword} setInput={setConfirmPassword} style={styles.input} color={'#3d3dac'} boardType='default' secure={true} /> */}
+          {/* Sleep Goal */}
+          <InfoSliders
+            val={sleepGoal}
+            title={"Sleep Goal"}
+            unit={1 == sleepGoal  ? "Hour" : "Hours" }
+            setVal={setSleepGoal}
+            minVal={1}
+            maxVal={12}
+            step={.25} />
+
+          {/* activity goal */}
+          <InfoSliders
+            val={activityGoal}
+            title={"Activity Goal"}
+            unit={"minutes"}
+            setVal={setActivityGoal}
+            minVal={0}
+            maxVal={120}
+            step={1} />
+
+          {/* Nap Goal */}
+          <InfoSliders
+            val={napDur}
+            title={"Nap Duration"}
+            unit={"minutes"}
+            setVal={setNapDur}
+            minVal={0}
+            maxVal={60}
+            step={1} />
+
+          {/* sleep time */}
+          <SelectDropdown
+            data={bedTimeCategories}
+            buttonStyle={{ width: '100%', borderRadius: 10, marginBottom: 20 }}
+            defaultButtonText='Select a bedtime'
+            onSelect={(selectedItem, index) => {
+              setBedTime(selectedItem)
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              // text represented after item is selected
+              // if data array is an array of objects then return selectedItem.property to render after item is selected
+              return selectedItem
+            }}
+            rowTextForSelection={(item, index) => {
+              // text represented for each item in dropdown
+              // if data array is an array of objects then return item.property to represent item in dropdown
+              return item
+            }}
+          />
+
+          {/* fav category */}
+          <SelectDropdown
+            data={favoriteCategory}
+            defaultButtonText=' Select a category'
+            buttonStyle={{ width: '100%', borderRadius: 10 }}
+            onSelect={(selectedItem, index) => {
+              setFavCategory(selectedItem)
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              // text represented after item is selected
+              // if data array is an array of objects then return selectedItem.property to render after item is selected
+              return selectedItem
+            }}
+            rowTextForSelection={(item, index) => {
+              // text represented for each item in dropdown
+              // if data array is an array of objects then return item.property to represent item in dropdown
+              return item
+            }}
+          />
+
+
+
+
         </View>
 
         <View
           style={styles.buttonContainer}
         >
           <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username) }} style={styles.button}>
-          {/* <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}> */}
+            {/* <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}> */}
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>
 
-          {/* <View style={styles.signUpContainer}>
-            <Text style={{ color: '#FFF', fontSize: 12, fontWeight: 500 }}>Already Have An Account?</Text>
-            <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={[styles.buttonOutline]}>
-              <Text style={styles.buttonOutlineText}> Sign In</Text>
-            </TouchableOpacity>
-          </View> */}
+          <TouchableOpacity onPress={() => { navigation.navigate('Register')}} style={styles.button}>
+            {/* <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}> */}
+            <Text style={styles.buttonText}>Go Back</Text>
+          </TouchableOpacity>
 
         </View>
       </KeyboardAvoidingView>

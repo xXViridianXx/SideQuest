@@ -1,8 +1,7 @@
 // let CATEGORY_SCORE_MAP = new Map();
-
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 let SLEEP_GOAL: number
+
 
 export class Activity {
     name: string;
@@ -21,7 +20,7 @@ export class Activity {
 
     //CALCULATE THE SCORE BASED ON THE QUALITY OF SLEEP THEY GOT PREVIOUSLY AND THE NUMBER OF TIMES THEY HAD PICKED THE ITEM (if the number of times is high, this sleep would only effect the time minorly)
     public updateScore(prevNightSleep: number, sleepGoal: number, sleepQuality: number, CATEGORY_SCORE_MAP: Map<string, number>) {
-        //    ubtract by 6 and dvide by 2 
+        // ubtract by 6 and dvide by 2 
         if (this.numPicks < 7) {
             this.numPicks += 1;
         }
@@ -58,18 +57,20 @@ export class Activity {
             numCats += 1
         });
         let finalScore = this.indScore + (categoryScore / numCats)
+        console.log("final score before adding weather, exercise, time: ", finalScore);
         let weatherDiff = 0;
         weatherDiff = this.updateWeather(degrees);
         console.log("weather diff: ", weatherDiff);
-        console.log("final score with weather score affecting it: ", finalScore += weatherDiff);
+        console.log("final score with weather: ", finalScore + weatherDiff);
 
         let timeDiff = 0;
         timeDiff = this.updateTime(currentTime);
+        console.log("final score with time: ", finalScore + weatherDiff + timeDiff);
 
         let exerciseDiff = 0;
-        let exerciseGoalPlaceholder = 0;
-        exerciseDiff = this.updateExercise(exerciseDuration, exerciseGoalPlaceholder); //3
-        
+        exerciseDiff = this.updateExercise(exerciseDuration, exerciseGoal); //3
+        console.log("final score with excercise: ", finalScore + weatherDiff + timeDiff + exerciseDiff);
+
         finalScore += weatherDiff + timeDiff + exerciseDiff;
         return finalScore
     }
@@ -102,8 +103,8 @@ export class Activity {
             threshold = 8;
             if (currTime >= threshold) {
                 diff += threshold - currTime;
-            } 
-        } else if (this.categoryNames.includes("Medium Intensity")) {   
+            }
+        } else if (this.categoryNames.includes("Medium Intensity")) {
             threshold = 10;
             if (currTime >= threshold) {
                 diff += threshold - currTime;
@@ -117,6 +118,7 @@ export class Activity {
         return diff;
     }
     public updateExercise(exerciseDuration: number, exerciseGoal: number): number {
+        console.log("exercise goal: ", exerciseGoal);
         // boost exercise things more if they are far away from the goal
         // exercise goal - exercise duration = difference
         // if this is not active return 0

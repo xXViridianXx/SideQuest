@@ -1,9 +1,9 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
-import { signUp, create} from '../components/Helpers'
+import { authUserSignUp, create} from '../components/Helpers'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-
+import user from '../redux/slices/user'
 
 
 const RegisterScreen = ({ navigation }) => {
@@ -47,7 +47,7 @@ const RegisterScreen = ({ navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { navigation.navigate('Info') }} style={styles.button}>
+          <TouchableOpacity onPress={() => { authUserSignUp(email, password, confirmPassword, username).then((value) => {if (value) { navigation.navigate('Info', {email: email, password: password, confirmPassword: confirmPassword, username: username}) }}) }} style={styles.button}>
           {/* <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}> */}
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>
