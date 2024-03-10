@@ -80,10 +80,10 @@ export class Activity {
         let diff = 0;
         if (this.categoryNames.includes("Outdoors")) {
             if (degrees < 40) {
-                diff -= 10;
+                diff -= 5;
             }
             else if (degrees > 80) {
-                diff -= 5;
+                diff -= 2;
             }
         }
         return diff;

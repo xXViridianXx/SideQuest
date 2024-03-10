@@ -185,9 +185,6 @@ const updateActivityScores = async (sleepQuality) => {
     activityList = JSON.parse(activityList)
     activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
 
-    let exerciseGoal = await AsyncStorage.getItem('activityGoal');
-
-
 
     // get the category map list from async storage
     let categoryMapList = await AsyncStorage.getItem('categoryMapList')
@@ -225,7 +222,17 @@ const updateActivityScores = async (sleepQuality) => {
 
     }
     // console.log("updated category map list: ", categoryMapList)
+    // let exerciseGoal = 2;
 
+    const exerciseGoal = await AsyncStorage.getItem('activityGoal');
+    console.log("levi exercise goal", exerciseGoal)
+
+    ({sleepData} = HealthKit());
+
+    latestData = sleepData[0];
+
+    const exerciseDuration = latestData.activityDuration;
+    console.log("levi ex dur", exerciseDuration)
     // sort the activityList based on the indScore
     // activityList.sort((a, b) => b.indScore - a.indScore)
     
