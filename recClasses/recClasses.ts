@@ -61,7 +61,7 @@ export class Activity {
 
     }
 
-    getScore(CATEGORY_SCORE_MAP: Map<string, number>) {
+    public getScore(CATEGORY_SCORE_MAP: Map<string, number>) {
         let categoryScore: number = 0;
         let numCats: number = 0;
         this.categoryNames.forEach(catName => {
@@ -83,6 +83,11 @@ export class Activity {
         //     }
         //     numCats += 1
         // });
+
+        // time, weather, exercise = context
+
+        //1. use final score for scoring instead of indScores
+        //2. use context to modify the score
 
         return this.indScore + (categoryScore / numCats)
     }

@@ -104,12 +104,7 @@ export default function Home({ route }) {
         fetchData();
     }, [activityRec]);
 
-
-
-    console.log("activityRec after useeffect() : ", activityRec);
-
     const items = route.params?.items || [];
-    // console.log("items in home page: ", items);
 
     useEffect(() => {
         (async () => {
@@ -125,15 +120,8 @@ export default function Home({ route }) {
 
         let { sleepData, activityData } = HealthKit()
 
-        // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
         setUserLogs(sleepData)
-        // setActivityLogs(activityData)
-
-
-        // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
         console.log("User Logs: ", userLogs)
-        // console.log("Activity Data: ", activityLogs)
-        // console.log("Activity Data: ", sampleHealthData)
     }, []);
     return (
         <SafeAreaView style={styles.container}>
