@@ -57,22 +57,23 @@ export class Activity {
             numCats += 1
         });
         let finalScore = this.indScore + (categoryScore / numCats)
-        console.log("final score before adding weather, exercise, time: ", finalScore);
+        console.log("final score before adding context: ", finalScore);
         let weatherDiff = 0;
         weatherDiff = this.updateWeather(degrees);
         console.log("weather diff: ", weatherDiff);
-        console.log("final score with weather: ", finalScore + weatherDiff);
 
         let timeDiff = 0;
         timeDiff = this.updateTime(currentTime);
-        console.log("final score with time: ", finalScore + weatherDiff + timeDiff);
+        console.log("timeDiff: ", timeDiff);
 
         let exerciseDiff = 0;
-        console.log("exercise duration: ", exerciseDuration);
+        console.log("exerciseDuration: ", exerciseDuration);
+        console.log("excerciseGoal", exerciseDuration)
         exerciseDiff = this.updateExercise(exerciseDuration, exerciseGoal); //3
-        console.log("final score with excercise: ", finalScore + weatherDiff + timeDiff + exerciseDiff);
+        console.log("excerciseDiff: ", exerciseDiff);
 
         finalScore += weatherDiff + timeDiff + exerciseDiff;
+        console.log("finalScore: ", finalScore)
         return finalScore
     }
 
@@ -93,25 +94,19 @@ export class Activity {
         let diff = 0;
         let threshold = 0;
 
-        // if (this.categoryNames.includes("Active")) {
-        //     if (currenTime < 6 || currenTime > 20) {
-        //         diff -= 5;
-        //     }
-        // }
-
         // threshold could be the average time the user sleeps at
         if (this.categoryNames.includes("High Intensity")) {
-            threshold = 8;
+            threshold = 20;
             if (currTime >= threshold) {
                 diff += threshold - currTime;
             }
         } else if (this.categoryNames.includes("Medium Intensity")) {
-            threshold = 10;
+            threshold = 22;
             if (currTime >= threshold) {
                 diff += threshold - currTime;
             }
         } else if (this.categoryNames.includes("Low Intensity")) {
-            threshold = 11;
+            threshold = 23;
             if (currTime >= threshold) {
                 diff += threshold - currTime;
             }
