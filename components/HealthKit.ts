@@ -82,7 +82,8 @@ const HealthKit = () => {
                         return
                     }
 
-                    sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 60)
+                    sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : 30
+                    // sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : 0
                 },
             )
 

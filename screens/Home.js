@@ -10,10 +10,10 @@ import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { getWeatherInfo, getLocalTime} from '../components/Helpers';
+import { getWeatherInfo, getLocalTime } from '../components/Helpers';
 import * as Location from 'expo-location'
 
-//he
+// 
 const width = Dimensions.get('window').width;
 
 const logout = async () => {
@@ -63,11 +63,12 @@ export default function Home({ route }) {
     // get the async data for selectedItems
 
     const [activityRec, setActivityRec] = useState([]);
-    const [userLogs, setUserLogs] = useState(null);
+    const [userLogs, setUserLogs] = useState([]);
     // const [activityLogs, setActivityLogs] = useState(null);
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [forceUpdate, setForceUpdate] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -103,35 +104,38 @@ export default function Home({ route }) {
         fetchData();
     }, [activityRec]);
 
-    const items = route.params?.items || [];
+    useEffect(() => {
+        const fetchData = async () => {
+            let { status } = await Calendar.requestCalendarPermissionsAsync();
+            if (status === 'granted') {
+                const events = await getEventsForCurrentDay();
+                const availableTimeSlots = await NapAlgorithm({ events })
+                setStartTime(availableTimeSlots ? formatTime(availableTimeSlots.startTime) : '')
+                setEndTime(availableTimeSlots ? formatTime(availableTimeSlots.endTime) : '')
+            }
+
+            ({ status } = await Location.requestForegroundPermissionsAsync());
+            if (status !== 'granted') {
+                console.log('Permission to access location was denied');
+            }
+        };
+
+        fetchData()
+
+    }, []);
+
+
 
     useEffect(() => {
-        (async () => {
-            let { statusCal } = await Calendar.requestCalendarPermissionsAsync();
-            if (statusCal === 'granted') {
-                const events = await getEventsForCurrentDay();
-                availableTimeSlots = NapAlgorithm({ events })
-                setStartTime(formatTime(availableTimeSlots.startTime))
-                setEndTime(formatTime(availableTimeSlots.endTime))
-            }
+        const getUserLogs = () => {
+            let { sleepData } = HealthKit()
+            setUserLogs(sleepData)
+        }
 
-            let { statusLoc } = await Location.requestForegroundPermissionsAsync();
-            if (statusLoc !== 'granted') {
-                console.log('Permission to access location was denied');
-                return;
-            }
+        getUserLogs()//LEVI this is where the workout time should be done
+    }, [userLogs])
 
-        })();
 
-        let { sleepData, activityData } = HealthKit()
-
-        // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
-        setUserLogs(sleepData) //LEVI this is where the workout time should be done
-        // setActivityLogs(activityData)
-        
-
-        // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
-    }, []);
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -161,7 +165,15 @@ export default function Home({ route }) {
 
                 <View style={styles.nap}>
                     <Text style={{ fontSize: 30, paddingBottom: 10 }}>Recommended Nap Time</Text>
-                    <Text style={styles.napRec}>{startTime} - {endTime}</Text>
+                    {startTime ?
+                        (
+                            <Text style={styles.napRec}> {startTime} - {endTime}</Text>
+                        )
+                        :
+                        (
+                            <Text style={styles.napRec}>No Naps Recommended</Text>
+                        )
+                    }
                 </View>
 
                 <View style={styles.sleepLogs}>
