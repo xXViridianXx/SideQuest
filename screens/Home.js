@@ -10,7 +10,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { getWeatherInfo, getLocalTime} from '../components/Helpers';
+import { getWeatherInfo, getLocalTime } from '../components/Helpers';
 
 const width = Dimensions.get('window').width;
 
@@ -60,6 +60,7 @@ export default function Home({ route }) {
     //     activityRec = [route.params?.items[0]];
     // }
     // get the async data for selectedItems
+
     const [activityRec, setActivityRec] = useState([]);
     const [userLogs, setUserLogs] = useState(null);
     // const [activityLogs, setActivityLogs] = useState(null);
@@ -72,7 +73,6 @@ export default function Home({ route }) {
             try {
                 const result = await accessItemList();
                 const newItems = result ? JSON.parse(result) : [];
-
                 console.log("activityRec hererere: ", newItems);
                 setActivityRec(newItems);
                 console.log("newItems: ", newItems);
@@ -88,31 +88,21 @@ export default function Home({ route }) {
         const fetchData = async () => {
             try {
                 var result = await accessActivityList();
-                // first parse result into json format
-                // then create the list of strings of this list
                 result = JSON.parse(result);
                 let first = result[0];
                 let second = result[1];
                 let third = result[2];
                 let firstSecondThird = [first, second, third];
-                let activityList = firstSecondThird.map(obj => obj.name);
-                console.log("activityList in useEffect(): ", activityList);
+                let activityList = firstSecondThird.map(obj => obj.name + " " + obj.indScore.toString());
 
                 const newItems = activityList ? activityList : [];
                 setActivityRec(newItems);
-
-                // const newItems = result ? JSON.parse(result) : [];
-
-                // console.log("activityRec hererere: ", newItems);
-                // setActivityRec(newItems);
-                // console.log("newItems: ", newItems);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
-    }, []);
+    }, [activityRec]);
 
 
 
@@ -138,7 +128,7 @@ export default function Home({ route }) {
         // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
         setUserLogs(sleepData)
         // setActivityLogs(activityData)
-        
+
 
         // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
         console.log("User Logs: ", userLogs)
