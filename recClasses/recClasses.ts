@@ -22,27 +22,15 @@ export class Activity {
     //CALCULATE THE SCORE BASED ON THE QUALITY OF SLEEP THEY GOT PREVIOUSLY AND THE NUMBER OF TIMES THEY HAD PICKED THE ITEM (if the number of times is high, this sleep would only effect the time minorly)
     public updateScore(prevNightSleep: number, sleepGoal: number, sleepQuality: number, CATEGORY_SCORE_MAP: Map<string, number>) {
         //    ubtract by 6 and dvide by 2 
-        console.log("this.indScore at first: ", this.indScore)
-
         if (this.numPicks < 7) {
             this.numPicks += 1;
         }
         sleepQuality -= 6;
-        console.log("new sleep quality: ", sleepQuality)
         sleepQuality /= 2;
-        console.log("after division by 2", sleepQuality)
         let diff = (prevNightSleep - sleepGoal) / sleepGoal; // percentage difference between prevNightSleep and sleepGoal
-        console.log("diff: ", diff)
         diff *= 10; // so if its 0.1 difference, the diff will be 1
-        console.log("diff after 10 times: ", diff)
         diff += sleepQuality;
-        console.log("diff after adding sleepQuality: ", diff)
         this.indScore += diff / this.numPicks; // divide by numPicks to regularize the results (don't want it to change a lot if this item has a history of being good/bad)
-        console.log("indscore: ", this.indScore)
-
-        console.log("this.numPicks: ", this.numPicks)
-
-        //update category scores
 
         this.categoryNames.forEach(catName => {
             let categoryScore = CATEGORY_SCORE_MAP.get(catName);
@@ -50,11 +38,6 @@ export class Activity {
                 CATEGORY_SCORE_MAP.set(catName, CATEGORY_SCORE_MAP.get(catName) + (diff / 5)) // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
             }
             else {
-                console.log("catName: ", catName)
-                console.log("type of catName: ", typeof catName)
-                console.log("category score map: ", CATEGORY_SCORE_MAP)
-                console.log("type of category score map: ", typeof CATEGORY_SCORE_MAP)
-                console.log("CATEGORY_SCORE_MAP[catName]: ", CATEGORY_SCORE_MAP[catName])
                 console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
             }
         });
@@ -65,29 +48,14 @@ export class Activity {
         let categoryScore: number = 0;
         let numCats: number = 0;
         this.categoryNames.forEach(catName => {
-            if (CATEGORY_SCORE_MAP[catName]) {
-                categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
+            if (CATEGORY_SCORE_MAP.get(catName) !== undefined) {
+                categoryScore += CATEGORY_SCORE_MAP.get(catName)// divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
             }
             else {
-                console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
+                console.log("ERROR: category name: " + catName + " not found in CATEGORY_SCORE_MAP")
             }
             numCats += 1
         });
-
-        // this.subCategory.forEach(catName => {
-        //     if (CATEGORY_SCORE_MAP[catName]) {
-        //         categoryScore += CATEGORY_SCORE_MAP[catName] // divided by 5 to make sure one difference doesn't make large difference (not sure if this is important or useful)
-        //     }
-        //     else {
-        //         console.log("ERROR: category name not found in CATEGORY_SCORE_MAP")
-        //     }
-        //     numCats += 1
-        // });
-
-        // time, weather, exercise = context
-
-        //1. use final score for scoring instead of indScores
-        //2. use context to modify the score
 
         return this.indScore + (categoryScore / numCats)
     }
@@ -142,7 +110,7 @@ export function initializeItemList() {
 export function initializeCategories() {
     // declare a map
     let CATEGORY_SCORE_MAP = new Map();
-    let categoryList = ["Active", "Mindfulness", "Outdoors", "Indoors", "Low Intensity", "Medium Intensity", "High Intensity"];
+    let categoryList = ["Active", "Mindfulness", "Outdoors", "Indoors", "Low Intensity", "Medium Intensity", "High Intensity", "Meditation"];
     for (let i = 0; i < categoryList.length; i++) {
         CATEGORY_SCORE_MAP[categoryList[i]] = 0;
     }

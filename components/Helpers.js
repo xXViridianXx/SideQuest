@@ -170,7 +170,6 @@ const updateActivityScores = async (sleepQuality) => {
         map.set(key, value);
     }
     categoryMapList = map
-    console.log("categorymaplist type: ", typeof categoryMapList)
     console.log("categoryMapList: ", categoryMapList)
 
     // get sleep goal from async (should be stored when first opening the app along with the sleep quality
@@ -196,11 +195,13 @@ const updateActivityScores = async (sleepQuality) => {
         }
 
     }
+    // console.log("updated category map list: ", categoryMapList)
 
     // sort the activityList based on the indScore
-    activityList.sort((a, b) => b.indScore - a.indScore)
+    // activityList.sort((a, b) => b.indScore - a.indScore)
+    activityList.sort((a, b) => b.getScore(categoryMapList) - a.getScore(categoryMapList))
     try {
-        console.log("Updated activityList: ", activityList)
+        // console.log("Updated activityList: ", activityList)
         await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
         console.log("Updated activityList stored in AsyncStorage.");
     } catch (error) {
