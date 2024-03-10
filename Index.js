@@ -30,109 +30,109 @@ const Stack = createNativeStackNavigator();
 export default function Index() {
 
 
-  // gives root state in call back: user slice
-  const user = useSelector(state => state.user.currentUser)
+    // gives root state in call back: user slice
+    const user = useSelector(state => state.user.currentUser)
 
-  const dispatch = useDispatch()
-
-
-  const auth = getAuth()
+    const dispatch = useDispatch()
 
 
-  // let loggedSleepAsync = false
+    const auth = getAuth()
 
-  const [loggedSleepAsync, setLoggedSleepAsync] = useState(false);
 
-  // setup logged_sleep async boolean value
-  useEffect(() => {
-    // function that checks if user logged sleep for the day
-    const checkLoggedSleep = async () => {
-      // gets logged sleep status, current date as a string, and the date user logged sleep
-      const logged_sleep = await AsyncStorage.getItem('logged_sleep');
-      const currentDate = new Date().toDateString()
-      const postedDate = await AsyncStorage.getItem('logged_date');
+    // let loggedSleepAsync = false
 
-      // checks if logged sleep exists
-      if (logged_sleep) {
-        // if user logged sleep we will check if the user entered sleep for the current date
-        if (logged_sleep === 'true') {
+    const [loggedSleepAsync, setLoggedSleepAsync] = useState(false);
 
-          // if the current date and posted date are the same then the user already posted sleep for the current date
-          if (currentDate === postedDate) {
+    // setup logged_sleep async boolean value
+    useEffect(() => {
+        // function that checks if user logged sleep for the day
+        const checkLoggedSleep = async () => {
+            // gets logged sleep status, current date as a string, and the date user logged sleep
+            const logged_sleep = await AsyncStorage.getItem('logged_sleep');
+            const currentDate = new Date().toDateString()
+            const postedDate = await AsyncStorage.getItem('logged_date');
 
-            console.log('Already logged sleep')
-            setLoggedSleepAsync(true)
+            // checks if logged sleep exists
+            if (logged_sleep) {
+                // if user logged sleep we will check if the user entered sleep for the current date
+                if (logged_sleep === 'true') {
 
-            // else the user should be prompted to enter the sleep logs since it is a new day
-            // this only happens when the user opens the app for the first time on a new day
-          } else {
+                    // if the current date and posted date are the same then the user already posted sleep for the current date
+                    if (currentDate === postedDate) {
 
-            console.log('New day log sleep again')
-            await AsyncStorage.setItem("loggged_sleep", "false")
-            setLoggedSleepAsync(false)
+                        console.log('Already logged sleep')
+                        setLoggedSleepAsync(true)
 
-          }
+                        // else the user should be prompted to enter the sleep logs since it is a new day
+                        // this only happens when the user opens the app for the first time on a new day
+                    } else {
 
-          // if the user never entered sleep logs for the current day then make them do it
-        } else {
+                        console.log('New day log sleep again')
+                        await AsyncStorage.setItem("loggged_sleep", "false")
+                        setLoggedSleepAsync(false)
 
-          console.log('Logged sleep was false')
-          setLoggedSleepAsync(false)
+                    }
 
+                    // if the user never entered sleep logs for the current day then make them do it
+                } else {
+
+                    console.log('Logged sleep was false')
+                    setLoggedSleepAsync(false)
+
+                }
+
+                // if the logged sleep doesnt exist then make user log sleep anyways
+            } else {
+
+                console.log('logged value does not exist')
+                await AsyncStorage.setItem('logged_sleep', 'false')
+                setLoggedSleepAsync(false)
+
+            }
         }
 
-      // if the logged sleep doesnt exist then make user log sleep anyways
-      } else {
+        checkLoggedSleep();
+    }, []);
 
-          console.log('logged value does not exist')
-          await AsyncStorage.setItem('logged_sleep', 'false')
-          setLoggedSleepAsync(false)
+    onAuthStateChanged(auth, (u) => {
+        let email = null
+        if (u != null) {
+            email = u.email
+        }
 
-      }
+        dispatch(setUser(email))
+    })
+
+
+    if (user) {
+        if (loggedSleepAsync) {
+            return (
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name="CreatePost" component={CreatePost} options={{ headerShown: false }} />
+                        <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            );
+        }
+        return (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
     }
-
-    checkLoggedSleep();
-  }, []);
-
-  onAuthStateChanged(auth, (u) => {
-    let email = null
-    if (u != null) {
-      email = u.email
+    else {
+        return (
+            <NavigationContainer initialRouteName='Login'>
+                <Stack.Navigator >
+                    <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name='Register' component={RegisterScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Info" component={RegisterInfo} options={{ headerShown: false }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
     }
-
-    dispatch(setUser(email))
-  })
-
-
-  if (user) {
-    if (loggedSleepAsync) {
-      return (
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="CreatePost" component={CreatePost} options={{ headerShown: false }} />
-            <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      );
-    }
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-  else {
-    return (
-      <NavigationContainer initialRouteName='Login'>
-        <Stack.Navigator >
-          <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='Register' component={RegisterScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Info" component={RegisterInfo} options={{ headerShown: false}} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
 
 }
