@@ -168,7 +168,6 @@ const updateActivityScores = async (sleepQuality) => {
         map.set(key, value);
     }
     categoryMapList = map
-    console.log("categorymaplist type: ", typeof categoryMapList)
     console.log("categoryMapList: ", categoryMapList)
 
     // VEDAANT -- get live sleep data from last night -- 
@@ -192,11 +191,13 @@ const updateActivityScores = async (sleepQuality) => {
         // VEDAANT -- update the score based on sleep quality and sleep duration
 
     }
+    // console.log("updated category map list: ", categoryMapList)
 
     // sort the activityList based on the indScore
-    activityList.sort((a, b) => b.indScore - a.indScore)
+    // activityList.sort((a, b) => b.indScore - a.indScore)
+    activityList.sort((a, b) => b.getScore(categoryMapList) - a.getScore(categoryMapList))
     try {
-        console.log("Updated activityList: ", activityList)
+        // console.log("Updated activityList: ", activityList)
         await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
         console.log("Updated activityList stored in AsyncStorage.");
     } catch (error) {
