@@ -1,6 +1,7 @@
 import AppleHealthKit, {
     HealthValue,
     HealthKitPermissions,
+    HealthInputOptions,
     HealthActivitySummary,
 } from 'react-native-health'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -95,25 +96,35 @@ const HealthKit = () => {
                 ascending: true, // optional; default false
             }
 
-            AppleHealthKit.getActivitySummary(
-                options,
-                (err: Object, results: HealthActivitySummary[]) => {
-                    if (err) {
-                        return
-                    }
-
-                    sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 60)
-
-                    // activityData.push({
-                    //     "id": id + 1,
-                    //     "actvivityDate": item.date,
-                    //     // use this one for testing
-                    //     "activityDuration": results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 60)
-                    //     // use this one once you add data to health app
-                    //     // "activityDuration": results[0] ? results[0].appleExerciseTime : 0
-                    // })
+            AppleHealthKit.getStepCount(
+                (options),
+                (err: Object, results: HealthValue) => {
+                  if (err) {
+                    return
+                  }
+                  console.log(results)
                 },
-            )
+              )
+
+            // AppleHealthKit.getActivitySummary(
+            //     options,
+            //     (err: Object, results: HealthActivitySummary[]) => {
+            //         if (err) {
+            //             return
+            //         }
+
+            //         sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 60)
+
+            //         // activityData.push({
+            //         //     "id": id + 1,
+            //         //     "actvivityDate": item.date,
+            //         //     // use this one for testing
+            //         //     "activityDuration": results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 60)
+            //         //     // use this one once you add data to health app
+            //         //     // "activityDuration": results[0] ? results[0].appleExerciseTime : 0
+            //         // })
+            //     },
+            // )
 
         })
 

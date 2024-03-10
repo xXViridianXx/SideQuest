@@ -10,8 +10,10 @@ import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { getWeatherInfo, getLocalTime } from '../components/Helpers';
+import { getWeatherInfo, getLocalTime} from '../components/Helpers';
+import * as Location from 'expo-location'
 
+//he
 const width = Dimensions.get('window').width;
 
 const logout = async () => {
@@ -108,19 +110,30 @@ export default function Home({ route }) {
 
     useEffect(() => {
         (async () => {
-            let { status } = await Calendar.requestCalendarPermissionsAsync();
-            if (status === 'granted') {
+            let { statusCal } = await Calendar.requestCalendarPermissionsAsync();
+            if (statusCal === 'granted') {
                 const events = await getEventsForCurrentDay();
                 availableTimeSlots = NapAlgorithm({ events })
                 setStartTime(formatTime(availableTimeSlots.startTime))
                 setEndTime(formatTime(availableTimeSlots.endTime))
             }
 
+            let { statusLoc } = await Location.requestForegroundPermissionsAsync();
+            if (statusLoc !== 'granted') {
+                console.log('Permission to access location was denied');
+                return;
+            }
+
         })();
 
         let { sleepData, activityData } = HealthKit()
 
-        setUserLogs(sleepData)
+        // await AsyncStorage.setItem('sleepData', JSON.stringify(sleepData))
+        setUserLogs(sleepData) //LEVI this is where the workout time should be done
+        // setActivityLogs(activityData)
+        
+
+        // console.log("Available Nap Slots: ", (new Date(availableTimeSlots['endTime'])))
         console.log("User Logs: ", userLogs)
     }, []);
     return (
