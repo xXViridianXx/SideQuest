@@ -11,12 +11,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const RegisterInfo = ({ route, navigation }) => {
 
   const favoriteCategory = ["Walk", 'Gym', 'Meditation']
-  const bedTimeCategories = ["8:00", "8:30", "9:00", "9:30",]
+  const bedTimeCategories = ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '1:00', '1:30']
   const { email, password, confirmPassword, username } = route.params
-  const [favCategory, setFavCategory] = useState(null);
+  const [favCategory, setFavCategory] = useState('');
   const [sleepGoal, setSleepGoal] = useState(8);
   const [activityGoal, setActivityGoal] = useState(0);
-  const [bedTime, setBedTime] = useState(null);
+  const [bedTime, setBedTime] = useState('');
   const [napDur, setNapDur] = useState(0);
 
   const dismissKeyboard = () => {
@@ -114,7 +114,7 @@ const RegisterInfo = ({ route, navigation }) => {
           {/* fav category */}
           <SelectDropdown
             data={favoriteCategory}
-            defaultButtonText=' Select a category'
+            defaultButtonText=' Select ur favorite destresser'
             buttonStyle={{ width: '100%', borderRadius: 10 }}
             onSelect={(selectedItem, index) => {
               setFavCategory(selectedItem)
