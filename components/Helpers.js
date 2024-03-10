@@ -171,6 +171,8 @@ const updateActivityScores = async (sleepQuality) => {
     hours = parseInt(hour) + (parseInt(minute) / 60);
     console.log("hours: ", hours); // DEBUG
 
+    
+
     // get the exercise duration from healthkit
 
 
@@ -206,6 +208,8 @@ const updateActivityScores = async (sleepQuality) => {
     let sleepDuration = sleepHours + (sleepMins / 60)
     let sleepGoal = 9;
 
+
+
     // debugging categoryMapList and the type for it
 
     // 1. sleepquality, 2. sleep duration, 3. activities
@@ -224,7 +228,7 @@ const updateActivityScores = async (sleepQuality) => {
 
     // sort the activityList based on the indScore
     // activityList.sort((a, b) => b.indScore - a.indScore)
-    let exerciseDuration = 2;
+    
     activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal))
     try {
         console.log("Updated activityList: ", activityList)

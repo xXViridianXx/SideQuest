@@ -68,6 +68,7 @@ export class Activity {
         console.log("final score with time: ", finalScore + weatherDiff + timeDiff);
 
         let exerciseDiff = 0;
+        console.log("exercise duration: ", exerciseDuration);
         exerciseDiff = this.updateExercise(exerciseDuration, exerciseGoal); //3
         console.log("final score with excercise: ", finalScore + weatherDiff + timeDiff + exerciseDiff);
 
