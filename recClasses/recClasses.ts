@@ -68,7 +68,7 @@ export class Activity {
 
         let exerciseDiff = 0;
         console.log("exerciseDuration: ", exerciseDuration);
-        console.log("excerciseGoal", exerciseDuration)
+        console.log("exerciseGoal", exerciseGoal)
         exerciseDiff = this.updateExercise(exerciseDuration, exerciseGoal); //3
         console.log("excerciseDiff: ", exerciseDiff);
 
@@ -114,14 +114,13 @@ export class Activity {
         return diff;
     }
     public updateExercise(exerciseDuration: number, exerciseGoal: number): number {
-        console.log("exercise goal: ", exerciseGoal);
         // boost exercise things more if they are far away from the goal
         // exercise goal - exercise duration = difference
         // if this is not active return 0
         if (!this.categoryNames.includes("Active")) {
             return 0;
         }
-        return ((exerciseGoal - exerciseDuration) / exerciseGoal) * 5; // scalar to weigh the exercise goal more.
+        return ((exerciseGoal - exerciseDuration - (exerciseGoal/15)) / exerciseGoal) * 5; // scalar to weigh the exercise goal more.
     }
 }
 
