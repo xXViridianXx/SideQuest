@@ -5,11 +5,31 @@ import { useNavigation } from '@react-navigation/native';
 import { itemList, categoryMapList } from '../recClasses/recClasses';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { accessActivityList } from './Home';
 
 const ActivityScreen = () => {
     const navigation = useNavigation(); // used for navigating to other screens
-    var itemNames = itemList.map((item) => item.name); // get the names of the activities like Walk, Run, etc
+    // var itemNames = itemList.map((item) => item.name); // get the names of the activities like Walk, Run, etc
+    const [itemNames, setItems] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                var result = await accessActivityList();
+                result = JSON.parse(result);
+                // console.log("levi result", result)
+                // let activityList = result.map(obj => obj.name + " " + obj.indScore.toString());
 
+                const newItems = result ? result : [];
+
+                var itemNames = newItems.map((item) => item.name); // get the names of the activities like Walk, Run, etc
+                console.log("levi item names: ", itemNames)
+                setItems(itemNames);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []); //
     const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
     // initialized with two values: current state value and function that allows you to update the state
     useEffect(() => {
