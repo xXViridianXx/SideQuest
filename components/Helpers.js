@@ -308,6 +308,7 @@ const signUp = async (email, password, confirmPassword, username) => {
             const user = credentials.user
             uid = user.uid
             createDocument(email, username, uid)
+            await AsyncStorage.setItem("username", username)
             console.log('Successfully created an account with', user.email)
         }
         catch (error) {

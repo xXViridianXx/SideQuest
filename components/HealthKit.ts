@@ -19,7 +19,7 @@ function randomIntFromInterval(min, max) { // min and max included
 let activityData = []
 let sleepData = []
 
-const HealthKit = () => {
+const HealthKit = async () => {
 
     /* Permission options */
     const permissions = {
@@ -82,8 +82,8 @@ const HealthKit = () => {
                         return
                     }
 
-                    sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : 30
-                    // sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : 0
+                    // sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : 30
+                    sleepData[id].activityDuration = results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 60)
                 },
             )
 

@@ -52,7 +52,7 @@ const accessActivityList = async () => {
         return [];
     }
 }
-export default function Home({ route }) {
+export default function Home({ route, navigation }) {
 
     // var activityRec = "Go Workout" // update this with actual workout
     // var activityRec = ["Go Workout", "Walk", "Meditate"]
@@ -62,6 +62,7 @@ export default function Home({ route }) {
     // }
     // get the async data for selectedItems
 
+    const params = route.params
     const [activityRec, setActivityRec] = useState([]);
     const [userLogs, setUserLogs] = useState([]);
     // const [activityLogs, setActivityLogs] = useState(null);
@@ -69,6 +70,16 @@ export default function Home({ route }) {
     const [endTime, setEndTime] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
     const [forceUpdate, setForceUpdate] = useState(false);
+
+    // handleing user log screen stuff (complicated ask vedaant to explain...)
+    useEffect(() => {
+        console.log('Home:', params)
+
+        if (params && params.index > 0) {
+            const {sleepData} = HealthKit()
+            navigation.navigate('UserLogs', {userLogs: sleepData, index: params.index + 1})
+        }
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -175,18 +186,9 @@ export default function Home({ route }) {
                         )
                     }
                 </View>
-
-                <View style={styles.sleepLogs}>
-                    <FlatList
-                        style={{ height: '50%' }}
-                        data={userLogs}
-                        ListEmptyComponent={NoSideQuests}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => <Item post={item} />}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
+                
+                {/* Put the circular progress tracker here for activity duration */}
+                
             </View>
         </SafeAreaView>
     )

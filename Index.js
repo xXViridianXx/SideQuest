@@ -6,6 +6,8 @@ import RegisterScreen from './screens/RegisterScreen';
 import RegisterInfo from './screens/RegisterInfo';
 // import QuestInfoScreen from './screens/QuestInfoScreen';
 import CreatePost from './screens/CreatePost';
+import UserLogsScreen from './screens/UserLogsScreen';
+import Home from './screens/Home';
 import { React, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -105,7 +107,7 @@ export default function Index() {
 
 
     if (user) {
-        if (loggedSleepAsync) {
+        if (!loggedSleepAsync) {
             return (
                 <NavigationContainer>
                     <Stack.Navigator>

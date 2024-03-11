@@ -16,6 +16,8 @@ const Post = ({ post }) => {
 
     const navigation = useNavigation()
 
+    // console.log(post)
+
     return (
         <TouchableOpacity style={styles.item} activeOpacity={.75} onPress={() => { navigation.navigate('SleepInfoScreen'), { } }}>
             <View style={styles.content}>
