@@ -10,8 +10,13 @@ import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { getWeatherInfo, getLocalTime } from '../components/Helpers';
+import { getWeatherInfo, getLocalTime, randomIntFromInterval } from '../components/Helpers';
 import * as Location from 'expo-location'
+import * as Progress from 'react-native-progress';
+// import getCurActivityDur from '../components/CurrentAcitivty';
+import getCurActivityDur from '../components/CurrentAcitivty';
+
+import AppleHealthKit from 'react-native-health'
 
 // 
 const width = Dimensions.get('window').width;
@@ -70,16 +75,8 @@ export default function Home({ route, navigation }) {
     const [endTime, setEndTime] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
     const [forceUpdate, setForceUpdate] = useState(false);
-
-    // handleing user log screen stuff (complicated ask vedaant to explain...)
-    useEffect(() => {
-        console.log('Home:', params)
-
-        if (params && params.index > 0) {
-            const {sleepData} = HealthKit()
-            navigation.navigate('UserLogs', {userLogs: sleepData, index: params.index + 1})
-        }
-    }, [])
+    const [activityDur, setActivityDur] = useState(0)
+    const [activityGoal, setActivityGoal] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -146,6 +143,42 @@ export default function Home({ route, navigation }) {
         getUserLogs()//LEVI this is where the workout time should be done
     }, [userLogs])
 
+    /*
+        Create a new function that grabs the users current day activity duration.
+        Store that in useState and use it to create a progress bar on home screen.
+        Use the user's activity goal to create progress bar.
+
+        Input: Activity Duration from HealthKit
+        Output: currentActivityDur in useState
+    */
+    useEffect(() => {
+        let options = {
+            startDate: new Date().toISOString(), // required
+            endDate: new Date().toISOString(), // optional; default now
+            limit: 1, // optional; default no limit
+            ascending: true, // optional; default false
+        }
+
+        AppleHealthKit.getActivitySummary(
+            options,
+            (err, results) => {
+                if (err) {
+                    return
+                }
+
+                let duration = results[0] ? results[0].appleExerciseTime : randomIntFromInterval(0, 120)
+                setActivityDur(duration)
+            },
+        )
+        
+        const fetchActivityGoal = async() => {
+            const value = await AsyncStorage.getItem('activityGoal');
+            setActivityGoal(Number(value));
+        }
+
+        fetchActivityGoal()
+
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -188,6 +221,11 @@ export default function Home({ route, navigation }) {
                 </View>
                 
                 {/* Put the circular progress tracker here for activity duration */}
+                
+                <View style={styles.progressBar}>
+                    <Text style={{fontSize: 30, paddingBottom: 10, paddingTop: 10}}>Activity Goal Progress</Text>
+                    <Progress.Circle progress={activityGoal ? activityDur / activityGoal : 0} size={200} showsText={true} textStyle={{textAlign: 'center'}} thickness={5} borderWidth={3}formatText={(progress) => `${Math.round(progress * 100)}%\n ${activityDur} / ${activityGoal}`}/>
+                </View>
                 
             </View>
         </SafeAreaView>
@@ -246,5 +284,10 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         paddingBottom: 25,
     },
+    progressBar: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 
 })

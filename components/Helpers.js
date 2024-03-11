@@ -369,5 +369,9 @@ const getLocalTime = () => {
     return { hours: hours, minutes: minutes, seconds: seconds };
 };
 
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
-export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime }
+
+export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime, randomIntFromInterval }
