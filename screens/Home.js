@@ -43,7 +43,7 @@ const accessItemList = async () => {
     }
 }
 
-const accessActivityList = async () => {
+export const accessActivityList = async () => {
     try {
         const activities = await AsyncStorage.getItem('itemList');
         return activities;

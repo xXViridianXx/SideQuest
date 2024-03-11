@@ -164,6 +164,10 @@ const updateActivityScores = async (sleepQuality) => {
 
     let { sleepData } = HealthKit();
     console.log("Sleep data from healthkit: ", sleepData);
+    if(sleepData === undefined) {
+        console.log("Error: no sleep data, will not update scores")
+        return
+    }
     let lastSleepData = sleepData[sleepData.length - 1];
     console.log("last sleep data: ", lastSleepData);
     let hours = sleepData[sleepData.length - 1]["sleepDuration"];
@@ -240,9 +244,6 @@ const updateActivityScores = async (sleepQuality) => {
     } catch (error) {
         console.error("Error storing updated activityList in AsyncStorage:", error.message);
     }
-
-
-
 
 }
 
