@@ -101,7 +101,7 @@ export default function Home({ route, navigation }) {
                 let second = result[1];
                 let third = result[2];
                 let firstSecondThird = [first, second, third];
-                let activityList = firstSecondThird.map(obj => obj.name + " " + obj.indScore.toString());
+                let activityList = firstSecondThird.map(obj => obj.name ); // for testing: + " " + obj.indScore.toString()
 
                 const newItems = activityList ? activityList : [];
                 setActivityRec(newItems);
