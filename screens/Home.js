@@ -10,7 +10,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import HealthKit from '../components/HealthKit'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { getWeatherInfo, getLocalTime, randomIntFromInterval } from '../components/Helpers';
+import { getWeatherInfo, getLocalTime, randomIntFromInterval, getUID } from '../components/Helpers';
 import * as Location from 'expo-location'
 import * as Progress from 'react-native-progress';
 // import getCurActivityDur from '../components/CurrentAcitivty';
@@ -40,7 +40,8 @@ function formatTime(date) {
 }
 const accessItemList = async () => {
     try {
-        const value = await AsyncStorage.getItem('selectedItems');
+        const uid = getUID()
+        const value = await AsyncStorage.getItem(uid + '|' + 'selectedItems');
         return value;
     } catch (error) {
         console.log('Error getting selected items');
@@ -50,7 +51,8 @@ const accessItemList = async () => {
 
 export const accessActivityList = async () => {
     try {
-        const activities = await AsyncStorage.getItem('itemList');
+        const uid = getUID()
+        const activities = await AsyncStorage.getItem(uid + '|' + 'itemList');
         return activities;
     } catch (error) {
         console.log('Error getting activity list');
@@ -85,7 +87,7 @@ export default function Home({ route, navigation }) {
                 const newItems = result ? JSON.parse(result) : [];
                 setActivityRec(newItems);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                // console.error('Error fetching data:', error);
             }
         };
 
@@ -106,7 +108,7 @@ export default function Home({ route, navigation }) {
                 const newItems = activityList ? activityList : [];
                 setActivityRec(newItems);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                // console.error('Error fetching data:', error);
             }
         };
         fetchData();
@@ -172,7 +174,8 @@ export default function Home({ route, navigation }) {
         )
         
         const fetchActivityGoal = async() => {
-            const value = await AsyncStorage.getItem('activityGoal');
+            const uid = getUID()
+            const value = await AsyncStorage.getItem(uid + '|' + 'activityGoal');
             setActivityGoal(Number(value));
         }
 

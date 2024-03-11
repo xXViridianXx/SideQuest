@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import * as Calendar from 'expo-calendar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUID } from './Helpers';
+
 
 async function NapAlgorithm({ events }) {
     // default nap time
     let napDur = 30;
+    const uid = getUID()
 
-    const value = await AsyncStorage.getItem("napDur");
+    const value = await AsyncStorage.getItem(uid + '|' + "napDur");
     napDur = value
 
     let startTime = new Date()

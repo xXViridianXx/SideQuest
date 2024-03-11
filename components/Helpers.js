@@ -28,8 +28,8 @@ const storeItemList = async () => {
     let itemList2 = initializeItemList()
     let categoryMapList = initializeCategories()
     try {
-        await AsyncStorage.setItem('itemList', JSON.stringify(itemList2));
-        await AsyncStorage.setItem('categoryMapList', JSON.stringify(categoryMapList))
+        await AsyncStorage.setItem(uid + '|' + 'itemList', JSON.stringify(itemList2));
+        await AsyncStorage.setItem(uid + '|' + 'categoryMapList', JSON.stringify(categoryMapList))
     } catch (e) {
         console.log("error storing item list")
     }
@@ -69,18 +69,19 @@ const createDocument = async (email, username, uid) => {
 }
 
 const postSleepData = async (sleepQuality) => {
+    const myUID = getUID()
     // only call storeItemList when async storage for 'itemList' and 'categoryMapList' is empty
-    if (await AsyncStorage.getItem('itemList') == null || await AsyncStorage.getItem('categoryMapList') == null) {
+    if (await AsyncStorage.getItem(myUID + '|' + 'itemList') == null || await AsyncStorage.getItem(uid + '|' + 'categoryMapList') == null) {
         storeItemList()
     }
     updateActivityScores(sleepQuality)
 
     try {
         const currentDate = new Date().toDateString()
-        await AsyncStorage.setItem('logged_sleep', 'true')
-        await AsyncStorage.setItem("logged_date", currentDate)
+        await AsyncStorage.setItem(myUID + '|' + 'logged_sleep', 'true')
+        await AsyncStorage.setItem(myUID + '|' + "logged_date", currentDate)
         console.log("posted sleep data!")
-        await AsyncStorage.setItem('sleepQuality', sleepQuality.toString())
+        await AsyncStorage.setItem(myUID + '|' + 'sleepQuality', sleepQuality.toString())
 
         // store the sleep quality in async storage?
     }
@@ -181,17 +182,17 @@ const updateActivityScores = async (sleepQuality) => {
 
 
 
-    let selectedItems = await AsyncStorage.getItem('selectedItems')
+    let selectedItems = await AsyncStorage.getItem(uid + '|' + 'selectedItems')
     selectedItems = JSON.parse(selectedItems)
     console.log("selectedItems: ", selectedItems)
 
-    let activityList = await AsyncStorage.getItem('itemList')
+    let activityList = await AsyncStorage.getItem(uid + '|' + 'itemList')
     activityList = JSON.parse(activityList)
     activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
 
 
     // get the category map list from async storage
-    let categoryMapList = await AsyncStorage.getItem('categoryMapList')
+    let categoryMapList = await AsyncStorage.getItem(uid + '|' + 'categoryMapList')
     categoryMapList = JSON.parse(categoryMapList)
     const map = new Map();
     for (const [key, value] of Object.entries(categoryMapList)) {
@@ -226,7 +227,7 @@ const updateActivityScores = async (sleepQuality) => {
 
     }
 
-    const exerciseGoal = await AsyncStorage.getItem('activityGoal');
+    const exerciseGoal = await AsyncStorage.getItem(uid + '|' + 'activityGoal');
 
     ({sleepData} = HealthKit());
 
@@ -239,7 +240,7 @@ const updateActivityScores = async (sleepQuality) => {
     activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal))
     try {
         console.log("Updated activityList: ", activityList)
-        await AsyncStorage.setItem('itemList', JSON.stringify(activityList));
+        await AsyncStorage.setItem(uid + '|' + 'itemList', JSON.stringify(activityList));
         // console.log("Updated activityList stored in AsyncStorage.");
     } catch (error) {
         console.error("Error storing updated activityList in AsyncStorage:", error.message);
@@ -296,7 +297,16 @@ const authUserSignUp = async (email, password, confirmPassword, username) => {
 
 }
 
-const signUp = async (email, password, confirmPassword, username) => {
+const getUID = () => {
+    const auth = getAuth()
+    const user = auth.currentUser
+
+    uid = user.uid
+    
+    return uid
+}
+
+const signUp = async (email, password, confirmPassword, username, sleepGoal, activityGoal, favCategory, bedTime, napDur) => {
     const auth = getAuth()
     if (password != confirmPassword) {
         showToast('Password Do Not Match')
@@ -308,8 +318,15 @@ const signUp = async (email, password, confirmPassword, username) => {
             let credentials = await createUserWithEmailAndPassword(auth, email, password)
             const user = credentials.user
             uid = user.uid
+            console.log('user.uid', uid)
             createDocument(email, username, uid)
-            await AsyncStorage.setItem("username", username)
+            await AsyncStorage.setItem(uid + '|' + "username", username)
+            await AsyncStorage.setItem(uid + '|' + "sleepGoal", sleepGoal.toString())
+            await AsyncStorage.setItem(uid + '|' + "activityGoal", activityGoal.toString())
+            await AsyncStorage.setItem(uid + '|' + "favCategory", favCategory)
+            await AsyncStorage.setItem(uid + '|' + "bedTime", bedTime)
+            await AsyncStorage.setItem(uid + '|' + "napDur", napDur.toString())
+
             console.log('Successfully created an account with', user.email)
         }
         catch (error) {
@@ -375,4 +392,4 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 
-export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime, randomIntFromInterval }
+export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime, randomIntFromInterval, getUID }

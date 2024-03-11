@@ -5,7 +5,8 @@ import Item from '../components/Post'
 import user from '../redux/slices/user';
 import HealthKit from '../components/HealthKit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { getUID } from '../components/Helpers';
+// const uid = getUID()
 const UserLogsScreen = ({ route }) => {
 
     const params = route.params;
@@ -19,7 +20,8 @@ const UserLogsScreen = ({ route }) => {
         }
 
         const getUsername = async () => {
-            const value = await AsyncStorage.getItem("username")
+            const uid = getUID()
+            const value = await AsyncStorage.getItem(uid + '|' + "username")
             setUsername(value)
         }
 

@@ -2,13 +2,20 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import LoginInputs from '../components/LoginInputs'
 import SelectDropdown from 'react-native-select-dropdown'
-import { signUp, create } from '../components/Helpers'
+import { signUp, create, getUID } from '../components/Helpers'
 import Slider from '@react-native-community/slider';
 import InfoSliders from '../components/InfoSliders'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch, useSelector } from 'react-redux';
 
+// const uid = getUID()
 
 const RegisterInfo = ({ route, navigation }) => {
+
+  const user = useSelector(state => state.user.currentUser)
+
+  console.log('user in reg', user)
+
 
   const favoriteCategory = ["Walk", 'Gym', 'Meditation']
   const bedTimeCategories = ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '1:00', '1:30']
@@ -30,15 +37,17 @@ const RegisterInfo = ({ route, navigation }) => {
     console.log('bedTime', bedTime)
     console.log('napDur', napDur)
 
-    const storeAsync = async () => {
-      await AsyncStorage.setItem("sleepGoal", sleepGoal.toString())
-      await AsyncStorage.setItem("activityGoal", activityGoal.toString())
-      await AsyncStorage.setItem("favCategory", favCategory)
-      await AsyncStorage.setItem("bedTime", bedTime)
-      await AsyncStorage.setItem("napDur", napDur.toString())
-    }
+    // im muted
 
-    storeAsync();
+    // const storeAsync = async () => {
+    //   await AsyncStorage.setItem("sleepGoal", sleepGoal.toString())
+    //   await AsyncStorage.setItem("activityGoal", activityGoal.toString())
+    //   await AsyncStorage.setItem("favCategory", favCategory)
+    //   await AsyncStorage.setItem("bedTime", bedTime)
+    //   await AsyncStorage.setItem("napDur", napDur.toString())
+    // }
+
+    // storeAsync();
   }, [sleepGoal, activityGoal, favCategory, bedTime, napDur])
 
   return (
@@ -139,7 +148,7 @@ const RegisterInfo = ({ route, navigation }) => {
         <View
           style={styles.buttonContainer}
         >
-          <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username) }} style={styles.button}>
+          <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username, sleepGoal, activityGoal, favCategory, bedTime, napDur) }} style={styles.button}>
             {/* <TouchableOpacity onPress={() => { signUp(email, password, confirmPassword, username)}} style={styles.button}> */}
             <Text style={styles.buttonText}>Lets Go</Text>
           </TouchableOpacity>

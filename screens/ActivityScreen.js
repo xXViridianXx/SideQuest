@@ -6,6 +6,9 @@ import { itemList, categoryMapList } from '../recClasses/recClasses';
 import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { accessActivityList } from './Home';
+import { getUID } from '../components/Helpers';
+
+
 
 const ActivityScreen = () => {
     const navigation = useNavigation(); // used for navigating to other screens
@@ -34,12 +37,13 @@ const ActivityScreen = () => {
     // initialized with two values: current state value and function that allows you to update the state
     useEffect(() => {
         const updateAsyncStorage = async () => {
+            const uid = getUID();
             try {
                 if (selectedItems.length > 0) {
-                    await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+                    await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(selectedItems));
                 } else {
                     const defaultSelectedItems = [];
-                    await AsyncStorage.setItem('selectedItems', JSON.stringify(defaultSelectedItems));
+                    await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(defaultSelectedItems));
                 }
             } catch (error) {
                 console.log('Error storing selected items');
@@ -59,14 +63,16 @@ const ActivityScreen = () => {
         // navigation.navigate('Home');
         // we are going to store the selected items in async storage
         try {
+            const uid = getUID();
             if (selectedItems.length > 0) {
-                await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+                
+                await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(selectedItems));
             }
             // get the async item first and then modify that
             console.log('selected Items: ', selectedItems)
             if (selectedItems.length == 0) {
                 console.log('No items selected');
-                await AsyncStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+                await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(selectedItems));
             }
         }
         catch (error) {

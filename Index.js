@@ -19,8 +19,12 @@ import { getAuth, onAuthStateChanged, initializeAuth } from 'firebase/auth'
 import ActivityScreen from './screens/ActivityScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { getUID } from './components/Helpers';
+
 
 const Stack = createNativeStackNavigator();
+
+// console.log(uid)
 
 
 // Start a timer for 5 seconds
@@ -47,12 +51,14 @@ export default function Index() {
 
     // setup logged_sleep async boolean value
     useEffect(() => {
+
         // function that checks if user logged sleep for the day
         const checkLoggedSleep = async () => {
+            const uid = getUID()
             // gets logged sleep status, current date as a string, and the date user logged sleep
-            const logged_sleep = await AsyncStorage.getItem('logged_sleep');
+            const logged_sleep = await AsyncStorage.getItem(uid + '|' + 'logged_sleep');
             const currentDate = new Date().toDateString()
-            const postedDate = await AsyncStorage.getItem('logged_date');
+            const postedDate = await AsyncStorage.getItem(uid + '|' + 'logged_date');
 
             // checks if logged sleep exists
             if (logged_sleep) {
@@ -70,7 +76,7 @@ export default function Index() {
                     } else {
 
                         console.log('New day log sleep again')
-                        await AsyncStorage.setItem("loggged_sleep", "false")
+                        await AsyncStorage.setItem(uid + '|' + "loggged_sleep", "false")
                         setLoggedSleepAsync(false)
 
                     }
@@ -87,14 +93,17 @@ export default function Index() {
             } else {
 
                 console.log('logged value does not exist')
-                await AsyncStorage.setItem('logged_sleep', 'false')
+                await AsyncStorage.setItem(uid + '|' + 'logged_sleep', 'false')
                 setLoggedSleepAsync(false)
 
             }
         }
 
-        checkLoggedSleep();
-    }, []);
+        if (user) {
+            checkLoggedSleep();
+        }
+        
+    }, [user]);
 
     onAuthStateChanged(auth, (u) => {
         let email = null
