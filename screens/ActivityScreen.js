@@ -25,6 +25,7 @@ const ActivityScreen = () => {
     //             // let activityList = result.map(obj => obj.name + " " + obj.indScore.toString());
 
     //             const newItems = result ? result : [];
+    //             const newItems = result ? result : [];
 
     //             var itemNames = newItems.map((item) => item.name); // get the names of the activities like Walk, Run, etc
     //             console.log("levi item names: ", itemNames)
@@ -90,7 +91,7 @@ const ActivityScreen = () => {
         try {
             const uid = getUID();
             if (selectedItems.length > 0) {
-                
+
                 await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(selectedItems));
             }
             // get the async item first and then modify that
