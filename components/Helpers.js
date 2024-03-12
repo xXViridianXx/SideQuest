@@ -31,7 +31,7 @@ const storeItemList = async () => {
     uid = getUID()
     const userRef = doc(database, 'users', uid);
     // const userSnapshot = await getDoc(userRef);
-
+// 
     try {
         await updateDoc(userRef, {
             itemList: JSON.stringify(itemList2),
