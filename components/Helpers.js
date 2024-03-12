@@ -31,7 +31,7 @@ const storeItemList = async () => {
     uid = getUID()
     const userRef = doc(database, 'users', uid);
     // const userSnapshot = await getDoc(userRef);
-// 
+    // 
     try {
         await updateDoc(userRef, {
             itemList: JSON.stringify(itemList2),
@@ -221,7 +221,7 @@ const updateActivityScores = async (sleepQuality) => {
 
     let { sleepData } = HealthKit();
     console.log("Sleep data from healthkit: ", sleepData);
-    if(sleepData === undefined) {
+    if (sleepData === undefined) {
         console.log("Error: no sleep data, will not update scores")
         return
     }
@@ -232,7 +232,7 @@ const updateActivityScores = async (sleepQuality) => {
     hours = parseInt(hour) + (parseInt(minute) / 60);
     console.log("hours: ", hours); // DEBUG
 
-    
+
 
     // get the exercise duration from healthkit
 
@@ -240,18 +240,31 @@ const updateActivityScores = async (sleepQuality) => {
     // retrieve from fb
     // let selectedItems = await AsyncStorage.getItem(uid + '|' + 'selectedItems')
     let selectedItems = ""
-    if (userSnapshot.exists()) {
-        selectedItems = userSnapshot.data().selectedItems;
-        console.log("firebase selectedItems:", selectedItems);
-    } else {
-        console.log("User does not exist.");
+    console.log("about to retrieve selected items from firebase")
+    const auth = getAuth()
+    const user = auth.currentUser
+    uid = user.uid
+    const userRef = doc(database, 'users', uid);
+
+    try {
+        const userSnapShot = await getDoc(userRef) 
+            if (userSnapShot.exists()) {
+                userInfo = userSnapShot.data()
+                selectedItems = userInfo.selectedItems
+            } else {
+                console.log("failed to get selected Items")
+            }
+    
+    } catch (error) {
+        console.log('failed to get selected itemss', error.message)
+        return null
     }
 
+
     selectedItems = JSON.parse(selectedItems)
-    console.log("selectedItems: ", selectedItems)
+    console.log("selectedItems after json parse: ", selectedItems)
 
     let activityList = await AsyncStorage.getItem(uid + '|' + 'itemList')
-    activityList = JSON.parse(activityList)
     activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
 
 
@@ -271,7 +284,7 @@ const updateActivityScores = async (sleepQuality) => {
 
 
     // get sleepGoal from firebase
-    const userRef = doc(database, 'users', uid);
+    // const userRef = doc(database, 'users', uid);
     const userSnapshot = await getDoc(userRef);
 
     let sleepGoal = -1
@@ -307,13 +320,13 @@ const updateActivityScores = async (sleepQuality) => {
 
     const exerciseGoal = await AsyncStorage.getItem(uid + '|' + 'activityGoal');
 
-    ({sleepData} = HealthKit());
+    ({ sleepData } = HealthKit());
 
     latestData = sleepData[0];
 
     const exerciseDuration = latestData.activityDuration;
     console.log("levi ex dur", exerciseDuration)
-    
+
     // sort activity score based on final score
     activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal))
     try {
@@ -380,7 +393,7 @@ const getUID = () => {
     const user = auth.currentUser
 
     uid = user.uid
-    
+
     return uid
 }
 
