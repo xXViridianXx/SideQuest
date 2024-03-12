@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import * as Calendar from 'expo-calendar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUID } from './Helpers';
+import { getUID, getFirebase } from './Helpers';
+import { database } from '../firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 async function NapAlgorithm({ events }) {
@@ -9,8 +11,25 @@ async function NapAlgorithm({ events }) {
     let napDur = 30;
     const uid = getUID()
 
-    const value = await AsyncStorage.getItem(uid + '|' + "napDur");
-    napDur = value
+    // const value = await AsyncStorage.getItem(uid + '|' + "napDur");
+    const userRef = doc(database, 'users', uid)
+    // try {
+    //     const userSnapShot = await getDoc(userRef) 
+    //         if (userSnapShot.exists()) {
+    //             userInfo = userSnapShot.data()
+    //             napDur = userInfo.napDur
+    //         } else {
+    //             console.log("failed to get user nap duration")
+    //         }
+    
+    // } catch (error) {
+    //     console.log('failed to get nap duration data', error.message)
+    //     return null
+    // }
+    napDur = await getFirebase(["napDur"])
+    napDur = napDur[0]
+
+    console.log("nap duration in nap algorithm: ", napDur);
 
     let startTime = new Date()
     startTime.setHours(12)

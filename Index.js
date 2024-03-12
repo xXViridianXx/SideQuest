@@ -103,7 +103,7 @@ export default function Index() {
             checkLoggedSleep();
         }
         
-    }, [user]);
+    }, []);
 
     onAuthStateChanged(auth, (u) => {
         let email = null

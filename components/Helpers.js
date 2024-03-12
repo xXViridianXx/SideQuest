@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { REACT_APP_RAPIDAPIKEY } from '@env'
 
 import HealthKit from './HealthKit';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const showToast = (text) => {
     let toast = Toast.show(text, {
@@ -450,9 +451,32 @@ const getLocalTime = () => {
     return { hours: hours, minutes: minutes, seconds: seconds };
 };
 
+const getFirebase = async (item) => {
+    const uid = getUID()
+    const userRef = doc(database, 'users', uid)
+    try {
+        const userSnapShot = await getDoc(userRef) 
+            if (userSnapShot.exists()) {
+                userInfo = userSnapShot.data()
+                // since item is a list of strings, we need to make a list here and return the list of items
+                // initialize a list
+                let listOfItems = []
+                for (let i = 0; i < item.length; i++) {
+                    listOfItems.push(userInfo[item[i]])
+                }
+                return listOfItems
+            } else {
+                console.log("failed to get user nap duration")
+            }
+    } catch (error) {
+        console.log('failed to get nap duration data', error.message)
+        return null
+    }
+}
+
 function randomIntFromInterval(min, max) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 
-export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime, randomIntFromInterval, getUID }
+export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime, randomIntFromInterval, getUID, getFirebase }
