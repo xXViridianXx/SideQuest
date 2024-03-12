@@ -15,6 +15,8 @@ import * as Location from 'expo-location'
 import * as Progress from 'react-native-progress';
 // import getCurActivityDur from '../components/CurrentAcitivty';
 import getCurActivityDur from '../components/CurrentAcitivty';
+import { database, doc, setDoc, addDoc } from '../firebaseConfig';
+import { collection, getDoc, updateDoc } from 'firebase/firestore';
 
 import AppleHealthKit from 'react-native-health'
 
@@ -174,9 +176,31 @@ export default function Home({ route, navigation }) {
         )
         
         const fetchActivityGoal = async() => {
-            const uid = getUID()
-            const value = await AsyncStorage.getItem(uid + '|' + 'activityGoal');
-            setActivityGoal(Number(value));
+            // const uid = getUID()
+            // const value = await AsyncStorage.getItem(uid + '|' + 'activityGoal');
+            // setActivityGoal(Number(value));
+            const userRef = doc(database, 'users', uid)
+            let activityGoal = -1
+            // getting user's last entry
+            try {
+                const userSnapShot = await getDoc(userRef)
+                if (userSnapShot.exists()) {
+                    userInfo = userSnapShot.data()
+                    activityGoal = userInfo.activityGoal
+                }                else {
+                    console.log("failed to get user data")
+                }
+            }
+            catch (error) {
+                console.log('failed to fetch activityGoal ', error.message)
+                return null
+            }
+
+            console.log("fb test, activityGoal:", activityGoal)
+
+
+            setActivityGoal(activityGoal);
+
         }
 
         fetchActivityGoal()

@@ -43,7 +43,13 @@ const createDocument = async (email, username, uid) => {
         await setDoc(userRef, {
             email: email,
             username: username,
-            lastDate: currentDate
+            lastDate: currentDate,
+            sleepGoal: 0,
+            activityGoal: 0,
+            favCategory: "",
+            bedTime: 0,
+            napDur: 0,
+            selectedItems: ""
         })
 
         const sleepDataCollectionRef = collection(userRef, "sleepData")
@@ -181,8 +187,16 @@ const updateActivityScores = async (sleepQuality) => {
     // get the exercise duration from healthkit
 
 
+    // retrieve from fb
+    // let selectedItems = await AsyncStorage.getItem(uid + '|' + 'selectedItems')
+    let selectedItems = ""
+    if (userSnapshot.exists()) {
+        selectedItems = userSnapshot.data().selectedItems;
+        console.log("firebase selectedItems:", selectedItems);
+    } else {
+        console.log("User does not exist.");
+    }
 
-    let selectedItems = await AsyncStorage.getItem(uid + '|' + 'selectedItems')
     selectedItems = JSON.parse(selectedItems)
     console.log("selectedItems: ", selectedItems)
 
@@ -204,11 +218,25 @@ const updateActivityScores = async (sleepQuality) => {
     // get sleep goal from async (should be stored when first opening the app along with the sleep quality
     // VEDAANT -- get live sleep data from last night -- 
     // let {sleepData, activityData} = HealthKit()
+
+
+    // get sleepGoal from firebase
+    const userRef = doc(database, 'users', uid);
+    const userSnapshot = await getDoc(userRef);
+
+    let sleepGoal = -1
+    if (userSnapshot.exists()) {
+        sleepGoal = userSnapshot.data().sleepGoal;
+        console.log("firebase sleepGoal:", sleepGoal);
+    } else {
+        console.log("User does not exist.");
+    }
+
     let sleepHours = Number(sleepData[sleepData.length - 1].sleepDuration.split(":")[0])
     console.log("sleep hours in 201: ", sleepHours);
     let sleepMins = Number(sleepData[sleepData.length - 1].sleepDuration.split(":")[1])
     let sleepDuration = sleepHours + (sleepMins / 60)
-    let sleepGoal = 9;
+    // let sleepGoal = 9;
 
 
 
@@ -326,6 +354,41 @@ const signUp = async (email, password, confirmPassword, username, sleepGoal, act
             await AsyncStorage.setItem(uid + '|' + "favCategory", favCategory)
             await AsyncStorage.setItem(uid + '|' + "bedTime", bedTime)
             await AsyncStorage.setItem(uid + '|' + "napDur", napDur.toString())
+
+            // update in firebase
+            const userRef = doc(database, 'users', uid)
+            // updating last user entry date
+            try {
+                await updateDoc(userRef, {
+                    sleepGoal: sleepGoal
+                })
+                console.log("updated sleep goal (fb)!", sleepGoal)
+
+                await updateDoc(userRef, {
+                    activityGoal: activityGoal
+                })
+                console.log("updated activityGoal goal (fb)!", activityGoal)
+
+                await updateDoc(userRef, {
+                    favCategory: favCategory
+                })
+                console.log("updated favCategory goal (fb)!", favCategory)
+
+                await updateDoc(userRef, {
+                    bedTime: bedTime
+                })
+                console.log("updated bedTime goal (fb)!", bedTime)
+
+                await updateDoc(userRef, {
+                    napDur: napDur
+                })
+                console.log("updated napDur goal (fb)!", napDur)
+
+            }
+            catch (error) {
+                console.log("error updating data: ", error.message)
+            }
+
 
             console.log('Successfully created an account with', user.email)
         }

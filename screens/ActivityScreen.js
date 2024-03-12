@@ -7,6 +7,8 @@ import SelectableList from '../components/SelectableList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { accessActivityList } from './Home';
 import { getUID } from '../components/Helpers';
+import { collection, getDoc, updateDoc } from 'firebase/firestore';
+import { database, doc, setDoc, addDoc } from '../firebaseConfig';
 
 
 
@@ -38,12 +40,35 @@ const ActivityScreen = () => {
     useEffect(() => {
         const updateAsyncStorage = async () => {
             const uid = getUID();
+            const userRef = doc(database, 'users', uid);
+            const userSnapshot = await getDoc(userRef); //don't think we need this
             try {
                 if (selectedItems.length > 0) {
                     await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(selectedItems));
+
+                    try {
+                        await updateDoc(userRef, {
+                            selectedItems: JSON.stringify(selectedItems)
+                        })
+                        console.log("updated selectedItems (fb)!", selectedItems)
+                    }
+                    catch (error) {
+                        console.log("error selectedItems data: ", error.message)
+                    }
+
                 } else {
                     const defaultSelectedItems = [];
                     await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(defaultSelectedItems));
+
+                    try {
+                        await updateDoc(userRef, {
+                            selectedItems: JSON.stringify(defaultSelectedItems)
+                        })
+                        console.log("updated selectedItems (fb)!", defaultSelectedItems)
+                    }
+                    catch (error) {
+                        console.log("error selectedItems data: ", error.message)
+                    }
                 }
             } catch (error) {
                 console.log('Error storing selected items');
