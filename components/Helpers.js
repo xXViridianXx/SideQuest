@@ -254,11 +254,12 @@ const updateActivityScores = async (sleepQuality) => {
             } else {
                 console.log("failed to get selected Items")
             }
-    
+
     } catch (error) {
         console.log('failed to get selected itemss', error.message)
         return null
     }
+    // selectedItems = await getFireBase('selectedItems');
 
 
     selectedItems = JSON.parse(selectedItems)
@@ -269,7 +270,9 @@ const updateActivityScores = async (sleepQuality) => {
 
 
     // get the category map list from async storage
-    let categoryMapList = await AsyncStorage.getItem(uid + '|' + 'categoryMapList')
+    // let categoryMapList = await AsyncStorage.getItem(uid + '|' + 'categoryMapList')
+    //retrieve category Map list from firebase
+
     categoryMapList = JSON.parse(categoryMapList)
     const map = new Map();
     for (const [key, value] of Object.entries(categoryMapList)) {
@@ -522,5 +525,28 @@ function randomIntFromInterval(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+const getFireBase = async (item) => {
+    const uid = getUID();
+    const userRef = doc(database, 'users', uid)
+    try {
+        const userSnapShot = await getDoc(userRef)
+        if (userSnapShot.exists()) {
+            userInfo = userSnapShot.data()
+            // since item is a list of strings, we need to make a list here and return the list of items
+            // initialize a list
+
+            let listOfItems = []
+            for (let i = 0; i < item.length; i++) {
+                listOfItems.push(userInfo[item[i]])
+            }
+            return listOfItems
+        } else {
+            console.log("failed to get user nap duration")
+        }
+    } catch (error) {
+        console.log('failed to get nap duration data', error.message)
+        return null
+    }
+}
 
 export { signIn, signUp, authUserSignUp, postSleepData, getWeatherInfo, getLocalTime, randomIntFromInterval, getUID }
