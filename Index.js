@@ -76,7 +76,7 @@ export default function Index() {
                     } else {
 
                         console.log('New day log sleep again')
-                        await AsyncStorage.setItem(uid + '|' + "loggged_sleep", "false")
+                        await AsyncStorage.setItem(uid + '|' + "logged_sleep", "false")
                         setLoggedSleepAsync(false)
 
                     }
