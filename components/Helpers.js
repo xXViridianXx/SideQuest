@@ -25,11 +25,20 @@ const storeItemList = async () => {
     // in this function we will get the itemList from the recClasses file and store it in async storage
 
     //call initializeItemList
+
     let itemList2 = initializeItemList()
     let categoryMapList = initializeCategories()
+    uid = getUID()
+    const userRef = doc(database, 'users', uid);
+    // const userSnapshot = await getDoc(userRef);
+
     try {
-        await AsyncStorage.setItem(uid + '|' + 'itemList', JSON.stringify(itemList2));
-        await AsyncStorage.setItem(uid + '|' + 'categoryMapList', JSON.stringify(categoryMapList))
+        await updateDoc(userRef, {
+            itemList: JSON.stringify(itemList2),
+            categoryMapList: JSON.stringify(categoryMapList)
+        })
+        // await AsyncStorage.setItem(uid + '|' + 'itemList', JSON.stringify(itemList2));
+        // await AsyncStorage.setItem(uid + '|' + 'categoryMapList', JSON.stringify(categoryMapList))
     } catch (e) {
         console.log("error storing item list")
     }
@@ -49,7 +58,12 @@ const createDocument = async (email, username, uid) => {
             favCategory: "",
             bedTime: 0,
             napDur: 0,
-            selectedItems: ""
+            selectedItems: "",
+            itemList: "",
+            categoryMapList: "",
+            loggedDate: "",
+            loggedSleep: "false"
+
         })
 
         const sleepDataCollectionRef = collection(userRef, "sleepData")
@@ -77,16 +91,53 @@ const createDocument = async (email, username, uid) => {
 const postSleepData = async (sleepQuality) => {
     const myUID = getUID()
     // only call storeItemList when async storage for 'itemList' and 'categoryMapList' is empty
-    if (await AsyncStorage.getItem(myUID + '|' + 'itemList') == null || await AsyncStorage.getItem(uid + '|' + 'categoryMapList') == null) {
+    const userRef = doc(database, 'users', myUID);
+    // const userSnapShot = await getDoc(userRef)
+
+    let lastDate = ""
+    let itemList = ""
+    let categoryMapList = ""
+    try {
+        const userSnapShot = await getDoc(userRef)
+        if (userSnapShot.exists()) {
+            userInfo = userSnapShot.data()
+            lastDate = userInfo.lastDate
+            itemList = userInfo.itemList
+            categoryMapList = userInfo.categoryMapList
+        }
+        else {
+            console.log("failed to get user data")
+        }
+    }
+    catch (error) {
+        console.log('failed to last entry date ', error.message)
+        return null
+    }
+    // if (await getDoc(userRef, ))
+    // if (await AsyncStorage.getItem(myUID + '|' + 'itemList') == null || await AsyncStorage.getItem(uid + '|' + 'categoryMapList') == null) {
+    //     storeItemList()
+    // }
+    if (itemList == "" || categoryMapList == "") {
         storeItemList()
     }
     updateActivityScores(sleepQuality)
 
     try {
         const currentDate = new Date().toDateString()
-        await AsyncStorage.setItem(myUID + '|' + 'logged_sleep', 'true')
-        await AsyncStorage.setItem(myUID + '|' + "logged_date", currentDate)
+        try {
+            await updateDoc(userRef, {
+                loggedSleep: "true",
+                loggedDate: currentDate
+            })
+        }
+        catch (error) {
+            console.log("error updating data: ", error.message)
+        }
+        // await AsyncStorage.setItem(myUID + '|' + 'logged_sleep', 'true')
+        // await AsyncStorage.setItem(myUID + '|' + "logged_date", currentDate)
         console.log("posted sleep data!")
+
+        // don't uplaod this to firebase
         await AsyncStorage.setItem(myUID + '|' + 'sleepQuality', sleepQuality.toString())
 
         // store the sleep quality in async storage?
@@ -96,16 +147,15 @@ const postSleepData = async (sleepQuality) => {
     }
 
     // getting current user id
-    const auth = getAuth()
-    const user = auth.currentUser
-    uid = user.uid
+    // const auth = getAuth()
+    // const user = auth.currentUser
+    // uid = user.uid
 
     // getting user from database
-    const userRef = doc(database, 'users', uid)
-    lastDate = ""
+    // const userRef = doc(database, 'users', uid)
     // getting user's last entry
     try {
-        const userSnapShot = await getDoc(userRef)
+        // const userSnapShot = await getDoc(userRef)
         if (userSnapShot.exists()) {
             userInfo = userSnapShot.data()
             lastDate = userInfo.lastDate
@@ -360,28 +410,33 @@ const signUp = async (email, password, confirmPassword, username, sleepGoal, act
             // updating last user entry date
             try {
                 await updateDoc(userRef, {
-                    sleepGoal: sleepGoal
+                    sleepGoal: sleepGoal,
+                    activityGoal: activityGoal,
+                    favCategory: favCategory,
+                    bedTime: bedTime,
+                    napDur: napDur
+
                 })
                 console.log("updated sleep goal (fb)!", sleepGoal)
 
-                await updateDoc(userRef, {
-                    activityGoal: activityGoal
-                })
+                // await updateDoc(userRef, {
+                //     activityGoal: activityGoal
+                // })
                 console.log("updated activityGoal goal (fb)!", activityGoal)
 
-                await updateDoc(userRef, {
-                    favCategory: favCategory
-                })
+                // await updateDoc(userRef, {
+                //     favCategory: favCategory
+                // })
                 console.log("updated favCategory goal (fb)!", favCategory)
 
-                await updateDoc(userRef, {
-                    bedTime: bedTime
-                })
+                // await updateDoc(userRef, {
+                //     bedTime: bedTime
+                // })
                 console.log("updated bedTime goal (fb)!", bedTime)
 
-                await updateDoc(userRef, {
-                    napDur: napDur
-                })
+                // await updateDoc(userRef, {
+                //     napDur: napDur
+                // })
                 console.log("updated napDur goal (fb)!", napDur)
 
             }
