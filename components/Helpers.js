@@ -120,7 +120,7 @@ const postSleepData = async (sleepQuality) => {
     if (itemList == "" || categoryMapList == "") {
         storeItemList()
     }
-    updateActivityScores(sleepQuality)
+    updateActivityScores(sleepQuality, categoryMapList)
 
     try {
         const currentDate = new Date().toDateString()
@@ -207,7 +207,7 @@ const postSleepData = async (sleepQuality) => {
 
 }
 
-const updateActivityScores = async (sleepQuality) => {
+const updateActivityScores = async (sleepQuality, mapList) => {
     // get the activity from async storage
 
     const uid = getUID()
@@ -251,14 +251,14 @@ const updateActivityScores = async (sleepQuality) => {
     // uid = user.uid
     // const userRef = doc(database, 'users', uid);
 
+    // const userSnapShot = await getDoc(userRef)
     try {
-        const userSnapShot = await getDoc(userRef) 
-            if (userSnapShot.exists()) {
-                userInfo = userSnapShot.data()
-                selectedItems = userInfo.selectedItems
-            } else {
-                console.log("failed to get selected Items")
-            }
+        if (userSnapShot.exists()) {
+            userInfo = userSnapShot.data()
+            selectedItems = userInfo.selectedItems
+        } else {
+            console.log("failed to get selected Items")
+        }
 
     } catch (error) {
         console.log('failed to get selected itemss', error.message)
@@ -274,8 +274,8 @@ const updateActivityScores = async (sleepQuality) => {
     // let activityList = await AsyncStorage.getItem(uid + '|' + 'itemList')
     let activityList = ""
 
+
     try {
-        // const userSnapShot = await getDoc(userRef)
         if (userSnapShot.exists()) {
             userInfo = userSnapShot.data()
             activityList = userInfo.itemList
@@ -294,6 +294,7 @@ const updateActivityScores = async (sleepQuality) => {
 
     // get the category map list from async storage
     // let categoryMapList = await AsyncStorage.getItem(uid + '|' + 'categoryMapList')
+    let categoryMapList = mapList;
     //retrieve category Map list from firebase
 
     categoryMapList = JSON.parse(categoryMapList)
@@ -302,18 +303,15 @@ const updateActivityScores = async (sleepQuality) => {
         map.set(key, value);
     }
     categoryMapList = map
-    console.log("categoryMapList: ", categoryMapList)
-
-    // get sleep goal from async (should be stored when first opening the app along with the sleep quality
-    // VEDAANT -- get live sleep data from last night -- 
-    // let {sleepData, activityData} = HealthKit()
-
+    console.log("categoryMapList after map conversion: ", categoryMapList)
 
     // get sleepGoal from firebase
 
+
     let sleepGoal = -1
-    if (userSnapshot.exists()) {
-        sleepGoal = userSnapshot.data().sleepGoal;
+    // const userSnapShot = await getDoc(userRef);
+    if (userSnapShot.exists()) {
+        sleepGoal = userSnapShot.data().sleepGoal;
         console.log("firebase sleepGoal:", sleepGoal);
     } else {
         console.log("User does not exist.");
