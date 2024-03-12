@@ -25,6 +25,7 @@ const ActivityScreen = () => {
     //             // let activityList = result.map(obj => obj.name + " " + obj.indScore.toString());
 
     //             const newItems = result ? result : [];
+    //             const newItems = result ? result : [];
 
     //             var itemNames = newItems.map((item) => item.name); // get the names of the activities like Walk, Run, etc
     //             console.log("levi item names: ", itemNames)
@@ -34,7 +35,7 @@ const ActivityScreen = () => {
     //         }
     //     };
     //     fetchData();
-    // }, []); // -- what is this for?
+    // }, []); //
     const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
     // initialized with two values: current state value and function that allows you to update the state
     useEffect(() => {

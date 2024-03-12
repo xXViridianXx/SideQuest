@@ -92,7 +92,7 @@ const postSleepData = async (sleepQuality) => {
     const myUID = getUID()
     // only call storeItemList when async storage for 'itemList' and 'categoryMapList' is empty
     const userRef = doc(database, 'users', myUID);
-    // const userSnapShot = await getDoc(userRef)
+    const userSnapShot = await getDoc(userRef)
 
     let lastDate = ""
     let itemList = ""
@@ -209,6 +209,11 @@ const postSleepData = async (sleepQuality) => {
 
 const updateActivityScores = async (sleepQuality) => {
     // get the activity from async storage
+
+    const uid = getUID()
+    const userRef = doc(database, 'users', uid);
+    const userSnapShot = await getDoc(userRef);
+
     let weatherData = await getWeatherInfo();
     console.log("weather data in update activityscores: ", weatherData);
     // get the temperature data from the json
@@ -241,10 +246,10 @@ const updateActivityScores = async (sleepQuality) => {
     // let selectedItems = await AsyncStorage.getItem(uid + '|' + 'selectedItems')
     let selectedItems = ""
     console.log("about to retrieve selected items from firebase")
-    const auth = getAuth()
-    const user = auth.currentUser
-    uid = user.uid
-    const userRef = doc(database, 'users', uid);
+    // const auth = getAuth()
+    // const user = auth.currentUser
+    // uid = user.uid
+    // const userRef = doc(database, 'users', uid);
 
     try {
         const userSnapShot = await getDoc(userRef) 
@@ -265,7 +270,25 @@ const updateActivityScores = async (sleepQuality) => {
     selectedItems = JSON.parse(selectedItems)
     console.log("selectedItems after json parse: ", selectedItems)
 
-    let activityList = await AsyncStorage.getItem(uid + '|' + 'itemList')
+
+    // let activityList = await AsyncStorage.getItem(uid + '|' + 'itemList')
+    let activityList = ""
+
+    try {
+        // const userSnapShot = await getDoc(userRef)
+        if (userSnapShot.exists()) {
+            userInfo = userSnapShot.data()
+            activityList = userInfo.itemList
+        }
+        else {
+            console.log("failed to get user data")
+        }
+    }
+    catch (error) {
+        console.log('failed to last entry date ', error.message)
+        return null
+    }
+    activityList = JSON.parse(activityList)
     activityList = activityList.map(obj => new Activity(obj.name, obj.categoryNames, obj.indScore, obj.numPicks))
 
 
@@ -287,8 +310,6 @@ const updateActivityScores = async (sleepQuality) => {
 
 
     // get sleepGoal from firebase
-    // const userRef = doc(database, 'users', uid);
-    const userSnapshot = await getDoc(userRef);
 
     let sleepGoal = -1
     if (userSnapshot.exists()) {
@@ -334,7 +355,16 @@ const updateActivityScores = async (sleepQuality) => {
     activityList.sort((a, b) => b.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal) - a.getScore(categoryMapList, degrees, currentTime, exerciseDuration, exerciseGoal))
     try {
         console.log("Updated activityList: ", activityList)
-        await AsyncStorage.setItem(uid + '|' + 'itemList', JSON.stringify(activityList));
+        try {
+            await updateDoc(userRef, {
+                itemList: JSON.stringify(activityList)
+            })
+        }
+        catch (error) {
+            console.log("error updating data: ", error.message)
+        }
+
+        // await AsyncStorage.setItem(uid + '|' + 'itemList', JSON.stringify(activityList));
         // console.log("Updated activityList stored in AsyncStorage.");
     } catch (error) {
         console.error("Error storing updated activityList in AsyncStorage:", error.message);
