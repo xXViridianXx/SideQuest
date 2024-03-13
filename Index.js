@@ -55,11 +55,31 @@ export default function Index() {
         // function that checks if user logged sleep for the day
         const checkLoggedSleep = async () => {
             const uid = getUID()
-            // gets logged sleep status, current date as a string, and the date user logged sleep
-            const logged_sleep = await AsyncStorage.getItem(uid + '|' + 'logged_sleep');
-            const currentDate = new Date().toDateString()
-            const postedDate = await AsyncStorage.getItem(uid + '|' + 'logged_date');
+            const userRef = doc(database, 'users', uid);
 
+            
+            // gets logged sleep status, current date as a string, and the date user logged sleep
+            // const logged_sleep = await AsyncStorage.getItem(uid + '|' + 'logged_sleep');
+            const currentDate = new Date().toDateString()
+            // const postedDate = await AsyncStorage.getItem(uid + '|' + 'logged_date');
+
+            const logged_sleep = ""
+            const postedDate = ""
+            try {
+                const userSnapShot = await getDoc(userRef)
+                if (userSnapShot.exists()) {
+                    userInfo = userSnapShot.data()
+                    logged_sleep = userInfo.loggedSleep
+                    postedDate = userInfo.loggedDate
+                }
+                else {
+                    console.log("failed to get user data")
+                }
+            }
+            catch (error) {
+                console.log('failed to last entry date ', error.message)
+                return null
+            }
             // checks if logged sleep exists
             if (logged_sleep) {
                 // if user logged sleep we will check if the user entered sleep for the current date
@@ -76,7 +96,15 @@ export default function Index() {
                     } else {
 
                         console.log('New day log sleep again')
-                        await AsyncStorage.setItem(uid + '|' + "logged_sleep", "false")
+                        // await AsyncStorage.setItem(uid + '|' + "logged_sleep", "false")
+                        try {
+                            await updateDoc(userRef, {
+                                loggedSleep: "false"
+                            })
+                        }
+                        catch (error) {
+                            console.log("error updating data: ", error.message)
+                        }
                         setLoggedSleepAsync(false)
 
                     }
@@ -93,7 +121,15 @@ export default function Index() {
             } else {
 
                 console.log('logged value does not exist')
-                await AsyncStorage.setItem(uid + '|' + 'logged_sleep', 'false')
+                // await AsyncStorage.setItem(uid + '|' + 'logged_sleep', 'false')
+                try {
+                    await updateDoc(userRef, {
+                        loggedSleep: "false"
+                    })
+                }
+                catch (error) {
+                    console.log("error updating data: ", error.message)
+                }
                 setLoggedSleepAsync(false)
 
             }

@@ -14,27 +14,28 @@ import { database, doc, setDoc, addDoc } from '../firebaseConfig';
 
 const ActivityScreen = () => {
     const navigation = useNavigation(); // used for navigating to other screens
-    // var itemNames = itemList.map((item) => item.name); // get the names of the activities like Walk, Run, etc
-    const [itemNames, setItems] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                var result = await accessActivityList();
-                result = JSON.parse(result);
-                // console.log("levi result", result)
-                // let activityList = result.map(obj => obj.name + " " + obj.indScore.toString());
+    var itemNames = itemList.map((item) => item.name); // get the names of the activities like Walk, Run, etc
+    // const [itemNames, setItems] = useState([]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             var result = await accessActivityList();
+    //             result = JSON.parse(result);
+    //             // console.log("levi result", result)
+    //             // let activityList = result.map(obj => obj.name + " " + obj.indScore.toString());
 
-                const newItems = result ? result : [];
+    //             const newItems = result ? result : [];
+    //             const newItems = result ? result : [];
 
-                var itemNames = newItems.map((item) => item.name); // get the names of the activities like Walk, Run, etc
-                console.log("levi item names: ", itemNames)
-                setItems(itemNames);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }, []); //
+    //             var itemNames = newItems.map((item) => item.name); // get the names of the activities like Walk, Run, etc
+    //             console.log("levi item names: ", itemNames)
+    //             setItems(itemNames);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []); //
     const [selectedItems, setSelectedItems] = useState([]); // managed in the useState hook
     // initialized with two values: current state value and function that allows you to update the state
     useEffect(() => {
@@ -90,7 +91,7 @@ const ActivityScreen = () => {
         try {
             const uid = getUID();
             if (selectedItems.length > 0) {
-                
+
                 await AsyncStorage.setItem(uid + '|' + 'selectedItems', JSON.stringify(selectedItems));
             }
             // get the async item first and then modify that

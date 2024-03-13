@@ -12,6 +12,7 @@ import {REACT_APP_FIREBASEKEY} from '@env'
 // import {...} from "firebase/storage";
 
 // Initialize Firebase
+console.log(REACT_APP_FIREBASEKEY)
 const firebaseConfig = {
   apiKey: REACT_APP_FIREBASEKEY,
   authDomain: "sidequest-c97a6.firebaseapp.com",
@@ -22,7 +23,6 @@ const firebaseConfig = {
   measurementId: "G-KEQEYNRBN0"
 };
 
-console.log(REACT_APP_FIREBASEKEY)
 
 const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service

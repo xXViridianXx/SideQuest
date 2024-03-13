@@ -54,7 +54,25 @@ const accessItemList = async () => {
 export const accessActivityList = async () => {
     try {
         const uid = getUID()
-        const activities = await AsyncStorage.getItem(uid + '|' + 'itemList');
+        const userRef = doc(database, 'users', uid);
+        
+        // const activities = await AsyncStorage.getItem(uid + '|' + 'itemList');
+        let activities = "";
+
+        try {
+            const userSnapShot = await getDoc(userRef)
+            if (userSnapShot.exists()) {
+                userInfo = userSnapShot.data()
+                activities = userInfo.itemList
+            }
+            else {
+                console.log("failed to get user data")
+            }
+        }
+        catch (error) {
+            console.log('failed to last entry date ', error.message)
+            return null
+        }
         return activities;
     } catch (error) {
         console.log('Error getting activity list');
